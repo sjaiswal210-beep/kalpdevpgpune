@@ -13,6 +13,7 @@ import Expenses from './pages/Expenses';
 import Visitors from './pages/Visitors';
 import Reports from './pages/Reports';
 import Notices from './pages/Notices';
+import WebsiteEditor from './pages/WebsiteEditor';
 import Settings from './pages/Settings';
 import Sidebar from './components/Sidebar';
 import TopBar from './components/TopBar';
@@ -66,6 +67,7 @@ function AdminLayout() {
             <Route path="/reports" element={<Reports />} />
             <Route path="/notices" element={<Notices />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/website" element={<WebsiteEditor />} />
           </Routes>
         </main>
       </div>

@@ -35,6 +35,9 @@ const KEYS = {
   ADMIN_CREDS: 'kalpdev_admin_creds',
   ADMIN_SESSION: 'kalpdev_admin_session',
   STUDENT_SESSION: 'kalpdev_student_session',
+  LANDING_SERVICES: 'kalpdev_landing_services',
+  LANDING_TESTIMONIALS: 'kalpdev_landing_testimonials',
+  LANDING_HERO: 'kalpdev_landing_hero',
 };
 
 function getItem(key, fallback = []) {
@@ -291,4 +294,62 @@ export function getTenantElectricity(tenantId) {
   if (!tenant) return [];
   const records = getElectricityRecords();
   return records.filter(r => r.roomNumber === tenant.roomNumber);
+}
+
+// ===== LANDING PAGE CMS =====
+const DEFAULT_SERVICES = [
+  { id: '1', title: 'Gated Society', desc: 'Secure gated community with restricted access for residents only.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop' },
+  { id: '2', title: 'CCTV Surveillance', desc: '24/7 CCTV monitoring across all floors and common areas.', img: 'https://images.unsplash.com/photo-1580795479225-c50ab8c3348d?w=600&h=400&fit=crop' },
+  { id: '3', title: 'Security Guard', desc: 'Trained security personnel on duty round the clock.', img: 'https://images.unsplash.com/photo-1582139329536-e7284fece509?w=600&h=400&fit=crop' },
+  { id: '4', title: 'Mineral Drinking Water', desc: 'Pure RO mineral water available 24/7 for all residents.', img: 'https://images.unsplash.com/photo-1559839914-17aae19cec71?w=600&h=400&fit=crop' },
+  { id: '5', title: 'Free High-Speed WiFi', desc: 'Unlimited high-speed internet for work and entertainment.', img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop' },
+  { id: '6', title: 'Personal Cupboard', desc: 'Dedicated lockable cupboard for each resident.', img: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=600&h=400&fit=crop' },
+  { id: '7', title: 'Bed with Mattress', desc: 'Comfortable beds with quality mattresses for restful sleep.', img: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&h=400&fit=crop' },
+  { id: '8', title: 'Fully Furnished PG', desc: 'Move-in ready rooms with all essential furniture provided.', img: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop' },
+  { id: '9', title: 'No Electricity Restrictions', desc: 'Use AC, heater, or any appliance — no extra charges.', img: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=600&h=400&fit=crop' },
+  { id: '10', title: 'Sports & Recreation', desc: 'Badminton, carrom, and chess available for leisure time.', img: 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=600&h=400&fit=crop' },
+  { id: '11', title: 'Project & Technical Guidance', desc: 'Expert mentorship for academic projects and technical skills.', img: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&h=400&fit=crop' },
+  { id: '12', title: 'Interview Prep & Job Referrals', desc: 'Mock interviews, resume help, and direct referrals in top companies.', img: 'https://images.unsplash.com/photo-1560472355-536de3962603?w=600&h=400&fit=crop' },
+];
+
+const DEFAULT_TESTIMONIALS = [
+  { id: '1', name: 'Rahul Sharma', room: 'Room 201', text: 'Best PG experience! Clean rooms, great food, and amazing community.', rating: 5 },
+  { id: '2', name: 'Priya Patel', room: 'Room 302', text: 'Feels like home away from home. The management is very responsive.', rating: 5 },
+  { id: '3', name: 'Amit Kumar', room: 'Room 203', text: 'Affordable, comfortable, and well-maintained. Highly recommended!', rating: 4 },
+];
+
+const DEFAULT_HERO = {
+  tagline: 'Premium PG Living',
+  title: 'KalpDev PG',
+  subtitle: 'Comfort • Safety • Better Living',
+  description: 'More than just a PG — we provide career guidance, sports facilities, and a supportive community to help you grow personally and professionally.',
+  heroImage: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=600&h=500&fit=crop',
+};
+
+export function getLandingServices() {
+  return getItem(KEYS.LANDING_SERVICES, DEFAULT_SERVICES);
+}
+
+export function saveLandingServices(services) {
+  setItem(KEYS.LANDING_SERVICES, services);
+}
+
+export function getLandingTestimonials() {
+  return getItem(KEYS.LANDING_TESTIMONIALS, DEFAULT_TESTIMONIALS);
+}
+
+export function saveLandingTestimonials(testimonials) {
+  setItem(KEYS.LANDING_TESTIMONIALS, testimonials);
+}
+
+export function getLandingHero() {
+  const data = localStorage.getItem(KEYS.LANDING_HERO);
+  if (data) {
+    try { return JSON.parse(data); } catch { return DEFAULT_HERO; }
+  }
+  return DEFAULT_HERO;
+}
+
+export function saveLandingHero(hero) {
+  setItem(KEYS.LANDING_HERO, hero);
 }
