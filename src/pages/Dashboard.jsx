@@ -5,16 +5,17 @@ import {
   BedDouble, Users, CreditCard, TrendingUp, Building2, AlertCircle, CheckCircle2, Percent
 } from 'lucide-react';
 import {
-  getTenants, getOccupancyStats, getMonthKey, getMonthlyCollection, getPendingRent,
+  getOccupancyStats, getMonthKey, getMonthlyCollection, getPendingRent,
   formatCurrency, TOTAL_ROOMS, TOTAL_BEDS, RENT_PER_PERSON, ALL_ROOMS, getRoomOccupancy
 } from '../data/store';
+import { useData } from '../data/DataContext';
 
 export default function Dashboard() {
-  const stats = getOccupancyStats();
+  const { tenants, rentRecords } = useData();
+  const stats = getOccupancyStats(tenants);
   const currentMonth = getMonthKey();
-  const collected = getMonthlyCollection(currentMonth);
-  const pending = getPendingRent(currentMonth);
-  const tenants = getTenants();
+  const collected = getMonthlyCollection(rentRecords, currentMonth);
+  const pending = getPendingRent(tenants, rentRecords, currentMonth);
 
   const statCards = [
     { label: 'Total Rooms', value: TOTAL_ROOMS, icon: Building2, color: 'from-blue-500 to-blue-600', bg: 'bg-blue-50 dark:bg-blue-900/20' },
@@ -40,7 +41,7 @@ export default function Dashboard() {
     d.setMonth(d.getMonth() - i);
     const mk = getMonthKey(d);
     const label = d.toLocaleDateString('en-IN', { month: 'short' });
-    barData.push({ month: label, collected: getMonthlyCollection(mk) });
+    barData.push({ month: label, collected: getMonthlyCollection(rentRecords, mk) });
   }
 
   return (
@@ -139,7 +140,7 @@ export default function Dashboard() {
         <h3 className="font-semibold text-gray-900 dark:text-white mb-6">Room Occupancy Layout</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {ALL_ROOMS.map((room) => {
-            const occupants = getRoomOccupancy(room.number);
+            const occupants = getRoomOccupancy(tenants, room.number);
             const count = occupants.length;
             let statusColor = 'border-red-200 bg-red-50 dark:bg-red-900/10';
             let statusBadge = 'badge-red';

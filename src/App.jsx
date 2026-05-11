@@ -21,6 +21,7 @@ import Settings from './pages/Settings';
 import Sidebar from './components/Sidebar';
 import TopBar from './components/TopBar';
 import { getDarkMode, setDarkMode as saveDarkMode, isAdminLoggedIn, isStudentLoggedIn } from './data/store';
+import { DataProvider } from './data/DataContext';
 
 function AdminProtected({ children }) {
   if (!isAdminLoggedIn()) {
@@ -83,29 +84,31 @@ function AdminLayout() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/student/login" element={<StudentLogin />} />
-        <Route
-          path="/student/dashboard"
-          element={
-            <StudentProtected>
-              <StudentDashboard />
-            </StudentProtected>
-          }
-        />
-        <Route
-          path="/admin/*"
-          element={
-            <AdminProtected>
-              <AdminLayout />
-            </AdminProtected>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <DataProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/student/login" element={<StudentLogin />} />
+          <Route
+            path="/student/dashboard"
+            element={
+              <StudentProtected>
+                <StudentDashboard />
+              </StudentProtected>
+            }
+          />
+          <Route
+            path="/admin/*"
+            element={
+              <AdminProtected>
+                <AdminLayout />
+              </AdminProtected>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </DataProvider>
   );
 }
 

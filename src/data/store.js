@@ -1,3 +1,6 @@
+import { db, COLLECTIONS, getCollection, addDocument, updateDocument, deleteDocument, setDocument, getDocument } from './firebase';
+import { collection, doc, getDocs, query, where } from 'firebase/firestore';
+
 // PG Structure Configuration
 export const PG_STRUCTURE = {
   1: { rooms: 1, label: '1st Floor', roomNumbers: ['101'] },
@@ -21,175 +24,11 @@ export const RENT_PER_PERSON = 3500;
 export const DEPOSIT_PER_BED = 3500;
 export const TOTAL_ROOMS = 9;
 export const TOTAL_BEDS = 18;
+export const POINTS_TO_RUPEE = 10;
 
-// LocalStorage helpers
-const KEYS = {
-  TENANTS: 'kalpdev_tenants',
-  RENT: 'kalpdev_rent',
-  ELECTRICITY: 'kalpdev_electricity',
-  EXPENSES: 'kalpdev_expenses',
-  VISITORS: 'kalpdev_visitors',
-  NOTICES: 'kalpdev_notices',
-  SETTINGS: 'kalpdev_settings',
-  DARK_MODE: 'kalpdev_dark_mode',
-  ADMIN_CREDS: 'kalpdev_admin_creds',
-  ADMIN_SESSION: 'kalpdev_admin_session',
-  STUDENT_SESSION: 'kalpdev_student_session',
-  LANDING_SERVICES: 'kalpdev_landing_services',
-  LANDING_TESTIMONIALS: 'kalpdev_landing_testimonials',
-  LANDING_HERO: 'kalpdev_landing_hero',
-  PAYMENT_REMINDERS: 'kalpdev_payment_reminders',
-  SHARING_DETAILS: 'kalpdev_sharing_details',
-  REWARDS_PRODUCTS: 'kalpdev_rewards_products',
-  REWARDS_POINTS: 'kalpdev_rewards_points',
-  REWARDS_PURCHASES: 'kalpdev_rewards_purchases',
-  REWARDS_REDEMPTIONS: 'kalpdev_rewards_redemptions',
-};
-
-function getItem(key, fallback = []) {
-  try {
-    const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function setItem(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-}
-
-// Tenants
-export function getTenants() {
-  return getItem(KEYS.TENANTS);
-}
-
-export function saveTenants(tenants) {
-  setItem(KEYS.TENANTS, tenants);
-}
-
-export function addTenant(tenant) {
-  const tenants = getTenants();
-  tenants.push({ ...tenant, id: generateId(), createdAt: new Date().toISOString() });
-  saveTenants(tenants);
-  return tenants;
-}
-
-export function updateTenant(id, data) {
-  const tenants = getTenants();
-  const idx = tenants.findIndex(t => t.id === id);
-  if (idx !== -1) {
-    tenants[idx] = { ...tenants[idx], ...data };
-    saveTenants(tenants);
-  }
-  return tenants;
-}
-
-export function deleteTenant(id) {
-  const tenants = getTenants().filter(t => t.id !== id);
-  saveTenants(tenants);
-  return tenants;
-}
-
-// Rent Records
-export function getRentRecords() {
-  return getItem(KEYS.RENT);
-}
-
-export function saveRentRecords(records) {
-  setItem(KEYS.RENT, records);
-}
-
-export function markRentPaid(tenantId, month, amount) {
-  const records = getRentRecords();
-  records.push({
-    id: generateId(),
-    tenantId,
-    month,
-    amount,
-    paid: true,
-    paidDate: new Date().toISOString().split('T')[0],
-  });
-  saveRentRecords(records);
-  return records;
-}
-
-export function markRentUnpaid(tenantId, month) {
-  const records = getRentRecords().filter(
-    r => !(r.tenantId === tenantId && r.month === month)
-  );
-  saveRentRecords(records);
-  return records;
-}
-
-// Electricity
-export function getElectricityRecords() {
-  return getItem(KEYS.ELECTRICITY);
-}
-
-export function saveElectricityRecords(records) {
-  setItem(KEYS.ELECTRICITY, records);
-}
-
-export function addElectricityBill(bill) {
-  const records = getElectricityRecords();
-  records.push({ ...bill, id: generateId(), createdAt: new Date().toISOString() });
-  saveElectricityRecords(records);
-  return records;
-}
-
-// Expenses
-export function getExpenses() {
-  return getItem(KEYS.EXPENSES);
-}
-
-export function saveExpenses(expenses) {
-  setItem(KEYS.EXPENSES, expenses);
-}
-
-export function addExpense(expense) {
-  const expenses = getExpenses();
-  expenses.push({ ...expense, id: generateId(), createdAt: new Date().toISOString() });
-  saveExpenses(expenses);
-  return expenses;
-}
-
-// Visitors
-export function getVisitors() {
-  return getItem(KEYS.VISITORS);
-}
-
-export function addVisitor(visitor) {
-  const visitors = getVisitors();
-  visitors.push({ ...visitor, id: generateId(), createdAt: new Date().toISOString() });
-  setItem(KEYS.VISITORS, visitors);
-  return visitors;
-}
-
-// Notices
-export function getNotices() {
-  return getItem(KEYS.NOTICES);
-}
-
-export function addNotice(notice) {
-  const notices = getNotices();
-  notices.push({ ...notice, id: generateId(), createdAt: new Date().toISOString() });
-  setItem(KEYS.NOTICES, notices);
-  return notices;
-}
-
-// Dark Mode
-export function getDarkMode() {
-  return localStorage.getItem(KEYS.DARK_MODE) === 'true';
-}
-
-export function setDarkMode(value) {
-  localStorage.setItem(KEYS.DARK_MODE, value.toString());
-}
-
-// Utility
+// ===== UTILITY =====
 export function generateId() {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+  return Date.now().toString(36) + Math.random().toString(36).substring(2, 11);
 }
 
 export function getMonthKey(date = new Date()) {
@@ -197,109 +36,279 @@ export function getMonthKey(date = new Date()) {
 }
 
 export function formatCurrency(amount) {
-  return `₹${Number(amount).toLocaleString('en-IN')}`;
+  return `₹${Number(amount || 0).toLocaleString('en-IN')}`;
 }
 
 export function formatDate(dateStr) {
   if (!dateStr) return '-';
-  return new Date(dateStr).toLocaleDateString('en-IN', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
+  return new Date(dateStr).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-// Computed helpers
-export function getRoomOccupancy(roomNumber) {
-  const tenants = getTenants();
-  return tenants.filter(t => t.roomNumber === roomNumber);
-}
+// ===== AUTH (session-based, stays local) =====
+const ADMIN_SESSION_KEY = 'kalpdev_admin_session';
+const STUDENT_SESSION_KEY = 'kalpdev_student_session';
 
-export function getOccupancyStats() {
-  const tenants = getTenants();
-  const occupied = tenants.length;
-  const vacant = TOTAL_BEDS - occupied;
-  const percentage = Math.round((occupied / TOTAL_BEDS) * 100);
-  return { occupied, vacant, percentage, total: TOTAL_BEDS };
-}
-
-export function getMonthlyCollection(month) {
-  const records = getRentRecords().filter(r => r.month === month && r.paid);
-  return records.reduce((sum, r) => sum + (r.amount || RENT_PER_PERSON), 0);
-}
-
-export function getPendingRent(month) {
-  const tenants = getTenants();
-  const records = getRentRecords().filter(r => r.month === month && r.paid);
-  const paidIds = records.map(r => r.tenantId);
-  const unpaid = tenants.filter(t => !paidIds.includes(t.id));
-  return unpaid.length * RENT_PER_PERSON;
-}
-
-// ===== AUTH =====
-const DEFAULT_ADMIN = { username: 'admin', password: 'admin123', name: 'KalpDev Admin' };
-
-export function getAdminCreds() {
-  return getItem(KEYS.ADMIN_CREDS, DEFAULT_ADMIN);
-}
-
-export function saveAdminCreds(creds) {
-  setItem(KEYS.ADMIN_CREDS, creds);
-}
-
-export function adminLogin(username, password) {
-  const creds = getAdminCreds();
+export async function adminLogin(username, password) {
+  const settings = await getDocument(COLLECTIONS.SETTINGS, 'admin_creds');
+  const creds = settings || { username: 'admin', password: 'admin123' };
   if (username === creds.username && password === creds.password) {
-    sessionStorage.setItem(KEYS.ADMIN_SESSION, 'true');
+    sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
     return { success: true };
   }
   return { success: false, error: 'Invalid username or password' };
 }
 
 export function isAdminLoggedIn() {
-  return sessionStorage.getItem(KEYS.ADMIN_SESSION) === 'true';
+  return sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
 }
 
 export function adminLogout() {
-  sessionStorage.removeItem(KEYS.ADMIN_SESSION);
+  sessionStorage.removeItem(ADMIN_SESSION_KEY);
 }
 
-export function studentLogin(phone) {
-  const tenants = getTenants();
+export async function studentLogin(phone) {
+  const tenants = await getCollection(COLLECTIONS.TENANTS);
   const tenant = tenants.find(t => t.phone === phone);
   if (tenant) {
-    sessionStorage.setItem(KEYS.STUDENT_SESSION, tenant.id);
+    sessionStorage.setItem(STUDENT_SESSION_KEY, JSON.stringify(tenant));
     return { success: true, tenant };
   }
   return { success: false, error: 'No tenant found with this phone number' };
 }
 
 export function isStudentLoggedIn() {
-  return !!sessionStorage.getItem(KEYS.STUDENT_SESSION);
+  return !!sessionStorage.getItem(STUDENT_SESSION_KEY);
 }
 
 export function getLoggedInStudent() {
-  const id = sessionStorage.getItem(KEYS.STUDENT_SESSION);
-  if (!id) return null;
-  const tenants = getTenants();
-  return tenants.find(t => t.id === id) || null;
+  const data = sessionStorage.getItem(STUDENT_SESSION_KEY);
+  return data ? JSON.parse(data) : null;
 }
 
 export function studentLogout() {
-  sessionStorage.removeItem(KEYS.STUDENT_SESSION);
+  sessionStorage.removeItem(STUDENT_SESSION_KEY);
 }
 
-// Get rent history for a specific tenant
-export function getTenantRentHistory(tenantId) {
-  return getRentRecords().filter(r => r.tenantId === tenantId);
+export async function getAdminCreds() {
+  const settings = await getDocument(COLLECTIONS.SETTINGS, 'admin_creds');
+  return settings || { username: 'admin', password: 'admin123' };
 }
 
-// Get electricity charges for a tenant's room
-export function getTenantElectricity(tenantId) {
-  const tenant = getTenants().find(t => t.id === tenantId);
-  if (!tenant) return [];
-  const records = getElectricityRecords();
-  return records.filter(r => r.roomNumber === tenant.roomNumber);
+export async function saveAdminCreds(creds) {
+  await setDocument(COLLECTIONS.SETTINGS, 'admin_creds', creds);
+}
+
+// ===== TENANTS =====
+export async function getTenants() {
+  return await getCollection(COLLECTIONS.TENANTS);
+}
+
+export async function addTenant(tenant) {
+  return await addDocument(COLLECTIONS.TENANTS, tenant);
+}
+
+export async function updateTenant(id, data) {
+  await updateDocument(COLLECTIONS.TENANTS, id, data);
+}
+
+export async function deleteTenant(id) {
+  await deleteDocument(COLLECTIONS.TENANTS, id);
+}
+
+// ===== RENT =====
+export async function getRentRecords() {
+  return await getCollection(COLLECTIONS.RENT);
+}
+
+export async function markRentPaid(tenantId, month, amount) {
+  return await addDocument(COLLECTIONS.RENT, {
+    tenantId, month, amount, paid: true,
+    paidDate: new Date().toISOString().split('T')[0],
+  });
+}
+
+export async function markRentUnpaid(tenantId, month) {
+  const records = await getRentRecords();
+  const record = records.find(r => r.tenantId === tenantId && r.month === month);
+  if (record) await deleteDocument(COLLECTIONS.RENT, record.id);
+}
+
+// ===== ELECTRICITY =====
+export async function getElectricityRecords() {
+  return await getCollection(COLLECTIONS.ELECTRICITY);
+}
+
+export async function addElectricityBill(bill) {
+  return await addDocument(COLLECTIONS.ELECTRICITY, bill);
+}
+
+// ===== EXPENSES =====
+export async function getExpenses() {
+  return await getCollection(COLLECTIONS.EXPENSES);
+}
+
+export async function addExpense(expense) {
+  return await addDocument(COLLECTIONS.EXPENSES, expense);
+}
+
+// ===== VISITORS =====
+export async function getVisitors() {
+  return await getCollection(COLLECTIONS.VISITORS);
+}
+
+export async function addVisitor(visitor) {
+  return await addDocument(COLLECTIONS.VISITORS, visitor);
+}
+
+// ===== NOTICES =====
+export async function getNotices() {
+  return await getCollection(COLLECTIONS.NOTICES);
+}
+
+export async function addNotice(notice) {
+  return await addDocument(COLLECTIONS.NOTICES, notice);
+}
+
+// ===== DARK MODE (stays local) =====
+export function getDarkMode() {
+  return localStorage.getItem('kalpdev_dark_mode') === 'true';
+}
+
+export function setDarkMode(value) {
+  localStorage.setItem('kalpdev_dark_mode', value.toString());
+}
+
+// ===== COMPUTED HELPERS =====
+export function getRoomOccupancy(tenants, roomNumber) {
+  return tenants.filter(t => t.roomNumber === roomNumber);
+}
+
+export function getOccupancyStats(tenants) {
+  const occupied = tenants.length;
+  const vacant = TOTAL_BEDS - occupied;
+  const percentage = Math.round((occupied / TOTAL_BEDS) * 100);
+  return { occupied, vacant, percentage, total: TOTAL_BEDS };
+}
+
+export function getMonthlyCollection(rentRecords, month) {
+  const records = rentRecords.filter(r => r.month === month && r.paid);
+  return records.reduce((sum, r) => sum + (r.amount || RENT_PER_PERSON), 0);
+}
+
+export function getPendingRent(tenants, rentRecords, month) {
+  const paidIds = rentRecords.filter(r => r.month === month && r.paid).map(r => r.tenantId);
+  const unpaid = tenants.filter(t => !paidIds.includes(t.id));
+  return unpaid.length * RENT_PER_PERSON;
+}
+
+// ===== PAYMENT TRACKER =====
+export async function getPaymentReminders() {
+  return await getCollection(COLLECTIONS.PAYMENT_REMINDERS);
+}
+
+export async function addPaymentReminder(reminder) {
+  return await addDocument(COLLECTIONS.PAYMENT_REMINDERS, { ...reminder, status: 'pending' });
+}
+
+export function getPaymentStatus(tenants, rentRecords, month) {
+  const paidRecords = rentRecords.filter(r => r.month === month && r.paid);
+  const paidIds = paidRecords.map(r => r.tenantId);
+  const dueDate = `${month}-05`;
+  const today = new Date().toISOString().split('T')[0];
+
+  return tenants.map(t => {
+    const record = paidRecords.find(r => r.tenantId === t.id);
+    const isOverdue = !record && today > dueDate;
+    return {
+      ...t, isPaid: !!record, paidDate: record ? record.paidDate : null, isOverdue,
+      daysOverdue: isOverdue ? Math.floor((new Date(today) - new Date(dueDate)) / (1000 * 60 * 60 * 24)) : 0,
+    };
+  });
+}
+
+// ===== SHARING / REFERRALS =====
+export async function getSharingDetails() {
+  return await getCollection(COLLECTIONS.SHARING);
+}
+
+export async function addSharingDetail(detail) {
+  return await addDocument(COLLECTIONS.SHARING, { ...detail, status: 'active' });
+}
+
+export async function updateSharingDetail(id, data) {
+  await updateDocument(COLLECTIONS.SHARING, id, data);
+}
+
+export async function deleteSharingDetail(id) {
+  await deleteDocument(COLLECTIONS.SHARING, id);
+}
+
+// ===== REWARDS & AFFILIATE =====
+export async function getRewardsProducts() {
+  return await getCollection(COLLECTIONS.REWARDS_PRODUCTS);
+}
+
+export async function addRewardsProduct(product) {
+  return await addDocument(COLLECTIONS.REWARDS_PRODUCTS, product);
+}
+
+export async function updateRewardsProduct(id, data) {
+  await updateDocument(COLLECTIONS.REWARDS_PRODUCTS, id, data);
+}
+
+export async function deleteRewardsProduct(id) {
+  await deleteDocument(COLLECTIONS.REWARDS_PRODUCTS, id);
+}
+
+export async function getRewardsPoints(tenantId) {
+  const doc = await getDocument(COLLECTIONS.REWARDS_POINTS, tenantId);
+  return doc || { balance: 0, history: [] };
+}
+
+export async function addPoints(tenantId, points, reason) {
+  const current = await getRewardsPoints(tenantId);
+  const updated = {
+    balance: (current.balance || 0) + points,
+    history: [...(current.history || []), { id: generateId(), type: 'earned', points, reason, date: new Date().toISOString() }],
+  };
+  await setDocument(COLLECTIONS.REWARDS_POINTS, tenantId, updated);
+  return updated;
+}
+
+export async function redeemPoints(tenantId, points, reason) {
+  const current = await getRewardsPoints(tenantId);
+  if (current.balance < points) return { success: false, error: 'Insufficient points' };
+  const updated = {
+    balance: current.balance - points,
+    history: [...(current.history || []), { id: generateId(), type: 'redeemed', points, reason, date: new Date().toISOString() }],
+  };
+  await setDocument(COLLECTIONS.REWARDS_POINTS, tenantId, updated);
+  return { success: true, data: updated };
+}
+
+export async function getRewardsPurchases() {
+  return await getCollection(COLLECTIONS.REWARDS_PURCHASES);
+}
+
+export async function addRewardsPurchase(purchase) {
+  return await addDocument(COLLECTIONS.REWARDS_PURCHASES, { ...purchase, verified: false });
+}
+
+export async function verifyPurchase(purchaseId) {
+  const purchases = await getRewardsPurchases();
+  const purchase = purchases.find(p => p.id === purchaseId);
+  if (purchase && !purchase.verified) {
+    await updateDocument(COLLECTIONS.REWARDS_PURCHASES, purchaseId, { verified: true, verifiedAt: new Date().toISOString() });
+    await addPoints(purchase.tenantId, purchase.pointsEarned, `Purchase: ${purchase.productName}`);
+  }
+}
+
+export async function getRedemptions() {
+  return await getCollection(COLLECTIONS.REWARDS_REDEMPTIONS);
+}
+
+export async function addRedemption(redemption) {
+  return await addDocument(COLLECTIONS.REWARDS_REDEMPTIONS, redemption);
 }
 
 // ===== LANDING PAGE CMS =====
@@ -332,237 +341,38 @@ const DEFAULT_HERO = {
   heroImage: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=700&h=500&fit=crop',
 };
 
-export function getLandingServices() {
-  return getItem(KEYS.LANDING_SERVICES, DEFAULT_SERVICES);
+export async function getLandingServices() {
+  const doc = await getDocument(COLLECTIONS.LANDING_CONTENT, 'services');
+  return doc?.items || DEFAULT_SERVICES;
 }
 
-export function saveLandingServices(services) {
-  setItem(KEYS.LANDING_SERVICES, services);
+export async function saveLandingServices(services) {
+  await setDocument(COLLECTIONS.LANDING_CONTENT, 'services', { items: services });
 }
 
-export function getLandingTestimonials() {
-  return getItem(KEYS.LANDING_TESTIMONIALS, DEFAULT_TESTIMONIALS);
+export async function getLandingTestimonials() {
+  const doc = await getDocument(COLLECTIONS.LANDING_CONTENT, 'testimonials');
+  return doc?.items || DEFAULT_TESTIMONIALS;
 }
 
-export function saveLandingTestimonials(testimonials) {
-  setItem(KEYS.LANDING_TESTIMONIALS, testimonials);
+export async function saveLandingTestimonials(testimonials) {
+  await setDocument(COLLECTIONS.LANDING_CONTENT, 'testimonials', { items: testimonials });
 }
 
-export function getLandingHero() {
-  const data = localStorage.getItem(KEYS.LANDING_HERO);
-  if (data) {
-    try { return JSON.parse(data); } catch { return DEFAULT_HERO; }
-  }
-  return DEFAULT_HERO;
+export async function getLandingHero() {
+  const doc = await getDocument(COLLECTIONS.LANDING_CONTENT, 'hero');
+  return doc || DEFAULT_HERO;
 }
 
-export function saveLandingHero(hero) {
-  setItem(KEYS.LANDING_HERO, hero);
+export async function saveLandingHero(hero) {
+  await setDocument(COLLECTIONS.LANDING_CONTENT, 'hero', hero);
 }
 
-// ===== PAYMENT TRACKING & REMINDERS =====
-export function getPaymentReminders() {
-  return getItem(KEYS.PAYMENT_REMINDERS);
+// Tenant-specific helpers
+export function getTenantRentHistory(rentRecords, tenantId) {
+  return rentRecords.filter(r => r.tenantId === tenantId);
 }
 
-export function savePaymentReminders(reminders) {
-  setItem(KEYS.PAYMENT_REMINDERS, reminders);
+export function getTenantElectricity(electricityRecords, roomNumber) {
+  return electricityRecords.filter(r => r.roomNumber === roomNumber);
 }
-
-export function addPaymentReminder(reminder) {
-  const reminders = getPaymentReminders();
-  reminders.push({ ...reminder, id: generateId(), createdAt: new Date().toISOString(), status: 'pending' });
-  savePaymentReminders(reminders);
-  return reminders;
-}
-
-export function markReminderSent(id) {
-  const reminders = getPaymentReminders();
-  const idx = reminders.findIndex(r => r.id === id);
-  if (idx !== -1) {
-    reminders[idx].status = 'sent';
-    reminders[idx].sentAt = new Date().toISOString();
-    savePaymentReminders(reminders);
-  }
-  return reminders;
-}
-
-// Get unpaid tenants for current month
-export function getUnpaidTenants(month) {
-  const tenants = getTenants();
-  const records = getRentRecords().filter(r => r.month === month && r.paid);
-  const paidIds = records.map(r => r.tenantId);
-  return tenants.filter(t => !paidIds.includes(t.id));
-}
-
-// Get payment history with due status
-export function getPaymentStatus(month) {
-  const tenants = getTenants();
-  const records = getRentRecords().filter(r => r.month === month && r.paid);
-  const paidIds = records.map(r => r.tenantId);
-
-  return tenants.map(t => {
-    const record = records.find(r => r.tenantId === t.id);
-    const dueDate = `${month}-05`; // Due on 5th of each month
-    const today = new Date().toISOString().split('T')[0];
-    const isOverdue = !record && today > dueDate;
-
-    return {
-      ...t,
-      isPaid: !!record,
-      paidDate: record ? record.paidDate : null,
-      isOverdue,
-      daysOverdue: isOverdue ? Math.floor((new Date(today) - new Date(dueDate)) / (1000 * 60 * 60 * 24)) : 0,
-    };
-  });
-}
-
-// ===== SHARING / REFERRAL MANAGEMENT =====
-export function getSharingDetails() {
-  return getItem(KEYS.SHARING_DETAILS);
-}
-
-export function saveSharingDetails(details) {
-  setItem(KEYS.SHARING_DETAILS, details);
-}
-
-export function addSharingDetail(detail) {
-  const details = getSharingDetails();
-  details.push({ ...detail, id: generateId(), createdAt: new Date().toISOString(), status: 'active' });
-  saveSharingDetails(details);
-  return details;
-}
-
-export function updateSharingDetail(id, data) {
-  const details = getSharingDetails();
-  const idx = details.findIndex(d => d.id === id);
-  if (idx !== -1) {
-    details[idx] = { ...details[idx], ...data };
-    saveSharingDetails(details);
-  }
-  return details;
-}
-
-export function deleteSharingDetail(id) {
-  const details = getSharingDetails().filter(d => d.id !== id);
-  saveSharingDetails(details);
-  return details;
-}
-
-// ===== REWARDS & AFFILIATE SYSTEM =====
-export function getRewardsProducts() {
-  return getItem(KEYS.REWARDS_PRODUCTS, []);
-}
-
-export function saveRewardsProducts(products) {
-  setItem(KEYS.REWARDS_PRODUCTS, products);
-}
-
-export function addRewardsProduct(product) {
-  const products = getRewardsProducts();
-  products.push({ ...product, id: generateId(), createdAt: new Date().toISOString() });
-  saveRewardsProducts(products);
-  return products;
-}
-
-export function updateRewardsProduct(id, data) {
-  const products = getRewardsProducts();
-  const idx = products.findIndex(p => p.id === id);
-  if (idx !== -1) {
-    products[idx] = { ...products[idx], ...data };
-    saveRewardsProducts(products);
-  }
-  return products;
-}
-
-export function deleteRewardsProduct(id) {
-  const products = getRewardsProducts().filter(p => p.id !== id);
-  saveRewardsProducts(products);
-  return products;
-}
-
-// Points per tenant
-export function getRewardsPoints() {
-  return getItem(KEYS.REWARDS_POINTS, {});
-}
-
-export function saveRewardsPoints(points) {
-  setItem(KEYS.REWARDS_POINTS, points);
-}
-
-export function addPoints(tenantId, points, reason) {
-  const allPoints = getRewardsPoints();
-  if (!allPoints[tenantId]) allPoints[tenantId] = { balance: 0, history: [] };
-  allPoints[tenantId].balance += points;
-  allPoints[tenantId].history.push({
-    id: generateId(),
-    type: 'earned',
-    points,
-    reason,
-    date: new Date().toISOString(),
-  });
-  saveRewardsPoints(allPoints);
-  return allPoints;
-}
-
-export function redeemPoints(tenantId, points, reason) {
-  const allPoints = getRewardsPoints();
-  if (!allPoints[tenantId] || allPoints[tenantId].balance < points) {
-    return { success: false, error: 'Insufficient points' };
-  }
-  allPoints[tenantId].balance -= points;
-  allPoints[tenantId].history.push({
-    id: generateId(),
-    type: 'redeemed',
-    points,
-    reason,
-    date: new Date().toISOString(),
-  });
-  saveRewardsPoints(allPoints);
-  return { success: true, data: allPoints };
-}
-
-export function getTenantPoints(tenantId) {
-  const allPoints = getRewardsPoints();
-  return allPoints[tenantId] || { balance: 0, history: [] };
-}
-
-// Purchase tracking
-export function getRewardsPurchases() {
-  return getItem(KEYS.REWARDS_PURCHASES);
-}
-
-export function addRewardsPurchase(purchase) {
-  const purchases = getRewardsPurchases();
-  purchases.push({ ...purchase, id: generateId(), createdAt: new Date().toISOString(), verified: false });
-  setItem(KEYS.REWARDS_PURCHASES, purchases);
-  return purchases;
-}
-
-export function verifyPurchase(purchaseId) {
-  const purchases = getRewardsPurchases();
-  const idx = purchases.findIndex(p => p.id === purchaseId);
-  if (idx !== -1 && !purchases[idx].verified) {
-    purchases[idx].verified = true;
-    purchases[idx].verifiedAt = new Date().toISOString();
-    setItem(KEYS.REWARDS_PURCHASES, purchases);
-    // Add points to tenant
-    addPoints(purchases[idx].tenantId, purchases[idx].pointsEarned, `Purchase: ${purchases[idx].productName}`);
-  }
-  return purchases;
-}
-
-// Redemption history
-export function getRedemptions() {
-  return getItem(KEYS.REWARDS_REDEMPTIONS);
-}
-
-export function addRedemption(redemption) {
-  const redemptions = getRedemptions();
-  redemptions.push({ ...redemption, id: generateId(), createdAt: new Date().toISOString() });
-  setItem(KEYS.REWARDS_REDEMPTIONS, redemptions);
-  return redemptions;
-}
-
-// Points to rupees conversion (10 points = ₹1 discount)
-export const POINTS_TO_RUPEE = 10;
