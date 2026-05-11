@@ -38,6 +38,8 @@ const KEYS = {
   LANDING_SERVICES: 'kalpdev_landing_services',
   LANDING_TESTIMONIALS: 'kalpdev_landing_testimonials',
   LANDING_HERO: 'kalpdev_landing_hero',
+  PAYMENT_REMINDERS: 'kalpdev_payment_reminders',
+  SHARING_DETAILS: 'kalpdev_sharing_details',
 };
 
 function getItem(key, fallback = []) {
@@ -319,10 +321,10 @@ const DEFAULT_TESTIMONIALS = [
 ];
 
 const DEFAULT_HERO = {
-  tagline: 'Premium PG Living',
+  tagline: 'Premium Girls PG Living',
   title: 'KalpDev PG',
   subtitle: 'Comfort • Safety • Better Living',
-  description: 'More than just a PG — we provide career guidance, sports facilities, and a supportive community to help you grow personally and professionally.',
+  description: 'A safe and premium paying guest accommodation exclusively for girls — with career guidance, sports facilities, and a supportive community to help you grow.',
   heroImage: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=700&h=500&fit=crop',
 };
 
@@ -352,4 +354,93 @@ export function getLandingHero() {
 
 export function saveLandingHero(hero) {
   setItem(KEYS.LANDING_HERO, hero);
+}
+
+// ===== PAYMENT TRACKING & REMINDERS =====
+export function getPaymentReminders() {
+  return getItem(KEYS.PAYMENT_REMINDERS);
+}
+
+export function savePaymentReminders(reminders) {
+  setItem(KEYS.PAYMENT_REMINDERS, reminders);
+}
+
+export function addPaymentReminder(reminder) {
+  const reminders = getPaymentReminders();
+  reminders.push({ ...reminder, id: generateId(), createdAt: new Date().toISOString(), status: 'pending' });
+  savePaymentReminders(reminders);
+  return reminders;
+}
+
+export function markReminderSent(id) {
+  const reminders = getPaymentReminders();
+  const idx = reminders.findIndex(r => r.id === id);
+  if (idx !== -1) {
+    reminders[idx].status = 'sent';
+    reminders[idx].sentAt = new Date().toISOString();
+    savePaymentReminders(reminders);
+  }
+  return reminders;
+}
+
+// Get unpaid tenants for current month
+export function getUnpaidTenants(month) {
+  const tenants = getTenants();
+  const records = getRentRecords().filter(r => r.month === month && r.paid);
+  const paidIds = records.map(r => r.tenantId);
+  return tenants.filter(t => !paidIds.includes(t.id));
+}
+
+// Get payment history with due status
+export function getPaymentStatus(month) {
+  const tenants = getTenants();
+  const records = getRentRecords().filter(r => r.month === month && r.paid);
+  const paidIds = records.map(r => r.tenantId);
+
+  return tenants.map(t => {
+    const record = records.find(r => r.tenantId === t.id);
+    const dueDate = `${month}-05`; // Due on 5th of each month
+    const today = new Date().toISOString().split('T')[0];
+    const isOverdue = !record && today > dueDate;
+
+    return {
+      ...t,
+      isPaid: !!record,
+      paidDate: record ? record.paidDate : null,
+      isOverdue,
+      daysOverdue: isOverdue ? Math.floor((new Date(today) - new Date(dueDate)) / (1000 * 60 * 60 * 24)) : 0,
+    };
+  });
+}
+
+// ===== SHARING / REFERRAL MANAGEMENT =====
+export function getSharingDetails() {
+  return getItem(KEYS.SHARING_DETAILS);
+}
+
+export function saveSharingDetails(details) {
+  setItem(KEYS.SHARING_DETAILS, details);
+}
+
+export function addSharingDetail(detail) {
+  const details = getSharingDetails();
+  details.push({ ...detail, id: generateId(), createdAt: new Date().toISOString(), status: 'active' });
+  saveSharingDetails(details);
+  return details;
+}
+
+export function updateSharingDetail(id, data) {
+  const details = getSharingDetails();
+  const idx = details.findIndex(d => d.id === id);
+  if (idx !== -1) {
+    details[idx] = { ...details[idx], ...data };
+    saveSharingDetails(details);
+  }
+  return details;
+}
+
+export function deleteSharingDetail(id) {
+  const details = getSharingDetails().filter(d => d.id !== id);
+  saveSharingDetails(details);
+  return details;
 }
