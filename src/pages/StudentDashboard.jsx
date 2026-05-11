@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Building2, LogOut, User, Phone, Mail, MapPin, Calendar, CreditCard,
-  Zap, BedDouble, FileText, Bell, Moon, Sun, MessageCircle
+  Zap, BedDouble, FileText, Bell, Moon, Sun, MessageCircle, Gift
 } from 'lucide-react';
 import {
   getLoggedInStudent, studentLogout, getTenantRentHistory, getTenantElectricity,
   formatCurrency, formatDate, getMonthKey, getRentRecords, getElectricityRecords,
   getNotices, RENT_PER_PERSON, getDarkMode, setDarkMode as saveDarkMode
 } from '../data/store';
+import StudentRewards from './StudentRewards';
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ export default function StudentDashboard() {
     { id: 'rent', label: 'Rent History', icon: CreditCard },
     { id: 'electricity', label: 'Electricity', icon: Zap },
     { id: 'notices', label: 'Notices', icon: Bell },
+    { id: 'rewards', label: 'Rewards', icon: Gift },
   ];
 
   return (
@@ -307,6 +309,10 @@ export default function StudentDashboard() {
                 </div>
               )}
             </div>
+          )}
+
+          {activeTab === 'rewards' && (
+            <StudentRewards />
           )}
         </motion.div>
       </div>

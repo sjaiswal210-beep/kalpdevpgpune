@@ -16,6 +16,7 @@ import Notices from './pages/Notices';
 import WebsiteEditor from './pages/WebsiteEditor';
 import PaymentTracker from './pages/PaymentTracker';
 import SharingManagement from './pages/SharingManagement';
+import RewardsAdmin from './pages/RewardsAdmin';
 import Settings from './pages/Settings';
 import Sidebar from './components/Sidebar';
 import TopBar from './components/TopBar';
@@ -72,6 +73,7 @@ function AdminLayout() {
             <Route path="/website" element={<WebsiteEditor />} />
             <Route path="/payments" element={<PaymentTracker />} />
             <Route path="/sharing" element={<SharingManagement />} />
+            <Route path="/rewards" element={<RewardsAdmin />} />
           </Routes>
         </main>
       </div>

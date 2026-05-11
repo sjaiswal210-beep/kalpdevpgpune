@@ -40,6 +40,10 @@ const KEYS = {
   LANDING_HERO: 'kalpdev_landing_hero',
   PAYMENT_REMINDERS: 'kalpdev_payment_reminders',
   SHARING_DETAILS: 'kalpdev_sharing_details',
+  REWARDS_PRODUCTS: 'kalpdev_rewards_products',
+  REWARDS_POINTS: 'kalpdev_rewards_points',
+  REWARDS_PURCHASES: 'kalpdev_rewards_purchases',
+  REWARDS_REDEMPTIONS: 'kalpdev_rewards_redemptions',
 };
 
 function getItem(key, fallback = []) {
@@ -444,3 +448,121 @@ export function deleteSharingDetail(id) {
   saveSharingDetails(details);
   return details;
 }
+
+// ===== REWARDS & AFFILIATE SYSTEM =====
+export function getRewardsProducts() {
+  return getItem(KEYS.REWARDS_PRODUCTS, []);
+}
+
+export function saveRewardsProducts(products) {
+  setItem(KEYS.REWARDS_PRODUCTS, products);
+}
+
+export function addRewardsProduct(product) {
+  const products = getRewardsProducts();
+  products.push({ ...product, id: generateId(), createdAt: new Date().toISOString() });
+  saveRewardsProducts(products);
+  return products;
+}
+
+export function updateRewardsProduct(id, data) {
+  const products = getRewardsProducts();
+  const idx = products.findIndex(p => p.id === id);
+  if (idx !== -1) {
+    products[idx] = { ...products[idx], ...data };
+    saveRewardsProducts(products);
+  }
+  return products;
+}
+
+export function deleteRewardsProduct(id) {
+  const products = getRewardsProducts().filter(p => p.id !== id);
+  saveRewardsProducts(products);
+  return products;
+}
+
+// Points per tenant
+export function getRewardsPoints() {
+  return getItem(KEYS.REWARDS_POINTS, {});
+}
+
+export function saveRewardsPoints(points) {
+  setItem(KEYS.REWARDS_POINTS, points);
+}
+
+export function addPoints(tenantId, points, reason) {
+  const allPoints = getRewardsPoints();
+  if (!allPoints[tenantId]) allPoints[tenantId] = { balance: 0, history: [] };
+  allPoints[tenantId].balance += points;
+  allPoints[tenantId].history.push({
+    id: generateId(),
+    type: 'earned',
+    points,
+    reason,
+    date: new Date().toISOString(),
+  });
+  saveRewardsPoints(allPoints);
+  return allPoints;
+}
+
+export function redeemPoints(tenantId, points, reason) {
+  const allPoints = getRewardsPoints();
+  if (!allPoints[tenantId] || allPoints[tenantId].balance < points) {
+    return { success: false, error: 'Insufficient points' };
+  }
+  allPoints[tenantId].balance -= points;
+  allPoints[tenantId].history.push({
+    id: generateId(),
+    type: 'redeemed',
+    points,
+    reason,
+    date: new Date().toISOString(),
+  });
+  saveRewardsPoints(allPoints);
+  return { success: true, data: allPoints };
+}
+
+export function getTenantPoints(tenantId) {
+  const allPoints = getRewardsPoints();
+  return allPoints[tenantId] || { balance: 0, history: [] };
+}
+
+// Purchase tracking
+export function getRewardsPurchases() {
+  return getItem(KEYS.REWARDS_PURCHASES);
+}
+
+export function addRewardsPurchase(purchase) {
+  const purchases = getRewardsPurchases();
+  purchases.push({ ...purchase, id: generateId(), createdAt: new Date().toISOString(), verified: false });
+  setItem(KEYS.REWARDS_PURCHASES, purchases);
+  return purchases;
+}
+
+export function verifyPurchase(purchaseId) {
+  const purchases = getRewardsPurchases();
+  const idx = purchases.findIndex(p => p.id === purchaseId);
+  if (idx !== -1 && !purchases[idx].verified) {
+    purchases[idx].verified = true;
+    purchases[idx].verifiedAt = new Date().toISOString();
+    setItem(KEYS.REWARDS_PURCHASES, purchases);
+    // Add points to tenant
+    addPoints(purchases[idx].tenantId, purchases[idx].pointsEarned, `Purchase: ${purchases[idx].productName}`);
+  }
+  return purchases;
+}
+
+// Redemption history
+export function getRedemptions() {
+  return getItem(KEYS.REWARDS_REDEMPTIONS);
+}
+
+export function addRedemption(redemption) {
+  const redemptions = getRedemptions();
+  redemptions.push({ ...redemption, id: generateId(), createdAt: new Date().toISOString() });
+  setItem(KEYS.REWARDS_REDEMPTIONS, redemptions);
+  return redemptions;
+}
+
+// Points to rupees conversion (10 points = ₹1 discount)
+export const POINTS_TO_RUPEE = 10;
