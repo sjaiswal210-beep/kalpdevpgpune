@@ -7,13 +7,15 @@ import {
 } from 'lucide-react';
 import {
   getLoggedInStudent, studentLogout, getTenantRentHistory, getTenantElectricity,
-  formatCurrency, formatDate, getMonthKey, getRentRecords, getElectricityRecords,
-  getNotices, RENT_PER_PERSON, getDarkMode, setDarkMode as saveDarkMode
+  formatCurrency, formatDate, getMonthKey,
+  RENT_PER_PERSON, getDarkMode, setDarkMode as saveDarkMode
 } from '../data/store';
+import { useData } from '../data/DataContext';
 import StudentRewards from './StudentRewards';
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
+  const { rentRecords, electricityRecords, notices } = useData();
   const [tenant, setTenant] = useState(null);
   const [darkMode, setDarkMode] = useState(getDarkMode());
   const [activeTab, setActiveTab] = useState('overview');
@@ -43,9 +45,8 @@ export default function StudentDashboard() {
 
   if (!tenant) return null;
 
-  const rentHistory = getTenantRentHistory(tenant.id);
-  const electricityRecords = getTenantElectricity(tenant.id);
-  const notices = getNotices();
+  const rentHistory = getTenantRentHistory(rentRecords, tenant.id);
+  const tenantElectricity = getTenantElectricity(electricityRecords, tenant.roomNumber);
   const currentMonth = getMonthKey();
   const isCurrentMonthPaid = rentHistory.some(r => r.month === currentMonth && r.paid);
 
@@ -250,7 +251,7 @@ export default function StudentDashboard() {
                   Electricity Bill History
                 </h3>
               </div>
-              {electricityRecords.length === 0 ? (
+              {tenantElectricity.length === 0 ? (
                 <div className="p-12 text-center text-gray-500 dark:text-gray-400">
                   <Zap className="w-12 h-12 mx-auto mb-3 opacity-30" />
                   <p>No electricity records for your room yet.</p>
@@ -267,7 +268,7 @@ export default function StudentDashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                      {electricityRecords.map((r, i) => (
+                      {tenantElectricity.map((r, i) => (
                         <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                           <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{r.month}</td>
                           <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{formatCurrency(r.totalBill)}</td>

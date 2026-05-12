@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Globe, Plus, Edit2, Trash2, X, Save, Image, Star, MessageSquare, Layout
+  Globe, Plus, Edit2, Trash2, X, Save, Star, MessageSquare, Layout
 } from 'lucide-react';
 import {
   getLandingServices, saveLandingServices,
@@ -11,12 +11,28 @@ import {
 
 export default function WebsiteEditor() {
   const [activeTab, setActiveTab] = useState('hero');
-  const [services, setServices] = useState(getLandingServices());
-  const [testimonials, setTestimonials] = useState(getLandingTestimonials());
-  const [hero, setHero] = useState(getLandingHero());
+  const [services, setServices] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [hero, setHero] = useState({ tagline: '', title: '', subtitle: '', description: '', heroImage: '' });
   const [editItem, setEditItem] = useState(null);
   const [editType, setEditType] = useState('');
   const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const [s, t, h] = await Promise.all([
+        getLandingServices(),
+        getLandingTestimonials(),
+        getLandingHero(),
+      ]);
+      setServices(s);
+      setTestimonials(t);
+      setHero(h);
+      setLoading(false);
+    };
+    loadData();
+  }, []);
 
   const showSaved = () => {
     setSaved(true);
@@ -24,13 +40,13 @@ export default function WebsiteEditor() {
   };
 
   // Hero
-  const saveHeroChanges = () => {
-    saveLandingHero(hero);
+  const saveHeroChanges = async () => {
+    await saveLandingHero(hero);
     showSaved();
   };
 
   // Services
-  const saveService = (data) => {
+  const saveService = async (data) => {
     let updated;
     if (data.id) {
       updated = services.map(s => s.id === data.id ? data : s);
@@ -38,22 +54,22 @@ export default function WebsiteEditor() {
       updated = [...services, { ...data, id: generateId() }];
     }
     setServices(updated);
-    saveLandingServices(updated);
+    await saveLandingServices(updated);
     setEditItem(null);
     setEditType('');
     showSaved();
   };
 
-  const deleteService = (id) => {
+  const deleteService = async (id) => {
     if (!window.confirm('Delete this service?')) return;
     const updated = services.filter(s => s.id !== id);
     setServices(updated);
-    saveLandingServices(updated);
+    await saveLandingServices(updated);
     showSaved();
   };
 
   // Testimonials
-  const saveTestimonial = (data) => {
+  const saveTestimonial = async (data) => {
     let updated;
     if (data.id) {
       updated = testimonials.map(t => t.id === data.id ? data : t);
@@ -61,17 +77,17 @@ export default function WebsiteEditor() {
       updated = [...testimonials, { ...data, id: generateId() }];
     }
     setTestimonials(updated);
-    saveLandingTestimonials(updated);
+    await saveLandingTestimonials(updated);
     setEditItem(null);
     setEditType('');
     showSaved();
   };
 
-  const deleteTestimonial = (id) => {
+  const deleteTestimonial = async (id) => {
     if (!window.confirm('Delete this review?')) return;
     const updated = testimonials.filter(t => t.id !== id);
     setTestimonials(updated);
-    saveLandingTestimonials(updated);
+    await saveLandingTestimonials(updated);
     showSaved();
   };
 
@@ -80,6 +96,14 @@ export default function WebsiteEditor() {
     { id: 'services', label: 'Services', icon: Globe },
     { id: 'testimonials', label: 'Reviews', icon: MessageSquare },
   ];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-12">
+        <div className="animate-spin w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

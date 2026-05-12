@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Gift, Plus, X, Edit2, Trash2, CheckCircle2, Star, Users, IndianRupee, ShoppingBag
 } from 'lucide-react';
 import {
-  getRewardsProducts, addRewardsProduct, updateRewardsProduct, deleteRewardsProduct,
-  getRewardsPurchases, verifyPurchase, getTenants, getRewardsPoints,
+  addRewardsProduct, updateRewardsProduct, deleteRewardsProduct,
+  verifyPurchase, getRewardsPoints,
   formatCurrency, POINTS_TO_RUPEE, generateId
 } from '../data/store';
+import { useData } from '../data/DataContext';
 
 const emptyProduct = {
   name: '', category: '', image: '',
@@ -18,35 +19,41 @@ const emptyProduct = {
 };
 
 export default function RewardsAdmin() {
+  const { tenants, rewardsProducts, rewardsPurchases } = useData();
   const [activeTab, setActiveTab] = useState('products');
-  const [products, setProducts] = useState(getRewardsProducts());
-  const [purchases, setPurchases] = useState(getRewardsPurchases());
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState(emptyProduct);
+  const [allPoints, setAllPoints] = useState({});
 
-  const tenants = getTenants();
-  const allPoints = getRewardsPoints();
+  useEffect(() => {
+    const loadPoints = async () => {
+      const pointsMap = {};
+      for (const t of tenants) {
+        const pts = await getRewardsPoints(t.id);
+        pointsMap[t.id] = pts;
+      }
+      setAllPoints(pointsMap);
+    };
+    if (tenants.length > 0) loadPoints();
+  }, [tenants]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (editId) {
-      const updated = updateRewardsProduct(editId, form);
-      setProducts(updated);
+      await updateRewardsProduct(editId, form);
     } else {
-      const updated = addRewardsProduct(form);
-      setProducts(updated);
+      await addRewardsProduct(form);
     }
     resetForm();
   };
 
   const handleEdit = (p) => { setForm(p); setEditId(p.id); setShowForm(true); };
-  const handleDelete = (id) => { if (window.confirm('Delete this product?')) setProducts(deleteRewardsProduct(id)); };
+  const handleDelete = async (id) => { if (window.confirm('Delete this product?')) await deleteRewardsProduct(id); };
   const resetForm = () => { setForm(emptyProduct); setEditId(null); setShowForm(false); };
 
-  const handleVerify = (purchaseId) => {
-    const updated = verifyPurchase(purchaseId);
-    setPurchases(updated);
+  const handleVerify = async (purchaseId) => {
+    await verifyPurchase(purchaseId);
   };
 
   const tabs = [
@@ -81,12 +88,12 @@ export default function RewardsAdmin() {
       {/* Products Tab */}
       {activeTab === 'products' && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {products.length === 0 ? (
+          {rewardsProducts.length === 0 ? (
             <div className="col-span-full glass-card-solid p-12 text-center">
               <ShoppingBag className="w-12 h-12 mx-auto mb-3 text-gray-300" />
               <p className="text-gray-500">No products added yet. Add affiliate products for tenants to compare and purchase.</p>
             </div>
-          ) : products.map(p => (
+          ) : rewardsProducts.map(p => (
             <div key={p.id} className="glass-card-solid overflow-hidden">
               {p.image && <img src={p.image} alt={p.name} className="w-full h-36 object-cover" />}
               <div className="p-4">
@@ -113,14 +120,14 @@ export default function RewardsAdmin() {
       {/* Purchases Tab */}
       {activeTab === 'purchases' && (
         <div className="glass-card-solid overflow-hidden">
-          {purchases.length === 0 ? (
+          {rewardsPurchases.length === 0 ? (
             <div className="p-12 text-center">
               <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-gray-300" />
               <p className="text-gray-500">No purchase claims yet.</p>
             </div>
           ) : (
             <div className="divide-y divide-gray-100 dark:divide-gray-700">
-              {purchases.slice().reverse().map(p => (
+              {rewardsPurchases.slice().reverse().map(p => (
                 <div key={p.id} className="p-4 flex items-center justify-between">
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white text-sm">{p.tenantName}</div>
@@ -152,7 +159,7 @@ export default function RewardsAdmin() {
             <div className="p-12 text-center"><p className="text-gray-500">No tenants yet.</p></div>
           ) : (
             <div className="divide-y divide-gray-100 dark:divide-gray-700">
-              {tenants.sort((a, b) => (allPoints[b.id]?.balance || 0) - (allPoints[a.id]?.balance || 0)).map((t, i) => {
+              {[...tenants].sort((a, b) => (allPoints[b.id]?.balance || 0) - (allPoints[a.id]?.balance || 0)).map((t, i) => {
                 const pts = allPoints[t.id]?.balance || 0;
                 const discount = Math.floor(pts / POINTS_TO_RUPEE);
                 return (

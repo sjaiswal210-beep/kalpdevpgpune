@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CreditCard, ChevronLeft, ChevronRight, Check, Undo2, CheckCircle2, Clock } from 'lucide-react';
 import {
-  getTenants, getRentRecords, markRentPaid, markRentUnpaid, getMonthKey,
+  markRentPaid, markRentUnpaid, getMonthKey,
   formatCurrency, formatDate, RENT_PER_PERSON
 } from '../data/store';
+import { useData } from '../data/DataContext';
 
 export default function RentCollection() {
+  const { tenants, rentRecords } = useData();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [records, setRecords] = useState(getRentRecords());
 
   const monthKey = getMonthKey(currentDate);
   const monthLabel = currentDate.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
-  const tenants = getTenants();
 
-  const paidTenants = tenants.filter(t => records.some(r => r.tenantId === t.id && r.month === monthKey && r.paid));
-  const unpaidTenants = tenants.filter(t => !records.some(r => r.tenantId === t.id && r.month === monthKey && r.paid));
+  const paidTenants = tenants.filter(t => rentRecords.some(r => r.tenantId === t.id && r.month === monthKey && r.paid));
+  const unpaidTenants = tenants.filter(t => !rentRecords.some(r => r.tenantId === t.id && r.month === monthKey && r.paid));
 
   const collected = paidTenants.length * RENT_PER_PERSON;
   const pending = unpaidTenants.length * RENT_PER_PERSON;
@@ -32,14 +32,12 @@ export default function RentCollection() {
     setCurrentDate(d);
   };
 
-  const handleMarkPaid = (tenantId) => {
-    const updated = markRentPaid(tenantId, monthKey, RENT_PER_PERSON);
-    setRecords(updated);
+  const handleMarkPaid = async (tenantId) => {
+    await markRentPaid(tenantId, monthKey, RENT_PER_PERSON);
   };
 
-  const handleMarkUnpaid = (tenantId) => {
-    const updated = markRentUnpaid(tenantId, monthKey);
-    setRecords(updated);
+  const handleMarkUnpaid = async (tenantId) => {
+    await markRentUnpaid(tenantId, monthKey);
   };
 
   return (
@@ -110,8 +108,7 @@ export default function RentCollection() {
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {tenants.map((t) => {
-                  const isPaid = records.some(r => r.tenantId === t.id && r.month === monthKey && r.paid);
-                  const record = records.find(r => r.tenantId === t.id && r.month === monthKey);
+                  const isPaid = rentRecords.some(r => r.tenantId === t.id && r.month === monthKey && r.paid);
                   return (
                     <tr key={t.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
                       <td className="px-6 py-4">

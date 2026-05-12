@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UserCheck, Plus, X } from 'lucide-react';
-import { getVisitors, addVisitor, formatDate } from '../data/store';
+import { addVisitor, formatDate } from '../data/store';
+import { useData } from '../data/DataContext';
 
 export default function Visitors() {
-  const [visitors, setVisitors] = useState(getVisitors());
+  const { visitors } = useData();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ name: '', phone: '', purpose: '', visitingTenant: '', date: '', timeIn: '', timeOut: '' });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const updated = addVisitor(form);
-    setVisitors(updated);
+    await addVisitor(form);
     setForm({ name: '', phone: '', purpose: '', visitingTenant: '', date: '', timeIn: '', timeOut: '' });
     setShowForm(false);
   };

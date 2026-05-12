@@ -6,16 +6,17 @@ import {
 } from 'lucide-react';
 import {
   getPaymentStatus, getMonthKey, formatCurrency, formatDate,
-  RENT_PER_PERSON, getUnpaidTenants, addPaymentReminder, getPaymentReminders
+  RENT_PER_PERSON, addPaymentReminder
 } from '../data/store';
+import { useData } from '../data/DataContext';
 
 export default function PaymentTracker() {
+  const { tenants, rentRecords, paymentReminders } = useData();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [reminders, setReminders] = useState(getPaymentReminders());
 
   const monthKey = getMonthKey(currentDate);
   const monthLabel = currentDate.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
-  const paymentStatus = getPaymentStatus(monthKey);
+  const paymentStatus = getPaymentStatus(tenants, rentRecords, monthKey);
 
   const paid = paymentStatus.filter(t => t.isPaid);
   const unpaid = paymentStatus.filter(t => !t.isPaid);
@@ -33,35 +34,32 @@ export default function PaymentTracker() {
     setCurrentDate(d);
   };
 
-  const sendWhatsAppReminder = (tenant) => {
+  const sendWhatsAppReminder = async (tenant) => {
     const message = encodeURIComponent(
       `Hi ${tenant.name}, this is a gentle reminder from KalpDev PG. Your rent of ₹${RENT_PER_PERSON} for ${monthLabel} is pending. Please pay at your earliest convenience. Thank you!`
     );
     window.open(`https://wa.me/91${tenant.phone}?text=${message}`, '_blank');
 
-    // Track reminder
-    const updated = addPaymentReminder({
+    await addPaymentReminder({
       tenantId: tenant.id,
       tenantName: tenant.name,
       month: monthKey,
       amount: RENT_PER_PERSON,
       type: 'whatsapp',
     });
-    setReminders(updated);
   };
 
-  const sendBulkReminder = () => {
+  const sendBulkReminder = async () => {
     if (unpaid.length === 0) return;
-    unpaid.forEach(tenant => {
-      addPaymentReminder({
+    for (const tenant of unpaid) {
+      await addPaymentReminder({
         tenantId: tenant.id,
         tenantName: tenant.name,
         month: monthKey,
         amount: RENT_PER_PERSON,
         type: 'bulk',
       });
-    });
-    setReminders(getPaymentReminders());
+    }
     alert(`Reminders logged for ${unpaid.length} tenants. Use WhatsApp buttons to send individually.`);
   };
 
@@ -178,7 +176,7 @@ export default function PaymentTracker() {
       )}
 
       {/* Reminder History */}
-      {reminders.length > 0 && (
+      {paymentReminders.length > 0 && (
         <div className="glass-card-solid overflow-hidden">
           <div className="p-4 border-b border-gray-100 dark:border-gray-700">
             <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
@@ -186,7 +184,7 @@ export default function PaymentTracker() {
             </h3>
           </div>
           <div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-64 overflow-y-auto">
-            {reminders.slice().reverse().slice(0, 20).map((r) => (
+            {paymentReminders.slice().reverse().slice(0, 20).map((r) => (
               <div key={r.id} className="p-3 flex items-center justify-between text-sm">
                 <div>
                   <span className="font-medium text-gray-900 dark:text-white">{r.tenantName}</span>

@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Share2, Plus, X, Edit2, Trash2, Users, Phone, CheckCircle2, Clock, XCircle } from 'lucide-react';
 import {
-  getSharingDetails, addSharingDetail, updateSharingDetail, deleteSharingDetail as removeSharing,
-  formatDate, generateId, getTenants
+  addSharingDetail, updateSharingDetail, deleteSharingDetail as removeSharing,
+  formatDate, generateId
 } from '../data/store';
+import { useData } from '../data/DataContext';
 
 const emptyForm = {
   referrerName: '',
@@ -17,21 +18,17 @@ const emptyForm = {
 };
 
 export default function SharingManagement() {
-  const [details, setDetails] = useState(getSharingDetails());
+  const { sharingDetails, tenants } = useData();
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState(emptyForm);
 
-  const tenants = getTenants();
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (editId) {
-      const updated = updateSharingDetail(editId, form);
-      setDetails(updated);
+      await updateSharingDetail(editId, form);
     } else {
-      const updated = addSharingDetail(form);
-      setDetails(updated);
+      await addSharingDetail(form);
     }
     resetForm();
   };
@@ -42,15 +39,13 @@ export default function SharingManagement() {
     setShowForm(true);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (!window.confirm('Delete this referral record?')) return;
-    const updated = removeSharing(id);
-    setDetails(updated);
+    await removeSharing(id);
   };
 
-  const handleStatusChange = (id, status) => {
-    const updated = updateSharingDetail(id, { status });
-    setDetails(updated);
+  const handleStatusChange = async (id, status) => {
+    await updateSharingDetail(id, { status });
   };
 
   const resetForm = () => {
@@ -59,9 +54,9 @@ export default function SharingManagement() {
     setShowForm(false);
   };
 
-  const pending = details.filter(d => d.status === 'pending');
-  const converted = details.filter(d => d.status === 'converted');
-  const rejected = details.filter(d => d.status === 'rejected');
+  const pending = sharingDetails.filter(d => d.status === 'pending');
+  const converted = sharingDetails.filter(d => d.status === 'converted');
+  const rejected = sharingDetails.filter(d => d.status === 'rejected');
 
   const statusColors = {
     pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
@@ -100,7 +95,7 @@ export default function SharingManagement() {
 
       {/* Referrals List */}
       <div className="glass-card-solid overflow-hidden">
-        {details.length === 0 ? (
+        {sharingDetails.length === 0 ? (
           <div className="p-12 text-center">
             <Share2 className="w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600" />
             <p className="text-gray-500 dark:text-gray-400">No referrals or sharing records yet.</p>
@@ -108,7 +103,7 @@ export default function SharingManagement() {
           </div>
         ) : (
           <div className="divide-y divide-gray-100 dark:divide-gray-700">
-            {details.slice().reverse().map((d) => (
+            {sharingDetails.slice().reverse().map((d) => (
               <div key={d.id} className="p-5 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">

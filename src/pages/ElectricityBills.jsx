@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Plus, X, Calculator } from 'lucide-react';
 import {
-  ALL_ROOMS, getRoomOccupancy, getElectricityRecords, addElectricityBill,
+  ALL_ROOMS, getRoomOccupancy, addElectricityBill,
   formatCurrency, formatDate, getMonthKey
 } from '../data/store';
+import { useData } from '../data/DataContext';
 
 export default function ElectricityBills() {
-  const [records, setRecords] = useState(getElectricityRecords());
+  const { tenants, electricityRecords } = useData();
   const [showForm, setShowForm] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState('');
   const [billAmount, setBillAmount] = useState('');
   const [billMonth, setBillMonth] = useState(getMonthKey());
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const occupants = getRoomOccupancy(selectedRoom);
+    const occupants = getRoomOccupancy(tenants, selectedRoom);
     const occupantCount = occupants.length;
 
     if (occupantCount === 0) {
@@ -34,14 +35,13 @@ export default function ElectricityBills() {
       tenantNames: occupants.map(t => t.name),
     };
 
-    const updated = addElectricityBill(bill);
-    setRecords(updated);
+    await addElectricityBill(bill);
     setShowForm(false);
     setSelectedRoom('');
     setBillAmount('');
   };
 
-  const selectedOccupants = selectedRoom ? getRoomOccupancy(selectedRoom) : [];
+  const selectedOccupants = selectedRoom ? getRoomOccupancy(tenants, selectedRoom) : [];
   const perPersonPreview = selectedOccupants.length > 0 && billAmount
     ? Math.ceil(Number(billAmount) / selectedOccupants.length)
     : 0;
@@ -60,7 +60,7 @@ export default function ElectricityBills() {
 
       {/* Bills History */}
       <div className="glass-card-solid overflow-hidden">
-        {records.length === 0 ? (
+        {electricityRecords.length === 0 ? (
           <div className="p-12 text-center">
             <Zap className="w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600" />
             <p className="text-gray-500 dark:text-gray-400">No electricity bills recorded yet.</p>
@@ -79,7 +79,7 @@ export default function ElectricityBills() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                {records.slice().reverse().map((r, i) => (
+                {electricityRecords.slice().reverse().map((r, i) => (
                   <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
                     <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">Room {r.roomNumber}</td>
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{r.month}</td>

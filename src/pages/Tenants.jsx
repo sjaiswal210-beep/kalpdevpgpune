@@ -4,10 +4,11 @@ import {
   Users, Plus, Search, Edit2, Trash2, Eye, X, Phone, Mail, Calendar, CreditCard, BedDouble
 } from 'lucide-react';
 import {
-  getTenants, addTenant, updateTenant, deleteTenant as removeTenant,
+  addTenant, updateTenant, deleteTenant as removeTenant,
   ALL_ROOMS, PG_STRUCTURE, getRoomOccupancy, formatCurrency, formatDate,
   RENT_PER_PERSON, DEPOSIT_PER_BED
 } from '../data/store';
+import { useData } from '../data/DataContext';
 
 const emptyForm = {
   name: '', phone: '', email: '', aadhaar: '', roomNumber: '', bed: '',
@@ -15,7 +16,7 @@ const emptyForm = {
 };
 
 export default function Tenants() {
-  const [tenants, setTenants] = useState(getTenants());
+  const { tenants } = useData();
   const [search, setSearch] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState(null);
@@ -28,10 +29,10 @@ export default function Tenants() {
     t.roomNumber?.includes(search)
   );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Check bed availability
-    const occupants = getRoomOccupancy(form.roomNumber);
+    const occupants = getRoomOccupancy(tenants, form.roomNumber);
     const conflict = occupants.find(t => t.bed === form.bed && t.id !== editId);
     if (conflict) {
       alert(`Bed ${form.bed} in Room ${form.roomNumber} is already occupied by ${conflict.name}`);
@@ -39,11 +40,9 @@ export default function Tenants() {
     }
 
     if (editId) {
-      const updated = updateTenant(editId, form);
-      setTenants(updated);
+      await updateTenant(editId, form);
     } else {
-      const updated = addTenant(form);
-      setTenants(updated);
+      await addTenant(form);
     }
     resetForm();
   };
@@ -54,10 +53,9 @@ export default function Tenants() {
     setShowForm(true);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to remove this tenant?')) {
-      const updated = removeTenant(id);
-      setTenants(updated);
+      await removeTenant(id);
     }
   };
 
@@ -69,7 +67,7 @@ export default function Tenants() {
 
   const availableBeds = (roomNumber) => {
     if (!roomNumber) return ['A', 'B'];
-    const occupants = getRoomOccupancy(roomNumber);
+    const occupants = getRoomOccupancy(tenants, roomNumber);
     const taken = occupants.filter(t => t.id !== editId).map(t => t.bed);
     return ['A', 'B'].filter(b => !taken.includes(b));
   };

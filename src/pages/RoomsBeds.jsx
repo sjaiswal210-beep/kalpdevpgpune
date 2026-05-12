@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BedDouble, User, Eye } from 'lucide-react';
 import { ALL_ROOMS, PG_STRUCTURE, getRoomOccupancy } from '../data/store';
+import { useData } from '../data/DataContext';
 
 export default function RoomsBeds() {
+  const { tenants } = useData();
   const [selectedFloor, setSelectedFloor] = useState(0); // 0 = all
 
   const floors = [
@@ -46,7 +48,7 @@ export default function RoomsBeds() {
       {/* Rooms Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredRooms.map((room, i) => {
-          const occupants = getRoomOccupancy(room.number);
+          const occupants = getRoomOccupancy(tenants, room.number);
           const bedA = occupants.find(t => t.bed === 'A');
           const bedB = occupants.find(t => t.bed === 'B');
           const count = occupants.length;

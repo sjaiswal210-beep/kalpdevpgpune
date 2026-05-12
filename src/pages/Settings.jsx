@@ -1,20 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Settings as SettingsIcon, Key, Building2, Save, Check } from 'lucide-react';
 import { getAdminCreds, saveAdminCreds } from '../data/store';
 
 export default function Settings() {
-  const creds = getAdminCreds();
-  const [username, setUsername] = useState(creds.username);
-  const [password, setPassword] = useState(creds.password);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const handleSave = (e) => {
+  useEffect(() => {
+    const loadCreds = async () => {
+      const creds = await getAdminCreds();
+      setUsername(creds.username);
+      setPassword(creds.password);
+      setLoading(false);
+    };
+    loadCreds();
+  }, []);
+
+  const handleSave = async (e) => {
     e.preventDefault();
-    saveAdminCreds({ username, password, name: 'KalpDev Admin' });
+    await saveAdminCreds({ username, password, name: 'KalpDev Admin' });
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-12">
+        <div className="animate-spin w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

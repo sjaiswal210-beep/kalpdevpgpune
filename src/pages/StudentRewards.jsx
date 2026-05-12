@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Gift, ShoppingBag, Star, IndianRupee, ExternalLink, X, Tag } from 'lucide-react';
+import { Gift, ShoppingBag, Star, ExternalLink, X } from 'lucide-react';
 import {
-  getRewardsProducts, getTenantPoints, addRewardsPurchase, redeemPoints, addRedemption,
-  getLoggedInStudent, formatCurrency, POINTS_TO_RUPEE, RENT_PER_PERSON
+  addRewardsPurchase, redeemPoints, addRedemption,
+  getLoggedInStudent, getRewardsPoints, POINTS_TO_RUPEE
 } from '../data/store';
+import { useData } from '../data/DataContext';
 
 export default function StudentRewards() {
-  const [products] = useState(getRewardsProducts());
+  const { rewardsProducts } = useData();
   const tenant = getLoggedInStudent();
-  const [points, setPoints] = useState(getTenantPoints(tenant?.id));
+  const [points, setPoints] = useState({ balance: 0, history: [] });
   const [showClaim, setShowClaim] = useState(null);
   const [showRedeem, setShowRedeem] = useState(false);
   const [claimStore, setClaimStore] = useState('');
@@ -17,14 +18,24 @@ export default function StudentRewards() {
   const [redeemAmount, setRedeemAmount] = useState('');
   const [message, setMessage] = useState('');
 
+  useEffect(() => {
+    const loadPoints = async () => {
+      if (tenant?.id) {
+        const pts = await getRewardsPoints(tenant.id);
+        setPoints(pts);
+      }
+    };
+    loadPoints();
+  }, [tenant?.id]);
+
   if (!tenant) return null;
 
   const maxDiscount = Math.floor(points.balance / POINTS_TO_RUPEE);
 
-  const handleClaim = (e) => {
+  const handleClaim = async (e) => {
     e.preventDefault();
     if (!showClaim || !claimStore) return;
-    addRewardsPurchase({
+    await addRewardsPurchase({
       tenantId: tenant.id,
       tenantName: tenant.name,
       productId: showClaim.id,
@@ -40,13 +51,14 @@ export default function StudentRewards() {
     setTimeout(() => setMessage(''), 4000);
   };
 
-  const handleRedeem = (e) => {
+  const handleRedeem = async (e) => {
     e.preventDefault();
     const pts = Number(redeemAmount) * POINTS_TO_RUPEE;
-    const result = redeemPoints(tenant.id, pts, `Rent discount: ₹${redeemAmount}`);
+    const result = await redeemPoints(tenant.id, pts, `Rent discount: ₹${redeemAmount}`);
     if (result.success) {
-      addRedemption({ tenantId: tenant.id, tenantName: tenant.name, points: pts, discount: Number(redeemAmount) });
-      setPoints(getTenantPoints(tenant.id));
+      await addRedemption({ tenantId: tenant.id, tenantName: tenant.name, points: pts, discount: Number(redeemAmount) });
+      const updated = await getRewardsPoints(tenant.id);
+      setPoints(updated);
       setMessage(`₹${redeemAmount} discount applied! Inform admin during rent payment.`);
       setShowRedeem(false);
       setRedeemAmount('');
@@ -88,14 +100,14 @@ export default function StudentRewards() {
         <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           <ShoppingBag className="w-5 h-5 text-purple-600" /> Shop & Earn Points
         </h3>
-        {products.length === 0 ? (
+        {rewardsProducts.length === 0 ? (
           <div className="glass-card-solid p-8 text-center">
             <ShoppingBag className="w-10 h-10 mx-auto mb-2 text-gray-300" />
             <p className="text-gray-500 text-sm">No products available yet. Check back later!</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 gap-4">
-            {products.map(p => (
+            {rewardsProducts.map(p => (
               <motion.div key={p.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card-solid overflow-hidden">
                 {p.image && <img src={p.image} alt={p.name} className="w-full h-40 object-cover" />}
                 <div className="p-4">
@@ -150,7 +162,7 @@ export default function StudentRewards() {
       </div>
 
       {/* Points History */}
-      {points.history.length > 0 && (
+      {points.history && points.history.length > 0 && (
         <div className="glass-card-solid overflow-hidden">
           <div className="p-4 border-b border-gray-100 dark:border-gray-700">
             <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Points History</h3>

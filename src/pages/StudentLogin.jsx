@@ -15,20 +15,23 @@ export default function StudentLogin() {
     return null;
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    setTimeout(() => {
-      const result = studentLogin(phone);
+    try {
+      const result = await studentLogin(phone);
       if (result.success) {
         navigate('/student/dashboard');
       } else {
         setError(result.error);
       }
       setLoading(false);
-    }, 500);
+    } catch (err) {
+      setError('Login failed. Please try again.');
+      setLoading(false);
+    }
   };
 
   return (

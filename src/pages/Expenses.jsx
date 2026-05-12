@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Receipt, Plus, X } from 'lucide-react';
-import { getExpenses, addExpense, formatCurrency, formatDate } from '../data/store';
+import { addExpense, formatCurrency, formatDate } from '../data/store';
+import { useData } from '../data/DataContext';
 
 export default function Expenses() {
-  const [expenses, setExpenses] = useState(getExpenses());
+  const { expenses } = useData();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: '', amount: '', category: '', date: '', notes: '' });
 
   const categories = ['Maintenance', 'Cleaning', 'Plumbing', 'Electrical', 'Furniture', 'Internet', 'Water', 'Other'];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const updated = addExpense(form);
-    setExpenses(updated);
+    await addExpense(form);
     setForm({ title: '', amount: '', category: '', date: '', notes: '' });
     setShowForm(false);
   };

@@ -1,13 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Building2, Shield, Wifi, MapPin, Phone, Mail, Star, ChevronRight, Heart, GraduationCap } from 'lucide-react';
+import { Building2, Shield, MapPin, Phone, Mail, Star, ChevronRight, Heart, GraduationCap } from 'lucide-react';
 import { getLandingServices, getLandingTestimonials, getLandingHero } from '../data/store';
 
 export default function LandingPage() {
-  const services = getLandingServices();
-  const testimonials = getLandingTestimonials();
-  const hero = getLandingHero();
+  const [services, setServices] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [hero, setHero] = useState({ tagline: 'Premium Girls PG Living', title: 'KalpDev PG', subtitle: 'Comfort • Safety • Better Living', description: '', heroImage: '' });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      const [s, t, h] = await Promise.all([getLandingServices(), getLandingTestimonials(), getLandingHero()]);
+      setServices(s);
+      setTestimonials(t);
+      setHero(h);
+      setLoading(false);
+    };
+    load();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white font-poppins">
+        <div className="text-center">
+          <div className="w-12 h-12 mx-auto rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center mb-4 animate-pulse">
+            <Building2 className="w-6 h-6 text-white" />
+          </div>
+          <p className="text-gray-500">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen font-poppins bg-white">

@@ -3,15 +3,14 @@ import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { BarChart3, TrendingUp, TrendingDown, Building2 } from 'lucide-react';
 import {
-  getTenants, getRentRecords, getElectricityRecords, getExpenses, getOccupancyStats,
-  getMonthKey, getMonthlyCollection, formatCurrency, RENT_PER_PERSON, TOTAL_BEDS
+  getOccupancyStats, getMonthKey, getMonthlyCollection,
+  formatCurrency, RENT_PER_PERSON, TOTAL_BEDS
 } from '../data/store';
+import { useData } from '../data/DataContext';
 
 export default function Reports() {
-  const tenants = getTenants();
-  const stats = getOccupancyStats();
-  const expenses = getExpenses();
-  const electricityRecords = getElectricityRecords();
+  const { tenants, rentRecords, electricityRecords, expenses } = useData();
+  const stats = getOccupancyStats(tenants);
 
   // Last 6 months data
   const monthlyData = [];
@@ -20,7 +19,7 @@ export default function Reports() {
     d.setMonth(d.getMonth() - i);
     const mk = getMonthKey(d);
     const label = d.toLocaleDateString('en-IN', { month: 'short', year: '2-digit' });
-    const collected = getMonthlyCollection(mk);
+    const collected = getMonthlyCollection(rentRecords, mk);
     const potential = tenants.length * RENT_PER_PERSON;
     const elecRecovery = electricityRecords
       .filter(r => r.month === mk)
@@ -35,7 +34,7 @@ export default function Reports() {
   }
 
   const currentMonth = getMonthKey();
-  const currentCollection = getMonthlyCollection(currentMonth);
+  const currentCollection = getMonthlyCollection(rentRecords, currentMonth);
   const totalPotential = tenants.length * RENT_PER_PERSON;
   const vacantLoss = stats.vacant * RENT_PER_PERSON;
   const totalExpenses = expenses.reduce((sum, e) => sum + Number(e.amount), 0);

@@ -18,20 +18,23 @@ export default function AdminLogin() {
     return null;
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    setTimeout(() => {
-      const result = adminLogin(username, password);
+    try {
+      const result = await adminLogin(username, password);
       if (result.success) {
         navigate('/admin');
       } else {
         setError(result.error);
       }
       setLoading(false);
-    }, 500);
+    } catch (err) {
+      setError('Login failed. Please try again.');
+      setLoading(false);
+    }
   };
 
   return (

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Plus, X, Megaphone } from 'lucide-react';
-import { getNotices, addNotice, formatDate } from '../data/store';
+import { addNotice, formatDate } from '../data/store';
+import { useData } from '../data/DataContext';
 
 export default function Notices() {
-  const [notices, setNotices] = useState(getNotices());
+  const { notices } = useData();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: '', message: '', priority: 'normal' });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const updated = addNotice(form);
-    setNotices(updated);
+    await addNotice(form);
     setForm({ title: '', message: '', priority: 'normal' });
     setShowForm(false);
   };
