@@ -144,6 +144,8 @@ export default function TenantHistory() {
                 <DetailRow label="Occupation" value={viewTenant.occupation || '-'} />
                 <DetailRow label="Blood Group" value={viewTenant.bloodGroup || '-'} />
                 <DetailRow label="Emergency" value={viewTenant.emergency || '-'} />
+                <DetailRow label="Parent Name" value={viewTenant.parentName || '-'} />
+                <DetailRow label="Parent Phone" value={viewTenant.parentPhone || '-'} />
                 <DetailRow label="Address" value={viewTenant.address || '-'} />
                 {viewTenant.notes && <DetailRow label="Notes" value={viewTenant.notes} />}
               </div>

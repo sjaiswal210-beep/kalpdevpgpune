@@ -28,6 +28,8 @@ export default function StudentProfile() {
         occupation: t.occupation || '',
         aadhaar: t.aadhaar || '',
         bloodGroup: t.bloodGroup || '',
+        parentName: t.parentName || '',
+        parentPhone: t.parentPhone || '',
         profileImage: t.profileImage || '',
       });
       setImagePreview(t.profileImage || '');
@@ -223,6 +225,31 @@ export default function StudentProfile() {
                 <option value="O+">O+</option>
                 <option value="O-">O-</option>
               </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" /> Parent/Guardian Name</span>
+              </label>
+              <input
+                type="text"
+                value={form.parentName}
+                onChange={e => setForm({ ...form, parentName: e.target.value })}
+                className="input-field"
+                placeholder="Father/Mother name"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <span className="flex items-center gap-1"><Phone className="w-3.5 h-3.5" /> Parent Phone</span>
+              </label>
+              <input
+                type="tel"
+                maxLength={10}
+                value={form.parentPhone}
+                onChange={e => setForm({ ...form, parentPhone: e.target.value })}
+                className="input-field"
+                placeholder="Parent's phone number"
+              />
             </div>
           </div>
           <div className="mt-4">

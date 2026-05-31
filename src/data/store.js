@@ -528,7 +528,7 @@ export async function updateTenantProfile(tenantId, data) {
   };
   await addDocument(COLLECTIONS.PROFILE_UPDATES, request);
   // Also directly update non-sensitive fields
-  const directFields = { profileImage: data.profileImage, email: data.email, address: data.address, emergency: data.emergency, occupation: data.occupation, bloodGroup: data.bloodGroup };
+  const directFields = { profileImage: data.profileImage, email: data.email, address: data.address, emergency: data.emergency, occupation: data.occupation, bloodGroup: data.bloodGroup, parentName: data.parentName, parentPhone: data.parentPhone };
   const filtered = Object.fromEntries(Object.entries(directFields).filter(([_, v]) => v !== undefined && v !== null));
   if (Object.keys(filtered).length > 0) {
     await updateDocument(COLLECTIONS.TENANTS, tenantId, filtered);

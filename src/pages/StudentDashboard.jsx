@@ -175,6 +175,8 @@ export default function StudentDashboard() {
                   <InfoRow icon={MapPin} label="Address" value={tenant.address || 'Not provided'} />
                   <InfoRow icon={FileText} label="Aadhaar" value={tenant.aadhaar || 'Not provided'} />
                   <InfoRow icon={Phone} label="Emergency" value={tenant.emergency || 'Not provided'} />
+                  <InfoRow icon={User} label="Parent Name" value={tenant.parentName || 'Not provided'} />
+                  <InfoRow icon={Phone} label="Parent Phone" value={tenant.parentPhone || 'Not provided'} />
                 </div>
               </div>
 

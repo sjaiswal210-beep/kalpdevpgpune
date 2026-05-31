@@ -12,7 +12,8 @@ import { useData } from '../data/DataContext';
 
 const emptyForm = {
   name: '', phone: '', email: '', aadhaar: '', roomNumber: '', bed: '',
-  deposit: DEPOSIT_PER_BED, joinDate: '', address: '', emergency: '', occupation: '', notes: ''
+  deposit: DEPOSIT_PER_BED, joinDate: '', address: '', emergency: '', occupation: '', notes: '',
+  parentName: '', parentPhone: ''
 };
 
 export default function Tenants() {
@@ -242,6 +243,14 @@ export default function Tenants() {
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Emergency Contact</label>
                     <input type="tel" value={form.emergency} onChange={e => setForm({...form, emergency: e.target.value})} className="input-field" placeholder="Emergency phone" />
                   </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Parent/Guardian Name</label>
+                    <input type="text" value={form.parentName} onChange={e => setForm({...form, parentName: e.target.value})} className="input-field" placeholder="Father/Mother name" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Parent Phone</label>
+                    <input type="tel" maxLength={10} value={form.parentPhone} onChange={e => setForm({...form, parentPhone: e.target.value})} className="input-field" placeholder="Parent's phone number" />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Address</label>
@@ -300,6 +309,8 @@ export default function Tenants() {
                 <DetailRow label="Join Date" value={formatDate(viewTenant.joinDate)} />
                 <DetailRow label="Occupation" value={viewTenant.occupation || '-'} />
                 <DetailRow label="Emergency" value={viewTenant.emergency || '-'} />
+                <DetailRow label="Parent Name" value={viewTenant.parentName || '-'} />
+                <DetailRow label="Parent Phone" value={viewTenant.parentPhone || '-'} />
                 <DetailRow label="Address" value={viewTenant.address || '-'} />
                 {viewTenant.notes && <DetailRow label="Notes" value={viewTenant.notes} />}
               </div>
