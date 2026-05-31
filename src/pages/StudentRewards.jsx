@@ -97,15 +97,24 @@ export default function StudentRewards() {
 
       {/* Products to Compare */}
       <div>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-            <ShoppingBag className="w-5 h-5 text-purple-600" /> Shop & Earn Points
-          </h3>
+        <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+          <ShoppingBag className="w-5 h-5 text-purple-600" /> Shop & Earn Points
+        </h3>
+
+        {/* Amazon Affiliate CTA */}
+        <div className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 border border-orange-200 dark:border-orange-800 rounded-2xl p-5 mb-5">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 rounded-full text-xs font-bold">Amazon</span>
+            <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-full text-xs font-bold">+5 pts</span>
+          </div>
+          <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
+            Buy anything from the link below. Submit the amount you paid and you'll get <strong>cashback points</strong> on every valid purchase.
+          </p>
           <a
             href="https://www.amazon.in/?tag=kalpdev-21"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl text-sm font-medium hover:from-orange-600 hover:to-orange-700 transition"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl text-sm font-semibold hover:from-orange-600 hover:to-orange-700 transition shadow-md"
           >
             <ExternalLink className="w-4 h-4" /> Open Amazon
           </a>
