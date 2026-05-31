@@ -103,7 +103,7 @@ export default function RewardsAdmin() {
               <div className="p-4">
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{p.name}</h4>
-                  <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-full text-xs font-bold">+{p.pointsReward} pts</span>
+                  <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-full text-xs font-bold">₹{p.pointsReward} cashback</span>
                 </div>
                 <p className="text-xs text-gray-500 mb-3">{p.category}</p>
                 <div className="space-y-1 text-xs">
