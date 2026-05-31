@@ -95,9 +95,6 @@ export default function StudentRewards() {
         </motion.div>
       )}
 
-      {/* Referral Section */}
-      <ReferralCard tenant={tenant} setMessage={setMessage} />
-
       {/* Products to Compare */}
       <div>
         <div className="flex items-center justify-between mb-4">
@@ -172,6 +169,9 @@ export default function StudentRewards() {
           </div>
         )}
       </div>
+
+      {/* Referral Section */}
+      <ReferralCard tenant={tenant} setMessage={setMessage} />
 
       {/* Points History */}
       {points.history && points.history.length > 0 && (

@@ -13,6 +13,7 @@ import {
 import { useData } from '../data/DataContext';
 import StudentRewards from './StudentRewards';
 import StudentProfile from './StudentProfile';
+import PGMembers from './PGMembers';
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ export default function StudentDashboard() {
   const tabs = [
     { id: 'rewards', label: '🎁 Rewards', icon: Gift },
     { id: 'overview', label: 'Overview', icon: User },
+    { id: 'members', label: 'PG Members', icon: UserCog },
     { id: 'profile', label: 'My Profile', icon: UserCog },
     { id: 'rent', label: 'Rent History', icon: CreditCard },
     { id: 'electricity', label: 'Electricity', icon: Zap },
@@ -320,6 +322,10 @@ export default function StudentDashboard() {
 
           {activeTab === 'profile' && (
             <StudentProfile />
+          )}
+
+          {activeTab === 'members' && (
+            <PGMembers />
           )}
         </motion.div>
       </div>

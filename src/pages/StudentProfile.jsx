@@ -27,6 +27,7 @@ export default function StudentProfile() {
         emergency: t.emergency || '',
         occupation: t.occupation || '',
         aadhaar: t.aadhaar || '',
+        bloodGroup: t.bloodGroup || '',
         profileImage: t.profileImage || '',
       });
       setImagePreview(t.profileImage || '');
@@ -200,6 +201,28 @@ export default function StudentProfile() {
                 className="input-field"
                 placeholder="Emergency phone number"
               />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4 mt-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <span className="flex items-center gap-1">🩸 Blood Group</span>
+              </label>
+              <select
+                value={form.bloodGroup}
+                onChange={e => setForm({ ...form, bloodGroup: e.target.value })}
+                className="input-field"
+              >
+                <option value="">Select Blood Group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
             </div>
           </div>
           <div className="mt-4">
