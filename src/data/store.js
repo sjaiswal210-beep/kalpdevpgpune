@@ -411,18 +411,52 @@ export async function markPaymentLinkPaid(linkId) {
   const link = links.find(l => l.linkId === linkId);
   if (link) {
     await updateDocument(COLLECTIONS.PAYMENT_LINKS, link.id, {
-      status: 'paid',
+      status: 'awaiting_approval',
       paidAt: new Date().toISOString(),
     });
-    // Also mark rent as paid
-    await markRentPaid(link.tenantId, link.month, link.amount);
-    // Add notification
+    // Notify admin
     await addNotification({
       type: 'payment_received',
-      title: 'Payment Received',
-      message: `${link.tenantName} paid ₹${link.amount} for ${link.month}`,
+      title: 'Payment Confirmation Pending',
+      message: `${link.tenantName} claims to have paid ₹${link.amount} for ${link.month}. Please verify.`,
       forAdmin: true,
       tenantId: link.tenantId,
+    });
+    return { success: true };
+  }
+  return { success: false };
+}
+
+export async function approvePayment(linkId) {
+  const links = await getPaymentLinks();
+  const link = links.find(l => l.linkId === linkId);
+  if (link) {
+    await updateDocument(COLLECTIONS.PAYMENT_LINKS, link.id, {
+      status: 'paid',
+      approvedAt: new Date().toISOString(),
+    });
+    // Mark rent as paid
+    await markRentPaid(link.tenantId, link.month, link.amount);
+    // Notify
+    await addNotification({
+      type: 'payment_received',
+      title: 'Payment Approved',
+      message: `Payment of ₹${link.amount} from ${link.tenantName} for ${link.month} approved`,
+      forAdmin: true,
+      tenantId: link.tenantId,
+    });
+    return { success: true };
+  }
+  return { success: false };
+}
+
+export async function rejectPayment(linkId) {
+  const links = await getPaymentLinks();
+  const link = links.find(l => l.linkId === linkId);
+  if (link) {
+    await updateDocument(COLLECTIONS.PAYMENT_LINKS, link.id, {
+      status: 'rejected',
+      rejectedAt: new Date().toISOString(),
     });
     return { success: true };
   }

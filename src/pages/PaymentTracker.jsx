@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import {
   getPaymentStatus, getMonthKey, formatCurrency, formatDate,
-  RENT_PER_PERSON, addPaymentReminder, sendRentReminderWithLink
+  RENT_PER_PERSON, addPaymentReminder, sendRentReminderWithLink, approvePayment, rejectPayment
 } from '../data/store';
 import { useData } from '../data/DataContext';
 
@@ -248,27 +248,52 @@ export default function PaymentTracker() {
               <Link2 className="w-5 h-5 text-purple-500" /> Payment Links ({monthLinks.length})
             </h3>
           </div>
-          <div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-64 overflow-y-auto">
+          <div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-96 overflow-y-auto">
             {monthLinks.slice().reverse().map((l) => (
-              <div key={l.id} className="p-3 flex items-center justify-between text-sm">
-                <div className="flex items-center gap-3">
-                  <div className={`w-2 h-2 rounded-full ${l.status === 'paid' ? 'bg-green-500' : 'bg-amber-500'}`}></div>
-                  <div>
-                    <span className="font-medium text-gray-900 dark:text-white">{l.tenantName}</span>
-                    <span className="text-gray-500 dark:text-gray-400 ml-2">• {formatCurrency(l.amount)}</span>
+              <div key={l.id} className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-2.5 h-2.5 rounded-full ${l.status === 'paid' ? 'bg-green-500' : l.status === 'awaiting_approval' ? 'bg-amber-500 animate-pulse' : 'bg-gray-400'}`}></div>
+                    <div>
+                      <span className="font-medium text-gray-900 dark:text-white text-sm">{l.tenantName}</span>
+                      <span className="text-gray-500 dark:text-gray-400 ml-2 text-sm">• {formatCurrency(l.amount)}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+                      l.status === 'paid' ? 'bg-green-100 text-green-700' :
+                      l.status === 'awaiting_approval' ? 'bg-amber-100 text-amber-700' :
+                      l.status === 'rejected' ? 'bg-red-100 text-red-700' :
+                      'bg-gray-100 text-gray-700'
+                    }`}>
+                      {l.status === 'paid' ? 'Approved' : l.status === 'awaiting_approval' ? 'Awaiting Approval' : l.status === 'rejected' ? 'Rejected' : 'Pending'}
+                    </span>
+                    <button
+                      onClick={() => copyPaymentLink(l.linkId)}
+                      className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                    >
+                      {copiedLink === l.linkId ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5 text-gray-400" />}
+                    </button>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${l.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
-                    {l.status === 'paid' ? 'Paid' : 'Pending'}
-                  </span>
-                  <button
-                    onClick={() => copyPaymentLink(l.linkId)}
-                    className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                  >
-                    {copiedLink === l.linkId ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5 text-gray-400" />}
-                  </button>
-                </div>
+                {/* Approve/Reject buttons for awaiting_approval */}
+                {l.status === 'awaiting_approval' && (
+                  <div className="mt-3 flex items-center gap-2 pl-5">
+                    <button
+                      onClick={async () => { await approvePayment(l.linkId); }}
+                      className="px-4 py-1.5 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition"
+                    >
+                      ✓ Approve Payment
+                    </button>
+                    <button
+                      onClick={async () => { await rejectPayment(l.linkId); }}
+                      className="px-4 py-1.5 bg-red-100 text-red-600 rounded-lg text-xs font-medium hover:bg-red-200 transition"
+                    >
+                      ✗ Reject
+                    </button>
+                    <span className="text-xs text-gray-400 ml-2">Submitted {formatDate(l.paidAt)}</span>
+                  </div>
+                )}
               </div>
             ))}
           </div>

@@ -22,9 +22,8 @@ export default function PaymentPage() {
 
   const handlePay = async () => {
     setProcessing(true);
-    // Simulate payment processing (in production, integrate with Razorpay/UPI)
     await markPaymentLinkPaid(linkId);
-    setLink(prev => ({ ...prev, status: 'paid', paidAt: new Date().toISOString() }));
+    setLink(prev => ({ ...prev, status: 'awaiting_approval', paidAt: new Date().toISOString() }));
     setProcessing(false);
   };
 
@@ -50,6 +49,31 @@ export default function PaymentPage() {
           <h1 className="text-xl font-bold text-gray-900 mb-2">Invalid Payment Link</h1>
           <p className="text-gray-500">This payment link is invalid or has expired.</p>
         </div>
+      </div>
+    );
+  }
+
+  if (link.status === 'awaiting_approval') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-yellow-50 p-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-white rounded-2xl p-8 shadow-xl text-center max-w-sm w-full"
+        >
+          <div className="w-20 h-20 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
+            <Clock className="w-10 h-10 text-amber-600" />
+          </div>
+          <h1 className="text-xl font-bold text-gray-900 mb-2">Waiting for Admin Approval</h1>
+          <p className="text-gray-500 mb-4">Your payment confirmation has been submitted. Admin will verify and approve it shortly.</p>
+          <div className="bg-amber-50 rounded-xl p-4 space-y-2 text-sm">
+            <div className="flex justify-between"><span className="text-gray-500">Name</span><span className="font-medium">{link.tenantName}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">Amount</span><span className="font-medium text-amber-600">{formatCurrency(link.amount)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">Month</span><span className="font-medium">{link.month}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">Submitted</span><span className="font-medium">{new Date(link.paidAt).toLocaleDateString('en-IN')}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">Status</span><span className="font-medium text-amber-600">⏳ Pending Approval</span></div>
+          </div>
+        </motion.div>
       </div>
     );
   }
