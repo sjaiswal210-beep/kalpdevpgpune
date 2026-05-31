@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Building2, Shield, MapPin, Phone, Mail, Star, ChevronRight, Heart, GraduationCap } from 'lucide-react';
 import { getLandingServices, getLandingTestimonials, getLandingHero } from '../data/store';
+import { addDocument, COLLECTIONS } from '../data/firebase';
 
 export default function LandingPage() {
   const DEFAULT_SERVICES = [
@@ -23,6 +24,30 @@ export default function LandingPage() {
   const [services, setServices] = useState(DEFAULT_SERVICES);
   const [testimonials, setTestimonials] = useState(DEFAULT_TESTIMONIALS);
   const [hero, setHero] = useState(DEFAULT_HERO);
+  const [contactForm, setContactForm] = useState({ name: '', phone: '', message: '' });
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formSubmitting, setFormSubmitting] = useState(false);
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    if (!contactForm.name || !contactForm.phone) return;
+    setFormSubmitting(true);
+    try {
+      await addDocument(COLLECTIONS.ENQUIRIES || 'enquiries', {
+        name: contactForm.name,
+        phone: contactForm.phone,
+        message: contactForm.message,
+        source: 'website_contact_form',
+        status: 'new',
+      });
+      setFormSubmitted(true);
+      setContactForm({ name: '', phone: '', message: '' });
+      setTimeout(() => setFormSubmitted(false), 5000);
+    } catch (err) {
+      console.error('Form submission error:', err);
+    }
+    setFormSubmitting(false);
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -222,12 +247,24 @@ export default function LandingPage() {
           </div>
           <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/10">
             <h3 className="text-xl font-semibold mb-6">Send a Message</h3>
-            <form className="space-y-4" onSubmit={e => e.preventDefault()}>
-              <input type="text" placeholder="Your Name" className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 outline-none" />
-              <input type="tel" placeholder="Phone Number" className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 outline-none" />
-              <textarea rows="4" placeholder="Your Message" className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 outline-none resize-none"></textarea>
-              <button type="submit" className="w-full py-3 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl font-semibold hover:from-purple-600 hover:to-indigo-600 transition">Send Message</button>
-            </form>
+            {formSubmitted ? (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <p className="text-lg font-semibold text-white">Message Sent!</p>
+                <p className="text-sm text-gray-300 mt-1">We'll get back to you soon.</p>
+              </div>
+            ) : (
+              <form className="space-y-4" onSubmit={handleContactSubmit}>
+                <input type="text" required placeholder="Your Name" value={contactForm.name} onChange={e => setContactForm({...contactForm, name: e.target.value})} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 outline-none" />
+                <input type="tel" required placeholder="Phone Number" value={contactForm.phone} onChange={e => setContactForm({...contactForm, phone: e.target.value})} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 outline-none" />
+                <textarea rows="4" placeholder="Your Message" value={contactForm.message} onChange={e => setContactForm({...contactForm, message: e.target.value})} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 outline-none resize-none"></textarea>
+                <button type="submit" disabled={formSubmitting} className="w-full py-3 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl font-semibold hover:from-purple-600 hover:to-indigo-600 transition disabled:opacity-50">
+                  {formSubmitting ? 'Sending...' : 'Send Message'}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </section>

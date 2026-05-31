@@ -43,6 +43,7 @@ export const COLLECTIONS = {
   PAYMENT_LINKS: 'payment_links',
   NOTIFICATIONS: 'notifications',
   PROFILE_UPDATES: 'profile_updates',
+  ENQUIRIES: 'enquiries',
 };
 
 // Generic Firestore helpers

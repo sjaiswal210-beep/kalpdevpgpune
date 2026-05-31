@@ -16,6 +16,7 @@ const navItems = [
   { path: '/admin/electricity', icon: Zap, label: 'Electricity Bills' },
   { path: '/admin/expenses', icon: Receipt, label: 'Expenses' },
   { path: '/admin/visitors', icon: UserCheck, label: 'Visitors' },
+  { path: '/admin/enquiries', icon: Bell, label: 'Enquiries' },
   { path: '/admin/sharing', icon: Share2, label: 'Sharing & Referrals' },
   { path: '/admin/rewards', icon: Gift, label: 'Rewards & Affiliate' },
   { path: '/admin/finance', icon: Wallet, label: 'Finance Tracker' },

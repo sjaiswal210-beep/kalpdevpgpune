@@ -12,6 +12,7 @@ import RentCollection from './pages/RentCollection';
 import ElectricityBills from './pages/ElectricityBills';
 import Expenses from './pages/Expenses';
 import Visitors from './pages/Visitors';
+import Enquiries from './pages/Enquiries';
 import Reports from './pages/Reports';
 import FinanceTracker from './pages/FinanceTracker';
 import Notices from './pages/Notices';
@@ -70,6 +71,7 @@ function AdminLayout() {
             <Route path="/electricity" element={<ElectricityBills />} />
             <Route path="/expenses" element={<Expenses />} />
             <Route path="/visitors" element={<Visitors />} />
+            <Route path="/enquiries" element={<Enquiries />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/finance" element={<FinanceTracker />} />
             <Route path="/notices" element={<Notices />} />
