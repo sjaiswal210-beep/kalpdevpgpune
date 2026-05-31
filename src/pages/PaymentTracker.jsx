@@ -35,7 +35,7 @@ export default function PaymentTracker() {
     const dayOfMonth = today.getDate();
     const currentMk = getMonthKey(today);
 
-    if (dayOfMonth >= 5 && !autoReminderDismissed) {
+    if (dayOfMonth >= 2 && !autoReminderDismissed) {
       // Check if bulk reminders were already sent this month
       const monthReminders = paymentReminders.filter(
         r => r.month === currentMk && r.type === 'whatsapp_with_link'
@@ -122,7 +122,7 @@ export default function PaymentTracker() {
           <div className="flex items-center gap-3">
             <CalendarClock className="w-6 h-6 text-purple-600" />
             <div>
-              <p className="font-semibold text-purple-700 dark:text-purple-400">It's the 5th! Time to send rent reminders</p>
+              <p className="font-semibold text-purple-700 dark:text-purple-400">It's the 2nd! Time to send rent reminders</p>
               <p className="text-sm text-purple-600 dark:text-purple-400">{unpaid.length} tenant(s) haven't paid yet for {monthLabel}</p>
             </div>
           </div>
@@ -148,7 +148,7 @@ export default function PaymentTracker() {
             <AlertTriangle className="w-6 h-6 text-red-500" />
             <div>
               <p className="font-semibold text-red-700 dark:text-red-400">{overdue.length} tenant(s) overdue!</p>
-              <p className="text-sm text-red-600 dark:text-red-400">Rent was due on 5th {monthLabel}</p>
+              <p className="text-sm text-red-600 dark:text-red-400">Rent was due on 2nd {monthLabel}</p>
             </div>
           </div>
           <button onClick={sendBulkReminders} className="px-4 py-2 bg-red-600 text-white rounded-xl text-sm font-medium hover:bg-red-700 transition flex items-center gap-2">

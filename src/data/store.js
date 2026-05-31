@@ -215,7 +215,7 @@ export async function addPaymentReminder(reminder) {
 export function getPaymentStatus(tenants, rentRecords, month) {
   const paidRecords = rentRecords.filter(r => r.month === month && r.paid);
   const paidIds = paidRecords.map(r => r.tenantId);
-  const dueDate = `${month}-05`;
+  const dueDate = `${month}-02`;
   const today = new Date().toISOString().split('T')[0];
 
   return tenants.map(t => {
