@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   CreditCard, AlertTriangle, CheckCircle2, Clock, Send, MessageCircle,
-  ChevronLeft, ChevronRight, Bell, Link2, ExternalLink, Copy, Check
+  ChevronLeft, ChevronRight, Bell, Link2, ExternalLink, Copy, Check, CalendarClock
 } from 'lucide-react';
 import {
   getPaymentStatus, getMonthKey, formatCurrency, formatDate,
@@ -15,6 +15,8 @@ export default function PaymentTracker() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [sending, setSending] = useState(null);
   const [copiedLink, setCopiedLink] = useState(null);
+  const [showAutoReminder, setShowAutoReminder] = useState(false);
+  const [autoReminderDismissed, setAutoReminderDismissed] = useState(false);
 
   const monthKey = getMonthKey(currentDate);
   const monthLabel = currentDate.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
@@ -26,6 +28,28 @@ export default function PaymentTracker() {
 
   // Payment links for current month
   const monthLinks = paymentLinks.filter(l => l.month === monthKey);
+
+  // Auto-reminder check: show prompt on/after 5th if reminders not sent this month
+  useEffect(() => {
+    const today = new Date();
+    const dayOfMonth = today.getDate();
+    const currentMk = getMonthKey(today);
+
+    if (dayOfMonth >= 5 && !autoReminderDismissed) {
+      // Check if bulk reminders were already sent this month
+      const monthReminders = paymentReminders.filter(
+        r => r.month === currentMk && r.type === 'whatsapp_with_link'
+      );
+      const unpaidThisMonth = paymentStatus.filter(t => !t.isPaid);
+
+      // Show prompt if there are unpaid tenants and no reminders sent yet
+      if (unpaidThisMonth.length > 0 && monthReminders.length === 0 && monthKey === currentMk) {
+        setShowAutoReminder(true);
+      } else {
+        setShowAutoReminder(false);
+      }
+    }
+  }, [paymentReminders, paymentStatus, monthKey, autoReminderDismissed]);
 
   const prevMonth = () => {
     const d = new Date(currentDate);
@@ -87,6 +111,31 @@ export default function PaymentTracker() {
         <StatCard icon={Clock} label="Pending" value={`${unpaid.length} tenants`} color="bg-amber-50 dark:bg-amber-900/20 text-amber-600" />
         <StatCard icon={Link2} label="Links Sent" value={`${monthLinks.length}`} color="bg-blue-50 dark:bg-blue-900/20 text-blue-600" />
       </div>
+
+      {/* Auto-Reminder Prompt (shows on/after 5th if reminders not sent) */}
+      {showAutoReminder && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-4 rounded-2xl bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 flex items-center justify-between flex-wrap gap-3"
+        >
+          <div className="flex items-center gap-3">
+            <CalendarClock className="w-6 h-6 text-purple-600" />
+            <div>
+              <p className="font-semibold text-purple-700 dark:text-purple-400">It's the 5th! Time to send rent reminders</p>
+              <p className="text-sm text-purple-600 dark:text-purple-400">{unpaid.length} tenant(s) haven't paid yet for {monthLabel}</p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button onClick={sendBulkReminders} className="px-4 py-2 bg-purple-600 text-white rounded-xl text-sm font-medium hover:bg-purple-700 transition flex items-center gap-2">
+              <Send className="w-4 h-4" /> Send All Reminders
+            </button>
+            <button onClick={() => setAutoReminderDismissed(true)} className="px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-medium hover:bg-gray-300 transition">
+              Dismiss
+            </button>
+          </div>
+        </motion.div>
+      )}
 
       {/* Overdue Alert */}
       {overdue.length > 0 && (
