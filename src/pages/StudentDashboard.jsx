@@ -73,7 +73,7 @@ export default function StudentDashboard() {
             </div>
             <div>
               <h1 className="font-bold text-gray-900 dark:text-white text-sm">KalpDev PG</h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Student Portal</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Tenant Portal</p>
             </div>
           </div>
           <div className="flex items-center gap-3">

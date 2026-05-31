@@ -81,7 +81,7 @@ export default function LandingPage() {
             <a href="#contact" className="text-gray-600 hover:text-purple-600 transition font-medium text-sm">Contact</a>
           </div>
           <div className="flex items-center gap-3">
-            <Link to="/student/login" className="px-4 py-2 text-sm font-semibold text-purple-600 border-2 border-purple-200 rounded-xl hover:bg-purple-50 transition">Student Login</Link>
+            <Link to="/student/login" className="px-4 py-2 text-sm font-semibold text-purple-600 border-2 border-purple-200 rounded-xl hover:bg-purple-50 transition">Tenant Login</Link>
             <Link to="/admin/login" className="hidden sm:block px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl hover:shadow-premium transition">Admin Login</Link>
           </div>
         </div>

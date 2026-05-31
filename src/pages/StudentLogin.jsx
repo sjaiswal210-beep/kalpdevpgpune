@@ -60,7 +60,7 @@ export default function StudentLogin() {
             <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-4 shadow-premium">
               <Users className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-white mb-2">Student Portal</h1>
+            <h1 className="text-2xl font-bold text-white mb-2">Tenant Portal</h1>
             <p className="text-white/60 text-sm">Login with your registered phone number</p>
           </div>
 
