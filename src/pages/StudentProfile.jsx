@@ -4,6 +4,7 @@ import {
   User, Phone, Mail, MapPin, Camera, Save, CheckCircle2, FileText, Briefcase, AlertCircle
 } from 'lucide-react';
 import { getLoggedInStudent, updateTenantProfile } from '../data/store';
+import { uploadFile } from '../data/firebase';
 
 export default function StudentProfile() {
   const [tenant, setTenant] = useState(null);
@@ -11,6 +12,8 @@ export default function StudentProfile() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [imagePreview, setImagePreview] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const t = getLoggedInStudent();
@@ -33,25 +36,43 @@ export default function StudentProfile() {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    // Convert to base64 for storage (in production, use Firebase Storage)
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64 = reader.result;
-      setImagePreview(base64);
-      setForm(prev => ({ ...prev, profileImage: base64 }));
-    };
-    reader.readAsDataURL(file);
+    // Show preview immediately
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreview(previewUrl);
+    setImageFile(file);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-    await updateTenantProfile(tenant.id, form);
+
+    let profileImageUrl = form.profileImage;
+
+    // Upload image to Firebase Storage if a new file was selected
+    if (imageFile) {
+      try {
+        setUploading(true);
+        const path = `profile-images/${tenant.id}_${Date.now()}.${imageFile.name.split('.').pop()}`;
+        profileImageUrl = await uploadFile(path, imageFile);
+        setUploading(false);
+      } catch (err) {
+        console.error('Image upload failed:', err);
+        setUploading(false);
+        setSaving(false);
+        alert('Image upload failed. Please try a smaller image or check your internet connection.');
+        return;
+      }
+    }
+
+    const updatedForm = { ...form, profileImage: profileImageUrl };
+    await updateTenantProfile(tenant.id, updatedForm);
+    setForm(updatedForm);
+    setImageFile(null);
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
     // Update local session
-    const updated = { ...tenant, ...form };
+    const updated = { ...tenant, ...updatedForm };
     setTenant(updated);
   };
 
@@ -213,7 +234,7 @@ export default function StudentProfile() {
           {saving ? (
             <>
               <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
-              Saving...
+              {uploading ? 'Uploading image...' : 'Saving...'}
             </>
           ) : (
             <>
