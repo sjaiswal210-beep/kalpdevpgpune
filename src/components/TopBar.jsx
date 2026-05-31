@@ -1,5 +1,6 @@
 import React from 'react';
-import { Menu, Moon, Sun, Bell } from 'lucide-react';
+import { Menu, Moon, Sun } from 'lucide-react';
+import NotificationBell from './NotificationBell';
 
 export default function TopBar({ onMenuClick, darkMode, onToggleDark }) {
   return (
@@ -19,10 +20,7 @@ export default function TopBar({ onMenuClick, darkMode, onToggleDark }) {
         </div>
 
         <div className="flex items-center gap-3">
-          <button className="relative p-2.5 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition">
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
+          <NotificationBell />
           <button
             onClick={onToggleDark}
             className="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition"

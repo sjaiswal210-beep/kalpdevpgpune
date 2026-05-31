@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Building2, LogOut, User, Phone, Mail, MapPin, Calendar, CreditCard,
-  Zap, BedDouble, FileText, Bell, Moon, Sun, MessageCircle, Gift
+  Zap, BedDouble, FileText, Bell, Moon, Sun, MessageCircle, Gift, UserCog
 } from 'lucide-react';
 import {
   getLoggedInStudent, studentLogout, getTenantRentHistory, getTenantElectricity,
@@ -12,6 +12,7 @@ import {
 } from '../data/store';
 import { useData } from '../data/DataContext';
 import StudentRewards from './StudentRewards';
+import StudentProfile from './StudentProfile';
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ export default function StudentDashboard() {
   const tabs = [
     { id: 'rewards', label: '🎁 Rewards', icon: Gift },
     { id: 'overview', label: 'Overview', icon: User },
+    { id: 'profile', label: 'My Profile', icon: UserCog },
     { id: 'rent', label: 'Rent History', icon: CreditCard },
     { id: 'electricity', label: 'Electricity', icon: Zap },
     { id: 'notices', label: 'Notices', icon: Bell },
@@ -314,6 +316,10 @@ export default function StudentDashboard() {
 
           {activeTab === 'rewards' && (
             <StudentRewards />
+          )}
+
+          {activeTab === 'profile' && (
+            <StudentProfile />
           )}
         </motion.div>
       </div>

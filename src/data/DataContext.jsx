@@ -14,6 +14,8 @@ export function DataProvider({ children }) {
   const [sharingDetails, setSharingDetails] = useState([]);
   const [rewardsProducts, setRewardsProducts] = useState([]);
   const [rewardsPurchases, setRewardsPurchases] = useState([]);
+  const [paymentLinks, setPaymentLinks] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,6 +32,8 @@ export function DataProvider({ children }) {
       unsubscribers.push(subscribeToCollection(COLLECTIONS.SHARING, setSharingDetails));
       unsubscribers.push(subscribeToCollection(COLLECTIONS.REWARDS_PRODUCTS, setRewardsProducts));
       unsubscribers.push(subscribeToCollection(COLLECTIONS.REWARDS_PURCHASES, setRewardsPurchases));
+      unsubscribers.push(subscribeToCollection(COLLECTIONS.PAYMENT_LINKS, setPaymentLinks));
+      unsubscribers.push(subscribeToCollection(COLLECTIONS.NOTIFICATIONS, setNotifications));
     } catch (err) {
       console.error('Firebase subscription error:', err);
     }
@@ -42,7 +46,8 @@ export function DataProvider({ children }) {
 
   const value = {
     tenants, rentRecords, electricityRecords, expenses, visitors, notices,
-    paymentReminders, sharingDetails, rewardsProducts, rewardsPurchases, loading,
+    paymentReminders, sharingDetails, rewardsProducts, rewardsPurchases,
+    paymentLinks, notifications, loading,
   };
 
   return (

@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   CreditCard, AlertTriangle, CheckCircle2, Clock, Send, MessageCircle,
-  ChevronLeft, ChevronRight, Bell
+  ChevronLeft, ChevronRight, Bell, Link2, ExternalLink, Copy, Check
 } from 'lucide-react';
 import {
   getPaymentStatus, getMonthKey, formatCurrency, formatDate,
-  RENT_PER_PERSON, addPaymentReminder
+  RENT_PER_PERSON, addPaymentReminder, sendRentReminderWithLink
 } from '../data/store';
 import { useData } from '../data/DataContext';
 
 export default function PaymentTracker() {
-  const { tenants, rentRecords, paymentReminders } = useData();
+  const { tenants, rentRecords, paymentReminders, paymentLinks } = useData();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [sending, setSending] = useState(null);
+  const [copiedLink, setCopiedLink] = useState(null);
 
   const monthKey = getMonthKey(currentDate);
   const monthLabel = currentDate.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
@@ -21,6 +23,9 @@ export default function PaymentTracker() {
   const paid = paymentStatus.filter(t => t.isPaid);
   const unpaid = paymentStatus.filter(t => !t.isPaid);
   const overdue = paymentStatus.filter(t => t.isOverdue);
+
+  // Payment links for current month
+  const monthLinks = paymentLinks.filter(l => l.month === monthKey);
 
   const prevMonth = () => {
     const d = new Date(currentDate);
@@ -34,40 +39,34 @@ export default function PaymentTracker() {
     setCurrentDate(d);
   };
 
-  const sendWhatsAppReminder = async (tenant) => {
-    const message = encodeURIComponent(
-      `Hi ${tenant.name}, this is a gentle reminder from KalpDev PG. Your rent of ₹${RENT_PER_PERSON} for ${monthLabel} is pending. Please pay at your earliest convenience. Thank you!`
-    );
-    window.open(`https://wa.me/91${tenant.phone}?text=${message}`, '_blank');
-
-    await addPaymentReminder({
-      tenantId: tenant.id,
-      tenantName: tenant.name,
-      month: monthKey,
-      amount: RENT_PER_PERSON,
-      type: 'whatsapp',
-    });
+  const sendWhatsAppWithLink = async (tenant) => {
+    setSending(tenant.id);
+    const baseUrl = window.location.origin;
+    await sendRentReminderWithLink(tenant, monthKey, baseUrl);
+    setSending(null);
   };
 
-  const sendBulkReminder = async () => {
+  const sendBulkReminders = async () => {
     if (unpaid.length === 0) return;
+    const baseUrl = window.location.origin;
     for (const tenant of unpaid) {
-      await addPaymentReminder({
-        tenantId: tenant.id,
-        tenantName: tenant.name,
-        month: monthKey,
-        amount: RENT_PER_PERSON,
-        type: 'bulk',
-      });
+      await sendRentReminderWithLink(tenant, monthKey, baseUrl);
     }
-    alert(`Reminders logged for ${unpaid.length} tenants. Use WhatsApp buttons to send individually.`);
+    alert(`WhatsApp reminders with payment links sent to ${unpaid.length} tenants.`);
+  };
+
+  const copyPaymentLink = (linkId) => {
+    const url = `${window.location.origin}/pay/${linkId}`;
+    navigator.clipboard.writeText(url);
+    setCopiedLink(linkId);
+    setTimeout(() => setCopiedLink(null), 2000);
   };
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Payment Tracker</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400">Track payments, overdue rent, and send reminders</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Track payments, send WhatsApp reminders with payment links</p>
       </div>
 
       {/* Month Navigation */}
@@ -86,7 +85,7 @@ export default function PaymentTracker() {
         <StatCard icon={CreditCard} label="Total Due" value={formatCurrency(paymentStatus.length * RENT_PER_PERSON)} color="bg-purple-50 dark:bg-purple-900/20 text-purple-600" />
         <StatCard icon={CheckCircle2} label="Paid" value={`${paid.length} tenants`} color="bg-green-50 dark:bg-green-900/20 text-green-600" />
         <StatCard icon={Clock} label="Pending" value={`${unpaid.length} tenants`} color="bg-amber-50 dark:bg-amber-900/20 text-amber-600" />
-        <StatCard icon={AlertTriangle} label="Overdue" value={`${overdue.length} tenants`} color="bg-red-50 dark:bg-red-900/20 text-red-600" />
+        <StatCard icon={Link2} label="Links Sent" value={`${monthLinks.length}`} color="bg-blue-50 dark:bg-blue-900/20 text-blue-600" />
       </div>
 
       {/* Overdue Alert */}
@@ -94,7 +93,7 @@ export default function PaymentTracker() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-center justify-between"
+          className="p-4 rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-center justify-between flex-wrap gap-3"
         >
           <div className="flex items-center gap-3">
             <AlertTriangle className="w-6 h-6 text-red-500" />
@@ -103,8 +102,8 @@ export default function PaymentTracker() {
               <p className="text-sm text-red-600 dark:text-red-400">Rent was due on 5th {monthLabel}</p>
             </div>
           </div>
-          <button onClick={sendBulkReminder} className="px-4 py-2 bg-red-600 text-white rounded-xl text-sm font-medium hover:bg-red-700 transition flex items-center gap-2">
-            <Bell className="w-4 h-4" /> Send All Reminders
+          <button onClick={sendBulkReminders} className="px-4 py-2 bg-red-600 text-white rounded-xl text-sm font-medium hover:bg-red-700 transition flex items-center gap-2">
+            <Send className="w-4 h-4" /> Send All Reminders
           </button>
         </motion.div>
       )}
@@ -118,32 +117,49 @@ export default function PaymentTracker() {
             </h3>
           </div>
           <div className="divide-y divide-gray-100 dark:divide-gray-700">
-            {unpaid.map((t) => (
-              <div key={t.id} className="p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${t.isOverdue ? 'bg-red-100 dark:bg-red-900/30' : 'bg-amber-100 dark:bg-amber-900/30'}`}>
-                    <span className={`text-sm font-bold ${t.isOverdue ? 'text-red-600' : 'text-amber-600'}`}>{t.name[0]}</span>
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white text-sm">{t.name}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      Room {t.roomNumber} • Bed {t.bed}
-                      {t.isOverdue && <span className="text-red-500 ml-2">• {t.daysOverdue} days overdue</span>}
+            {unpaid.map((t) => {
+              const tenantLink = monthLinks.find(l => l.tenantId === t.id && l.status === 'pending');
+              return (
+                <div key={t.id} className="p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${t.isOverdue ? 'bg-red-100 dark:bg-red-900/30' : 'bg-amber-100 dark:bg-amber-900/30'}`}>
+                      <span className={`text-sm font-bold ${t.isOverdue ? 'text-red-600' : 'text-amber-600'}`}>{t.name[0]}</span>
+                    </div>
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white text-sm">{t.name}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        Room {t.roomNumber} • Bed {t.bed}
+                        {t.isOverdue && <span className="text-red-500 ml-2">• {t.daysOverdue} days overdue</span>}
+                      </div>
                     </div>
                   </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-gray-900 dark:text-white hidden sm:block">{formatCurrency(RENT_PER_PERSON)}</span>
+                    {tenantLink && (
+                      <button
+                        onClick={() => copyPaymentLink(tenantLink.linkId)}
+                        className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 hover:bg-blue-100 transition"
+                        title="Copy Payment Link"
+                      >
+                        {copiedLink === tenantLink.linkId ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                      </button>
+                    )}
+                    <button
+                      onClick={() => sendWhatsAppWithLink(t)}
+                      disabled={sending === t.id}
+                      className="p-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600 hover:bg-green-100 transition disabled:opacity-50"
+                      title="Send WhatsApp Reminder with Payment Link"
+                    >
+                      {sending === t.id ? (
+                        <div className="w-4 h-4 border-2 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        <MessageCircle className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-gray-900 dark:text-white">{formatCurrency(RENT_PER_PERSON)}</span>
-                  <button
-                    onClick={() => sendWhatsAppReminder(t)}
-                    className="p-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600 hover:bg-green-100 transition"
-                    title="Send WhatsApp Reminder"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -169,6 +185,41 @@ export default function PaymentTracker() {
                   </div>
                 </div>
                 <span className="text-sm font-semibold text-green-600">{formatCurrency(RENT_PER_PERSON)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Payment Links History */}
+      {monthLinks.length > 0 && (
+        <div className="glass-card-solid overflow-hidden">
+          <div className="p-4 border-b border-gray-100 dark:border-gray-700">
+            <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <Link2 className="w-5 h-5 text-purple-500" /> Payment Links ({monthLinks.length})
+            </h3>
+          </div>
+          <div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-64 overflow-y-auto">
+            {monthLinks.slice().reverse().map((l) => (
+              <div key={l.id} className="p-3 flex items-center justify-between text-sm">
+                <div className="flex items-center gap-3">
+                  <div className={`w-2 h-2 rounded-full ${l.status === 'paid' ? 'bg-green-500' : 'bg-amber-500'}`}></div>
+                  <div>
+                    <span className="font-medium text-gray-900 dark:text-white">{l.tenantName}</span>
+                    <span className="text-gray-500 dark:text-gray-400 ml-2">• {formatCurrency(l.amount)}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${l.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+                    {l.status === 'paid' ? 'Paid' : 'Pending'}
+                  </span>
+                  <button
+                    onClick={() => copyPaymentLink(l.linkId)}
+                    className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                  >
+                    {copiedLink === l.linkId ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5 text-gray-400" />}
+                  </button>
+                </div>
               </div>
             ))}
           </div>

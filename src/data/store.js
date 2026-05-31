@@ -378,3 +378,161 @@ export function getTenantRentHistory(rentRecords, tenantId) {
 export function getTenantElectricity(electricityRecords, roomNumber) {
   return electricityRecords.filter(r => r.roomNumber === roomNumber);
 }
+
+// ===== PAYMENT LINKS =====
+export async function createPaymentLink(data) {
+  const link = {
+    tenantId: data.tenantId,
+    tenantName: data.tenantName,
+    phone: data.phone,
+    amount: data.amount,
+    month: data.month,
+    status: 'pending', // pending, paid, expired
+    linkId: generateId(),
+    note: data.note || '',
+    paidAt: null,
+    sentVia: data.sentVia || 'manual',
+  };
+  const result = await addDocument(COLLECTIONS.PAYMENT_LINKS, link);
+  return result;
+}
+
+export async function getPaymentLinks() {
+  return await getCollection(COLLECTIONS.PAYMENT_LINKS);
+}
+
+export async function updatePaymentLink(id, data) {
+  await updateDocument(COLLECTIONS.PAYMENT_LINKS, id, data);
+}
+
+export async function markPaymentLinkPaid(linkId) {
+  const links = await getPaymentLinks();
+  const link = links.find(l => l.linkId === linkId);
+  if (link) {
+    await updateDocument(COLLECTIONS.PAYMENT_LINKS, link.id, {
+      status: 'paid',
+      paidAt: new Date().toISOString(),
+    });
+    // Also mark rent as paid
+    await markRentPaid(link.tenantId, link.month, link.amount);
+    // Add notification
+    await addNotification({
+      type: 'payment_received',
+      title: 'Payment Received',
+      message: `${link.tenantName} paid ₹${link.amount} for ${link.month}`,
+      forAdmin: true,
+      tenantId: link.tenantId,
+    });
+    return { success: true };
+  }
+  return { success: false };
+}
+
+export async function getPaymentLinkByLinkId(linkId) {
+  const links = await getPaymentLinks();
+  return links.find(l => l.linkId === linkId) || null;
+}
+
+// ===== NOTIFICATIONS =====
+export async function getNotifications(forAdmin = true) {
+  const all = await getCollection(COLLECTIONS.NOTIFICATIONS);
+  return all.filter(n => forAdmin ? n.forAdmin : n.tenantId);
+}
+
+export async function addNotification(notification) {
+  return await addDocument(COLLECTIONS.NOTIFICATIONS, {
+    ...notification,
+    read: false,
+  });
+}
+
+export async function markNotificationRead(id) {
+  await updateDocument(COLLECTIONS.NOTIFICATIONS, id, { read: true });
+}
+
+export async function markAllNotificationsRead(forAdmin = true) {
+  const notifications = await getNotifications(forAdmin);
+  for (const n of notifications.filter(n => !n.read)) {
+    await updateDocument(COLLECTIONS.NOTIFICATIONS, n.id, { read: true });
+  }
+}
+
+// ===== TENANT SELF-SERVICE PROFILE =====
+export async function updateTenantProfile(tenantId, data) {
+  // Save the update request for admin review
+  const request = {
+    tenantId,
+    tenantName: data.name,
+    changes: data,
+    status: 'pending', // pending, approved, rejected
+    submittedAt: new Date().toISOString(),
+  };
+  await addDocument(COLLECTIONS.PROFILE_UPDATES, request);
+  // Also directly update non-sensitive fields
+  const directFields = { profileImage: data.profileImage, email: data.email, address: data.address, emergency: data.emergency, occupation: data.occupation };
+  const filtered = Object.fromEntries(Object.entries(directFields).filter(([_, v]) => v !== undefined && v !== null));
+  if (Object.keys(filtered).length > 0) {
+    await updateDocument(COLLECTIONS.TENANTS, tenantId, filtered);
+  }
+  // Notify admin
+  await addNotification({
+    type: 'profile_update',
+    title: 'Profile Updated',
+    message: `${data.name} updated their profile details`,
+    forAdmin: true,
+    tenantId,
+  });
+  // Update session
+  const current = getLoggedInStudent();
+  if (current && current.id === tenantId) {
+    const updated = { ...current, ...filtered };
+    sessionStorage.setItem(STUDENT_SESSION_KEY, JSON.stringify(updated));
+  }
+  return { success: true };
+}
+
+export async function getProfileUpdates() {
+  return await getCollection(COLLECTIONS.PROFILE_UPDATES);
+}
+
+// ===== WHATSAPP RENT REMINDER WITH PAYMENT LINK =====
+export async function sendRentReminderWithLink(tenant, month, baseUrl) {
+  // Create payment link
+  const paymentLink = await createPaymentLink({
+    tenantId: tenant.id,
+    tenantName: tenant.name,
+    phone: tenant.phone,
+    amount: RENT_PER_PERSON,
+    month,
+    sentVia: 'whatsapp',
+  });
+
+  const payUrl = `${baseUrl}/pay/${paymentLink.linkId}`;
+  const monthLabel = new Date(month + '-01').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+  const message = encodeURIComponent(
+    `Hi ${tenant.name} 👋\n\nThis is a friendly reminder from *KalpDev PG*.\n\n💰 Rent Due: ₹${RENT_PER_PERSON}\n📅 Month: ${monthLabel}\n🏠 Room: ${tenant.roomNumber}, Bed ${tenant.bed}\n\n🔗 Pay here: ${payUrl}\n\nPlease pay at your earliest convenience. Thank you! 🙏`
+  );
+
+  window.open(`https://wa.me/91${tenant.phone}?text=${message}`, '_blank');
+
+  // Log reminder
+  await addPaymentReminder({
+    tenantId: tenant.id,
+    tenantName: tenant.name,
+    month,
+    amount: RENT_PER_PERSON,
+    type: 'whatsapp_with_link',
+    paymentLinkId: paymentLink.linkId,
+  });
+
+  // Add notification
+  await addNotification({
+    type: 'reminder_sent',
+    title: 'Reminder Sent',
+    message: `WhatsApp reminder sent to ${tenant.name} with payment link`,
+    forAdmin: true,
+    tenantId: tenant.id,
+  });
+
+  return paymentLink;
+}

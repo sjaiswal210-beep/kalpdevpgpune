@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Gift, ShoppingBag, Star, ExternalLink, X, Users, Send } from 'lucide-react';
+import { Gift, ShoppingBag, Star, ExternalLink, X, Users, Send, Tag, TrendingUp } from 'lucide-react';
 import {
   addRewardsPurchase, redeemPoints, addRedemption, addSharingDetail,
   getLoggedInStudent, getRewardsPoints, POINTS_TO_RUPEE, REFERRAL_REWARD_RUPEES

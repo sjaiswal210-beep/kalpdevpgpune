@@ -30,6 +30,9 @@ export const COLLECTIONS = {
   REWARDS_PURCHASES: 'rewards_purchases',
   REWARDS_REDEMPTIONS: 'rewards_redemptions',
   LANDING_CONTENT: 'landing_content',
+  PAYMENT_LINKS: 'payment_links',
+  NOTIFICATIONS: 'notifications',
+  PROFILE_UPDATES: 'profile_updates',
 };
 
 // Generic Firestore helpers

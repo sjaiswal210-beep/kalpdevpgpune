@@ -1,13 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Globe, Plus, Edit2, Trash2, X, Save, Star, MessageSquare, Layout
+  Globe, Plus, Edit2, Trash2, X, Save, Star, MessageSquare, Layout, Sparkles, RefreshCw
 } from 'lucide-react';
 import {
   getLandingServices, saveLandingServices,
   getLandingTestimonials, saveLandingTestimonials,
   getLandingHero, saveLandingHero, generateId
 } from '../data/store';
+
+// AI Content Generator (uses templates + smart variations)
+function generateAIContent(type, context = {}) {
+  const heroVariations = [
+    { tagline: 'Premium Girls PG Living', title: 'KalpDev PG', subtitle: 'Comfort • Safety • Better Living', description: 'A safe and premium paying guest accommodation exclusively for girls — with career guidance, sports facilities, and a supportive community to help you grow.' },
+    { tagline: 'Your Home Away From Home', title: 'KalpDev PG', subtitle: 'Safe • Affordable • Modern', description: 'Experience premium PG living with 24/7 security, high-speed WiFi, fully furnished rooms, and a vibrant community of ambitious young women.' },
+    { tagline: 'Where Comfort Meets Career', title: 'KalpDev PG', subtitle: 'Live • Learn • Grow', description: 'More than just a PG — we provide career mentorship, interview preparation, job referrals, and a safe environment for girls to thrive in their professional journey.' },
+    { tagline: 'Safe & Smart Living', title: 'KalpDev PG', subtitle: 'Security • Community • Growth', description: 'Gated society with CCTV, trained security guards, and a supportive community. Focus on your career while we take care of your comfort and safety.' },
+    { tagline: 'Premium Accommodation for Girls', title: 'KalpDev PG', subtitle: 'Furnished • Secure • Connected', description: 'Fully furnished rooms with personal cupboards, high-speed WiFi, mineral water, and round-the-clock security. Your perfect home in the city.' },
+  ];
+
+  const serviceDescVariations = {
+    security: [
+      'Round-the-clock security with trained personnel ensuring your safety at all times.',
+      'Professional security team on duty 24/7 for complete peace of mind.',
+      'Dedicated security staff ensuring a safe and secure environment for all residents.',
+    ],
+    wifi: [
+      'Blazing fast internet connectivity for seamless work, study, and entertainment.',
+      'High-speed unlimited WiFi to keep you connected — stream, work, and browse without limits.',
+      'Enterprise-grade WiFi ensuring uninterrupted connectivity for all your needs.',
+    ],
+    furnished: [
+      'Move-in ready rooms with quality furniture, comfortable beds, and personal storage.',
+      'Fully equipped rooms with everything you need — just bring your bags and settle in.',
+      'Premium furnished spaces designed for comfort and productivity.',
+    ],
+    water: [
+      'Pure RO-filtered mineral water available 24/7 for healthy hydration.',
+      'Clean, safe drinking water through advanced purification systems.',
+      'Premium quality mineral water ensuring your health and well-being.',
+    ],
+    general: [
+      'Thoughtfully designed amenity to enhance your living experience.',
+      'Premium facility ensuring comfort and convenience for all residents.',
+      'Quality service that sets us apart from ordinary PG accommodations.',
+    ],
+  };
+
+  if (type === 'hero') {
+    return heroVariations[Math.floor(Math.random() * heroVariations.length)];
+  }
+
+  if (type === 'service_desc') {
+    const title = (context.title || '').toLowerCase();
+    let category = 'general';
+    if (title.includes('security') || title.includes('guard') || title.includes('cctv')) category = 'security';
+    else if (title.includes('wifi') || title.includes('internet')) category = 'wifi';
+    else if (title.includes('furnished') || title.includes('bed') || title.includes('cupboard')) category = 'furnished';
+    else if (title.includes('water') || title.includes('mineral')) category = 'water';
+
+    const options = serviceDescVariations[category];
+    return options[Math.floor(Math.random() * options.length)];
+  }
+
+  if (type === 'testimonial') {
+    const templates = [
+      `Living at KalpDev PG has been an amazing experience. The rooms are clean, management is responsive, and I feel completely safe here.`,
+      `Best PG I've stayed in! The community is wonderful, facilities are top-notch, and the career guidance sessions are a huge bonus.`,
+      `I love the homely atmosphere here. Great food, clean rooms, and the security gives my parents complete peace of mind.`,
+      `Affordable, comfortable, and well-maintained. The WiFi is fast, rooms are spacious, and the staff is very helpful.`,
+      `KalpDev PG is more than just accommodation — it's a community. Made great friends and got amazing career support here.`,
+    ];
+    return templates[Math.floor(Math.random() * templates.length)];
+  }
+
+  return '';
+}
 
 export default function WebsiteEditor() {
   const [activeTab, setActiveTab] = useState('hero');
@@ -18,6 +86,7 @@ export default function WebsiteEditor() {
   const [editType, setEditType] = useState('');
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [aiGenerating, setAiGenerating] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -37,6 +106,16 @@ export default function WebsiteEditor() {
   const showSaved = () => {
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  // AI Generate Hero
+  const generateHeroAI = () => {
+    setAiGenerating(true);
+    setTimeout(() => {
+      const generated = generateAIContent('hero');
+      setHero(prev => ({ ...prev, ...generated }));
+      setAiGenerating(false);
+    }, 800);
   };
 
   // Hero
@@ -110,7 +189,7 @@ export default function WebsiteEditor() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Website Editor</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Edit landing page content, images, and reviews</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Edit landing page content with AI-powered writing assistance</p>
         </div>
         {saved && (
           <motion.span
@@ -144,9 +223,19 @@ export default function WebsiteEditor() {
       {/* Hero Editor */}
       {activeTab === 'hero' && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card-solid p-6 space-y-5">
-          <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-            <Layout className="w-5 h-5 text-purple-600" /> Edit Hero Section
-          </h3>
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <Layout className="w-5 h-5 text-purple-600" /> Edit Hero Section
+            </h3>
+            <button
+              onClick={generateHeroAI}
+              disabled={aiGenerating}
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl text-sm font-medium hover:from-purple-600 hover:to-pink-600 transition disabled:opacity-50"
+            >
+              {aiGenerating ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+              {aiGenerating ? 'Generating...' : 'AI Generate'}
+            </button>
+          </div>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tagline</label>
@@ -166,7 +255,18 @@ export default function WebsiteEditor() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+              <button
+                onClick={() => {
+                  const desc = generateAIContent('hero').description;
+                  setHero(prev => ({ ...prev, description: desc }));
+                }}
+                className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
+              >
+                <Sparkles className="w-3 h-3" /> Rewrite with AI
+              </button>
+            </div>
             <textarea rows={3} value={hero.description} onChange={e => setHero({...hero, description: e.target.value})} className="input-field resize-none" />
           </div>
           {hero.heroImage && (
@@ -285,10 +385,29 @@ export default function WebsiteEditor() {
 
 function EditModal({ type, item, onSave, onClose }) {
   const [form, setForm] = useState(item);
+  const [aiGenerating, setAiGenerating] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave(form);
+  };
+
+  const generateServiceDesc = () => {
+    setAiGenerating(true);
+    setTimeout(() => {
+      const desc = generateAIContent('service_desc', { title: form.title });
+      setForm(prev => ({ ...prev, desc }));
+      setAiGenerating(false);
+    }, 600);
+  };
+
+  const generateTestimonialText = () => {
+    setAiGenerating(true);
+    setTimeout(() => {
+      const text = generateAIContent('testimonial');
+      setForm(prev => ({ ...prev, text }));
+      setAiGenerating(false);
+    }, 600);
   };
 
   return (
@@ -322,7 +441,18 @@ function EditModal({ type, item, onSave, onClose }) {
                 <input type="text" required value={form.title} onChange={e => setForm({...form, title: e.target.value})} className="input-field" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description *</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description *</label>
+                  <button
+                    type="button"
+                    onClick={generateServiceDesc}
+                    disabled={aiGenerating || !form.title}
+                    className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 disabled:opacity-50"
+                  >
+                    {aiGenerating ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+                    AI Write
+                  </button>
+                </div>
                 <textarea rows={3} required value={form.desc} onChange={e => setForm({...form, desc: e.target.value})} className="input-field resize-none" />
               </div>
               <div>
@@ -345,7 +475,18 @@ function EditModal({ type, item, onSave, onClose }) {
                 <input type="text" value={form.room} onChange={e => setForm({...form, room: e.target.value})} className="input-field" placeholder="e.g. Room 201" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Review Text *</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Review Text *</label>
+                  <button
+                    type="button"
+                    onClick={generateTestimonialText}
+                    disabled={aiGenerating}
+                    className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 disabled:opacity-50"
+                  >
+                    {aiGenerating ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+                    AI Write
+                  </button>
+                </div>
                 <textarea rows={3} required value={form.text} onChange={e => setForm({...form, text: e.target.value})} className="input-field resize-none" />
               </div>
               <div>
