@@ -100,9 +100,19 @@ export default function StudentRewards() {
 
       {/* Products to Compare */}
       <div>
-        <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          <ShoppingBag className="w-5 h-5 text-purple-600" /> Shop & Earn Points
-        </h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <ShoppingBag className="w-5 h-5 text-purple-600" /> Shop & Earn Points
+          </h3>
+          <a
+            href="https://www.amazon.in"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl text-sm font-medium hover:from-orange-600 hover:to-orange-700 transition"
+          >
+            <ExternalLink className="w-4 h-4" /> Open Amazon
+          </a>
+        </div>
         {rewardsProducts.length === 0 ? (
           <div className="glass-card-solid p-8 text-center">
             <ShoppingBag className="w-10 h-10 mx-auto mb-2 text-gray-300" />
@@ -121,7 +131,6 @@ export default function StudentRewards() {
                     </span>
                   </div>
                   {p.description && <p className="text-xs text-gray-500 mb-3">{p.description}</p>}
-                  {p.category && <span className="inline-block px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs text-gray-600 dark:text-gray-400 mb-3">{p.category}</span>}
 
                   {/* Price Comparison */}
                   <div className="space-y-2 mb-4">
