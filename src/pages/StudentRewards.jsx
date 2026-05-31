@@ -105,7 +105,7 @@ export default function StudentRewards() {
             <ShoppingBag className="w-5 h-5 text-purple-600" /> Shop & Earn Points
           </h3>
           <a
-            href="https://www.amazon.in"
+            href="https://www.amazon.in/?tag=kalpdev-21"
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl text-sm font-medium hover:from-orange-600 hover:to-orange-700 transition"
