@@ -24,9 +24,9 @@ export const RENT_PER_PERSON = 3500;
 export const DEPOSIT_PER_BED = 3500;
 export const TOTAL_ROOMS = 9;
 export const TOTAL_BEDS = 18;
-export const POINTS_TO_RUPEE = 10;
+export const POINTS_TO_RUPEE = 1;
 export const REFERRAL_REWARD_RUPEES = 500;
-export const REFERRAL_REWARD_POINTS = 500 * 10; // 5000 points = ₹500
+export const REFERRAL_REWARD_POINTS = 500 * 1; // 500 points = ₹500
 
 // ===== UTILITY =====
 export function generateId() {
@@ -296,12 +296,13 @@ export async function addRewardsPurchase(purchase) {
   return await addDocument(COLLECTIONS.REWARDS_PURCHASES, { ...purchase, verified: false });
 }
 
-export async function verifyPurchase(purchaseId) {
+export async function verifyPurchase(purchaseId, customPoints) {
   const purchases = await getRewardsPurchases();
   const purchase = purchases.find(p => p.id === purchaseId);
   if (purchase && !purchase.verified) {
-    await updateDocument(COLLECTIONS.REWARDS_PURCHASES, purchaseId, { verified: true, verifiedAt: new Date().toISOString() });
-    await addPoints(purchase.tenantId, purchase.pointsEarned, `Purchase: ${purchase.productName}`);
+    const pointsToCredit = customPoints || purchase.pointsEarned;
+    await updateDocument(COLLECTIONS.REWARDS_PURCHASES, purchaseId, { verified: true, verifiedAt: new Date().toISOString(), pointsEarned: pointsToCredit });
+    await addPoints(purchase.tenantId, pointsToCredit, `Purchase: ${purchase.productName}`);
   }
 }
 

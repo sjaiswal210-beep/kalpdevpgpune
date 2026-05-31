@@ -25,6 +25,8 @@ export default function RewardsAdmin() {
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState(emptyProduct);
   const [allPoints, setAllPoints] = useState({});
+  const [verifyingPurchase, setVerifyingPurchase] = useState(null);
+  const [customPoints, setCustomPoints] = useState('');
 
   useEffect(() => {
     const loadPoints = async () => {
@@ -53,7 +55,9 @@ export default function RewardsAdmin() {
   const resetForm = () => { setForm(emptyProduct); setEditId(null); setShowForm(false); };
 
   const handleVerify = async (purchaseId) => {
-    await verifyPurchase(purchaseId);
+    await verifyPurchase(purchaseId, Number(customPoints));
+    setVerifyingPurchase(null);
+    setCustomPoints('');
   };
 
   const tabs = [
@@ -128,20 +132,56 @@ export default function RewardsAdmin() {
           ) : (
             <div className="divide-y divide-gray-100 dark:divide-gray-700">
               {rewardsPurchases.slice().reverse().map(p => (
-                <div key={p.id} className="p-4 flex items-center justify-between">
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white text-sm">{p.tenantName}</div>
-                    <div className="text-xs text-gray-500">{p.productName} • {p.store} • ₹{p.amount}</div>
-                    <div className="text-xs text-gray-400 mt-0.5">{new Date(p.createdAt).toLocaleDateString('en-IN')}</div>
+                <div key={p.id} className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-medium text-gray-900 dark:text-white text-sm">{p.tenantName}</div>
+                      <div className="text-xs text-gray-500">{p.productName} • {p.store} • ₹{p.amount}</div>
+                      <div className="text-xs text-gray-400 mt-0.5">{new Date(p.createdAt).toLocaleDateString('en-IN')}</div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      {p.verified ? (
+                        <>
+                          <span className="text-sm font-bold text-purple-600">+{p.pointsEarned} pts</span>
+                          <span className="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-bold">Verified</span>
+                        </>
+                      ) : (
+                        <button onClick={() => { setVerifyingPurchase(p); setCustomPoints(''); }} className="px-3 py-1.5 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition">Give Cashback</button>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm font-bold text-purple-600">+{p.pointsEarned} pts</span>
-                    {p.verified ? (
-                      <span className="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-bold">Verified</span>
-                    ) : (
-                      <button onClick={() => handleVerify(p.id)} className="px-3 py-1.5 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition">Verify & Credit</button>
-                    )}
-                  </div>
+                  {/* Custom points input when verifying */}
+                  {verifyingPurchase && verifyingPurchase.id === p.id && (
+                    <div className="mt-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl flex items-center gap-3">
+                      <div className="flex-1">
+                        <label className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Cashback points to give:</label>
+                        <input
+                          type="number"
+                          min="1"
+                          value={customPoints}
+                          onChange={e => setCustomPoints(e.target.value)}
+                          placeholder="Enter points"
+                          className="input-field text-sm"
+                          autoFocus
+                        />
+                      </div>
+                      <div className="flex gap-2 pt-5">
+                        <button
+                          onClick={() => handleVerify(p.id)}
+                          disabled={!customPoints || Number(customPoints) < 1}
+                          className="px-4 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition disabled:opacity-50"
+                        >
+                          Credit {customPoints || '0'} pts
+                        </button>
+                        <button
+                          onClick={() => { setVerifyingPurchase(null); setCustomPoints(''); }}
+                          className="px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-xs font-medium"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

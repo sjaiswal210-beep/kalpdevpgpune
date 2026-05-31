@@ -44,7 +44,7 @@ export default function StudentRewards() {
       amount: Number(claimAmount),
       pointsEarned: showClaim.pointsReward,
     });
-    setMessage(`Purchase claimed! ${showClaim.pointsReward} points will be added after admin verification.`);
+    setMessage(`Purchase claimed! Cashback points will be added after admin verification.`);
     setShowClaim(null);
     setClaimStore('');
     setClaimAmount('');
@@ -170,7 +170,7 @@ export default function StudentRewards() {
                   </div>
 
                   <button onClick={() => setShowClaim(p)} className="w-full py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl text-sm font-semibold hover:from-purple-700 hover:to-indigo-700 transition">
-                    I Purchased This → Claim {p.pointsReward} Points
+                    I Purchased This → Claim Cashback
                   </button>
                 </div>
               </motion.div>
@@ -228,7 +228,7 @@ export default function StudentRewards() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount Paid (₹) *</label>
                   <input type="number" required min="1" value={claimAmount} onChange={e => setClaimAmount(e.target.value)} className="input-field" />
                 </div>
-                <p className="text-xs text-purple-600 font-medium">You'll earn +{showClaim.pointsReward} points after admin verification</p>
+                <p className="text-xs text-purple-600 font-medium">You'll earn cashback points after admin verification</p>
                 <button type="submit" className="btn-premium w-full">Submit Claim</button>
               </form>
             </motion.div>
