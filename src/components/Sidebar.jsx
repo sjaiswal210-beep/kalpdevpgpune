@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, BedDouble, Users, CreditCard, Zap, Receipt,
-  UserCheck, BarChart3, Bell, Settings, LogOut, Building2, X, Globe, AlertCircle, Share2, Gift, Wallet
+  UserCheck, BarChart3, Bell, Settings, LogOut, Building2, X, Globe, AlertCircle, Share2, Gift, Wallet, History
 } from 'lucide-react';
 import { adminLogout } from '../data/store';
 
@@ -11,6 +11,7 @@ const navItems = [
   { path: '/admin', icon: LayoutDashboard, label: 'Dashboard', end: true },
   { path: '/admin/rooms', icon: BedDouble, label: 'Rooms & Beds' },
   { path: '/admin/tenants', icon: Users, label: 'Tenants' },
+  { path: '/admin/tenant-history', icon: History, label: 'Tenant History' },
   { path: '/admin/rent', icon: CreditCard, label: 'Rent Collection' },
   { path: '/admin/payments', icon: AlertCircle, label: 'Payment Tracker' },
   { path: '/admin/electricity', icon: Zap, label: 'Electricity Bills' },

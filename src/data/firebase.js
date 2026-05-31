@@ -44,6 +44,7 @@ export const COLLECTIONS = {
   NOTIFICATIONS: 'notifications',
   PROFILE_UPDATES: 'profile_updates',
   ENQUIRIES: 'enquiries',
+  TENANT_HISTORY: 'tenant_history',
 };
 
 // Generic Firestore helpers

@@ -8,6 +8,7 @@ import PaymentPage from './pages/PaymentPage';
 import Dashboard from './pages/Dashboard';
 import RoomsBeds from './pages/RoomsBeds';
 import Tenants from './pages/Tenants';
+import TenantHistory from './pages/TenantHistory';
 import RentCollection from './pages/RentCollection';
 import ElectricityBills from './pages/ElectricityBills';
 import Expenses from './pages/Expenses';
@@ -67,6 +68,7 @@ function AdminLayout() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/rooms" element={<RoomsBeds />} />
             <Route path="/tenants" element={<Tenants />} />
+            <Route path="/tenant-history" element={<TenantHistory />} />
             <Route path="/rent" element={<RentCollection />} />
             <Route path="/electricity" element={<ElectricityBills />} />
             <Route path="/expenses" element={<Expenses />} />

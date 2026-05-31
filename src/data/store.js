@@ -117,6 +117,30 @@ export async function deleteTenant(id) {
   await deleteDocument(COLLECTIONS.TENANTS, id);
 }
 
+export async function markTenantAsLeft(id, tenantData) {
+  // Move tenant to history collection
+  await addDocument(COLLECTIONS.TENANT_HISTORY, {
+    ...tenantData,
+    originalId: id,
+    leftDate: new Date().toISOString().split('T')[0],
+    status: 'left',
+  });
+  // Remove from active tenants (frees up the bed)
+  await deleteDocument(COLLECTIONS.TENANTS, id);
+  // Notify
+  await addNotification({
+    type: 'tenant_left',
+    title: 'Tenant Left',
+    message: `${tenantData.name} (Room ${tenantData.roomNumber}, Bed ${tenantData.bed}) has left the PG`,
+    forAdmin: true,
+    tenantId: id,
+  });
+}
+
+export async function getTenantHistory() {
+  return await getCollection(COLLECTIONS.TENANT_HISTORY);
+}
+
 // ===== RENT =====
 export async function getRentRecords() {
   return await getCollection(COLLECTIONS.RENT);

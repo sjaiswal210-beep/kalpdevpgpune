@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Users, Plus, Search, Edit2, Trash2, Eye, X, Phone, Mail, Calendar, CreditCard, BedDouble
+  Users, Plus, Search, Edit2, Trash2, Eye, X, Phone, Mail, Calendar, CreditCard, BedDouble, UserMinus
 } from 'lucide-react';
 import {
-  addTenant, updateTenant, deleteTenant as removeTenant,
+  addTenant, updateTenant, deleteTenant as removeTenant, markTenantAsLeft,
   ALL_ROOMS, PG_STRUCTURE, getRoomOccupancy, formatCurrency, formatDate,
   RENT_PER_PERSON, DEPOSIT_PER_BED
 } from '../data/store';
@@ -56,6 +56,12 @@ export default function Tenants() {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to remove this tenant?')) {
       await removeTenant(id);
+    }
+  };
+
+  const handleMarkAsLeft = async (tenant) => {
+    if (window.confirm(`Mark ${tenant.name} as left PG? This will free up Bed ${tenant.bed} in Room ${tenant.roomNumber}. The tenant's history will be preserved.`)) {
+      await markTenantAsLeft(tenant.id, tenant);
     }
   };
 
@@ -142,6 +148,9 @@ export default function Tenants() {
                         </button>
                         <button onClick={() => handleEdit(t)} className="p-2 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 hover:bg-amber-100 transition">
                           <Edit2 className="w-4 h-4" />
+                        </button>
+                        <button onClick={() => handleMarkAsLeft(t)} className="p-2 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 hover:bg-orange-100 transition" title="Mark as Left PG">
+                          <UserMinus className="w-4 h-4" />
                         </button>
                         <button onClick={() => handleDelete(t.id)} className="p-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 transition">
                           <Trash2 className="w-4 h-4" />
