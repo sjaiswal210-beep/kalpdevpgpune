@@ -13,6 +13,7 @@ import ElectricityBills from './pages/ElectricityBills';
 import Expenses from './pages/Expenses';
 import Visitors from './pages/Visitors';
 import Reports from './pages/Reports';
+import FinanceTracker from './pages/FinanceTracker';
 import Notices from './pages/Notices';
 import WebsiteEditor from './pages/WebsiteEditor';
 import PaymentTracker from './pages/PaymentTracker';
@@ -70,6 +71,7 @@ function AdminLayout() {
             <Route path="/expenses" element={<Expenses />} />
             <Route path="/visitors" element={<Visitors />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/finance" element={<FinanceTracker />} />
             <Route path="/notices" element={<Notices />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/website" element={<WebsiteEditor />} />
