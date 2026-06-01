@@ -70,7 +70,7 @@ export default function StudentDashboard() {
       <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-700">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-400 to-rose-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
               <Building2 className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -101,7 +101,7 @@ export default function StudentDashboard() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-pink-400 to-rose-400 rounded-3xl p-8 mb-8 text-white relative overflow-hidden"
+          className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-3xl p-8 mb-8 text-white relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
           <div className="relative">
@@ -145,8 +145,8 @@ export default function StudentDashboard() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
                 activeTab === tab.id
-                  ? 'bg-pink-400 text-white shadow-premium'
-                  : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-pink-50 dark:hover:bg-gray-700'
+                  ? 'bg-purple-600 text-white shadow-premium'
+                  : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-gray-700'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -167,7 +167,7 @@ export default function StudentDashboard() {
               {/* Personal Info */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-card">
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                  <User className="w-5 h-5 text-pink-500" />
+                  <User className="w-5 h-5 text-purple-600" />
                   Personal Information
                 </h3>
                 <div className="space-y-4">
@@ -185,7 +185,7 @@ export default function StudentDashboard() {
               {/* Room Info */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-card">
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                  <BedDouble className="w-5 h-5 text-pink-500" />
+                  <BedDouble className="w-5 h-5 text-purple-600" />
                   Room Details
                 </h3>
                 <div className="space-y-4">
@@ -213,7 +213,7 @@ export default function StudentDashboard() {
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-card overflow-hidden">
               <div className="p-6 border-b border-gray-100 dark:border-gray-700">
                 <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                  <CreditCard className="w-5 h-5 text-pink-500" />
+                  <CreditCard className="w-5 h-5 text-purple-600" />
                   Rent Payment History
                 </h3>
               </div>
@@ -280,7 +280,7 @@ export default function StudentDashboard() {
                         <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                           <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{r.month}</td>
                           <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{formatCurrency(r.totalBill)}</td>
-                          <td className="px-6 py-4 text-sm font-semibold text-pink-500 dark:text-pink-400">{formatCurrency(r.perPersonAmount)}</td>
+                          <td className="px-6 py-4 text-sm font-semibold text-purple-600 dark:text-purple-400">{formatCurrency(r.perPersonAmount)}</td>
                           <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{r.occupants}</td>
                         </tr>
                       ))}
@@ -295,7 +295,7 @@ export default function StudentDashboard() {
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-card overflow-hidden">
               <div className="p-6 border-b border-gray-100 dark:border-gray-700">
                 <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                  <Bell className="w-5 h-5 text-pink-500" />
+                  <Bell className="w-5 h-5 text-purple-600" />
                   Notices & Announcements
                 </h3>
               </div>

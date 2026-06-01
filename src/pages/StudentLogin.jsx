@@ -35,11 +35,11 @@ export default function StudentLogin() {
   };
 
   return (
-    <div className="min-h-screen font-poppins bg-gradient-to-br from-pink-800 via-rose-700 to-gray-900 flex items-center justify-center p-4">
+    <div className="min-h-screen font-poppins bg-gradient-to-br from-indigo-900 via-purple-900 to-gray-900 flex items-center justify-center p-4">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-rose-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-pink-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl"></div>
       </div>
 
       <motion.div
@@ -57,7 +57,7 @@ export default function StudentLogin() {
         <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl p-8 shadow-2xl">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center mb-4 shadow-premium">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-4 shadow-premium">
               <Users className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-white mb-2">Tenant Portal</h1>
@@ -137,7 +137,7 @@ export default function StudentLogin() {
           {/* Admin link */}
           <div className="mt-4 text-center">
             <Link to="/admin/login" className="text-sm text-white/50 hover:text-white/80 transition">
-              Are you an admin? <span className="text-pink-300 font-medium">Login here</span>
+              Are you an admin? <span className="text-purple-300 font-medium">Login here</span>
             </Link>
           </div>
         </div>
