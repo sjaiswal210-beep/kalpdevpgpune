@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import {
   getPaymentStatus, getMonthKey, formatCurrency, formatDate,
-  RENT_PER_PERSON, addPaymentReminder, sendRentReminderWithLink, approvePayment, rejectPayment
+  RENT_PER_PERSON, addPaymentReminder, sendRentReminderWithLink, approvePayment, rejectPayment, getRentForRoom
 } from '../data/store';
 import { useData } from '../data/DataContext';
 
@@ -106,7 +106,7 @@ export default function PaymentTracker() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard icon={CreditCard} label="Total Due" value={formatCurrency(paymentStatus.length * RENT_PER_PERSON)} color="bg-purple-50 dark:bg-purple-900/20 text-purple-600" />
+        <StatCard icon={CreditCard} label="Total Due" value={formatCurrency(paymentStatus.reduce((sum, t) => sum + getRentForRoom(t.roomNumber), 0))} color="bg-purple-50 dark:bg-purple-900/20 text-purple-600" />
         <StatCard icon={CheckCircle2} label="Paid" value={`${paid.length} tenants`} color="bg-green-50 dark:bg-green-900/20 text-green-600" />
         <StatCard icon={Clock} label="Pending" value={`${unpaid.length} tenants`} color="bg-amber-50 dark:bg-amber-900/20 text-amber-600" />
         <StatCard icon={Link2} label="Links Sent" value={`${monthLinks.length}`} color="bg-blue-50 dark:bg-blue-900/20 text-blue-600" />
@@ -183,7 +183,7 @@ export default function PaymentTracker() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-gray-900 dark:text-white hidden sm:block">{formatCurrency(RENT_PER_PERSON)}</span>
+                    <span className="text-sm font-semibold text-gray-900 dark:text-white hidden sm:block">{formatCurrency(getRentForRoom(t.roomNumber))}</span>
                     {tenantLink && (
                       <button
                         onClick={() => copyPaymentLink(tenantLink.linkId)}
@@ -233,7 +233,7 @@ export default function PaymentTracker() {
                     <div className="text-xs text-gray-500 dark:text-gray-400">Room {t.roomNumber} • Paid on {formatDate(t.paidDate)}</div>
                   </div>
                 </div>
-                <span className="text-sm font-semibold text-green-600">{formatCurrency(RENT_PER_PERSON)}</span>
+                <span className="text-sm font-semibold text-green-600">{formatCurrency(getRentForRoom(t.roomNumber))}</span>
               </div>
             ))}
           </div>

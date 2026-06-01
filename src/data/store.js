@@ -241,7 +241,7 @@ export function getMonthlyCollection(rentRecords, month) {
 export function getPendingRent(tenants, rentRecords, month) {
   const paidIds = rentRecords.filter(r => r.month === month && r.paid).map(r => r.tenantId);
   const unpaid = tenants.filter(t => !paidIds.includes(t.id));
-  return unpaid.length * RENT_PER_PERSON;
+  return unpaid.reduce((sum, t) => sum + getRentForRoom(t.roomNumber), 0);
 }
 
 // ===== PAYMENT TRACKER =====
@@ -573,12 +573,13 @@ export async function getProfileUpdates() {
 
 // ===== WHATSAPP RENT REMINDER WITH PAYMENT LINK =====
 export async function sendRentReminderWithLink(tenant, month, baseUrl) {
+  const rentAmount = getRentForRoom(tenant.roomNumber);
   // Create payment link
   const paymentLink = await createPaymentLink({
     tenantId: tenant.id,
     tenantName: tenant.name,
     phone: tenant.phone,
-    amount: RENT_PER_PERSON,
+    amount: rentAmount,
     month,
     sentVia: 'whatsapp',
   });
@@ -586,7 +587,7 @@ export async function sendRentReminderWithLink(tenant, month, baseUrl) {
   const payUrl = `${baseUrl}/pay/${paymentLink.linkId}`;
   const monthLabel = new Date(month + '-01').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
   const message = encodeURIComponent(
-    `Hi ${tenant.name} 👋\n\nThis is a friendly reminder from *KalpDev PG*.\n\n💰 Rent Due: ₹${RENT_PER_PERSON}\n📅 Month: ${monthLabel}\n🏠 Room: ${tenant.roomNumber}, Bed ${tenant.bed}\n\n🔗 Pay here: ${payUrl}\n\nPlease pay at your earliest convenience. Thank you! 🙏`
+    `Hi ${tenant.name} 👋\n\nThis is a friendly reminder from *KalpDev PG*.\n\n💰 Rent Due: ₹${rentAmount}\n📅 Month: ${monthLabel}\n🏠 Room: ${tenant.roomNumber}, Bed ${tenant.bed}\n\n🔗 Pay here: ${payUrl}\n\nPlease pay at your earliest convenience. Thank you! 🙏`
   );
 
   window.open(`https://wa.me/91${tenant.phone}?text=${message}`, '_blank');
@@ -596,7 +597,7 @@ export async function sendRentReminderWithLink(tenant, month, baseUrl) {
     tenantId: tenant.id,
     tenantName: tenant.name,
     month,
-    amount: RENT_PER_PERSON,
+    amount: rentAmount,
     type: 'whatsapp_with_link',
     paymentLinkId: paymentLink.linkId,
   });

@@ -4,7 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContaine
 import { BarChart3, TrendingUp, TrendingDown, Building2 } from 'lucide-react';
 import {
   getOccupancyStats, getMonthKey, getMonthlyCollection,
-  formatCurrency, RENT_PER_PERSON, TOTAL_BEDS
+  formatCurrency, RENT_PER_PERSON, TOTAL_BEDS, getRentForRoom
 } from '../data/store';
 import { useData } from '../data/DataContext';
 
@@ -20,7 +20,7 @@ export default function Reports() {
     const mk = getMonthKey(d);
     const label = d.toLocaleDateString('en-IN', { month: 'short', year: '2-digit' });
     const collected = getMonthlyCollection(rentRecords, mk);
-    const potential = tenants.length * RENT_PER_PERSON;
+    const potential = tenants.reduce((sum, t) => sum + getRentForRoom(t.roomNumber), 0);
     const elecRecovery = electricityRecords
       .filter(r => r.month === mk)
       .reduce((sum, r) => sum + r.totalBill, 0);
@@ -35,7 +35,7 @@ export default function Reports() {
 
   const currentMonth = getMonthKey();
   const currentCollection = getMonthlyCollection(rentRecords, currentMonth);
-  const totalPotential = tenants.length * RENT_PER_PERSON;
+  const totalPotential = tenants.reduce((sum, t) => sum + getRentForRoom(t.roomNumber), 0);
   const vacantLoss = stats.vacant * RENT_PER_PERSON;
   const totalExpenses = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
   const totalElecRecovery = electricityRecords.reduce((sum, r) => sum + r.totalBill, 0);

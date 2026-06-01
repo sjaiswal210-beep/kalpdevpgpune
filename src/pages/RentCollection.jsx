@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { CreditCard, ChevronLeft, ChevronRight, Check, Undo2, CheckCircle2, Clock } from 'lucide-react';
 import {
   markRentPaid, markRentUnpaid, getMonthKey,
-  formatCurrency, formatDate, RENT_PER_PERSON
+  formatCurrency, formatDate, RENT_PER_PERSON, getRentForRoom
 } from '../data/store';
 import { useData } from '../data/DataContext';
 
@@ -17,8 +17,8 @@ export default function RentCollection() {
   const paidTenants = tenants.filter(t => rentRecords.some(r => r.tenantId === t.id && r.month === monthKey && r.paid));
   const unpaidTenants = tenants.filter(t => !rentRecords.some(r => r.tenantId === t.id && r.month === monthKey && r.paid));
 
-  const collected = paidTenants.length * RENT_PER_PERSON;
-  const pending = unpaidTenants.length * RENT_PER_PERSON;
+  const collected = paidTenants.reduce((sum, t) => sum + getRentForRoom(t.roomNumber), 0);
+  const pending = unpaidTenants.reduce((sum, t) => sum + getRentForRoom(t.roomNumber), 0);
 
   const prevMonth = () => {
     const d = new Date(currentDate);
@@ -33,7 +33,8 @@ export default function RentCollection() {
   };
 
   const handleMarkPaid = async (tenantId) => {
-    await markRentPaid(tenantId, monthKey, RENT_PER_PERSON);
+    const tenant = tenants.find(t => t.id === tenantId);
+    await markRentPaid(tenantId, monthKey, getRentForRoom(tenant?.roomNumber));
   };
 
   const handleMarkUnpaid = async (tenantId) => {
@@ -120,7 +121,7 @@ export default function RentCollection() {
                         </div>
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">Room {t.roomNumber} • Bed {t.bed}</td>
-                      <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{formatCurrency(RENT_PER_PERSON)}</td>
+                      <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{formatCurrency(getRentForRoom(t.roomNumber))}</td>
                       <td className="px-6 py-4">
                         {isPaid ? (
                           <span className="badge-green">Paid</span>
