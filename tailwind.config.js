@@ -18,9 +18,9 @@ export default {
           300: '#FFEAB3',
         },
         brand: {
-          pink: '#E11D73',
-          'pink-dark': '#BE185D',
-          'pink-light': '#FCE7F3',
+          purple: '#7C3AED',
+          'purple-dark': '#5B21B6',
+          'purple-light': '#EDE9FE',
           black: '#1A1A2E',
           cream: '#FFF8F0',
         }
@@ -28,7 +28,7 @@ export default {
       boxShadow: {
         'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
         'glass-lg': '0 16px 48px 0 rgba(31, 38, 135, 0.12)',
-        'premium': '0 4px 24px -2px rgba(244, 114, 182, 0.2)',
+        'premium': '0 4px 24px -2px rgba(124, 58, 237, 0.15)',
         'card': '0 2px 16px rgba(0, 0, 0, 0.04)',
         'card-hover': '0 8px 32px rgba(0, 0, 0, 0.08)',
       },

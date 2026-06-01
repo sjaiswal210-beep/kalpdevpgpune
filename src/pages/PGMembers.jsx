@@ -11,7 +11,7 @@ export default function PGMembers() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3 mb-2">
-        <Users className="w-6 h-6 text-pink-500" />
+        <Users className="w-6 h-6 text-purple-600" />
         <div>
           <h3 className="font-semibold text-gray-900 dark:text-white text-lg">PG Members</h3>
           <p className="text-xs text-gray-500 dark:text-gray-400">{tenants.length} members living here</p>
@@ -33,7 +33,7 @@ export default function PGMembers() {
               transition={{ delay: i * 0.05 }}
               className={`bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-card border-2 ${
                 currentTenant && currentTenant.id === t.id
-                  ? 'border-pink-300 dark:border-pink-600'
+                  ? 'border-purple-300 dark:border-purple-600'
                   : 'border-transparent'
               }`}
             >
@@ -46,8 +46,8 @@ export default function PGMembers() {
                     className="w-14 h-14 rounded-xl object-cover border border-gray-200 dark:border-gray-600"
                   />
                 ) : (
-                  <div className="w-14 h-14 rounded-xl bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center flex-shrink-0">
-                    <span className="text-lg font-bold text-pink-500 dark:text-pink-400">{t.name?.[0] || '?'}</span>
+                  <div className="w-14 h-14 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0">
+                    <span className="text-lg font-bold text-purple-600 dark:text-purple-400">{t.name?.[0] || '?'}</span>
                   </div>
                 )}
 
@@ -56,7 +56,7 @@ export default function PGMembers() {
                   <div className="flex items-center gap-2">
                     <h4 className="font-semibold text-gray-900 dark:text-white text-sm truncate">{t.name}</h4>
                     {currentTenant && currentTenant.id === t.id && (
-                      <span className="px-1.5 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-500 dark:text-pink-400 rounded text-[10px] font-bold">YOU</span>
+                      <span className="px-1.5 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded text-[10px] font-bold">YOU</span>
                     )}
                   </div>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">

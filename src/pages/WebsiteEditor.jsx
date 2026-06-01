@@ -179,7 +179,7 @@ export default function WebsiteEditor() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-12">
-        <div className="animate-spin w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full"></div>
+        <div className="animate-spin w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full"></div>
       </div>
     );
   }
@@ -210,8 +210,8 @@ export default function WebsiteEditor() {
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
               activeTab === tab.id
-                ? 'bg-pink-400 text-white shadow-premium'
-                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-pink-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
+                ? 'bg-purple-600 text-white shadow-premium'
+                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
             }`}
           >
             <tab.icon className="w-4 h-4" />
@@ -225,12 +225,12 @@ export default function WebsiteEditor() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card-solid p-6 space-y-5">
           <div className="flex items-center justify-between">
             <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-              <Layout className="w-5 h-5 text-pink-500" /> Edit Hero Section
+              <Layout className="w-5 h-5 text-purple-600" /> Edit Hero Section
             </h3>
             <button
               onClick={generateHeroAI}
               disabled={aiGenerating}
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-pink-500 text-white rounded-xl text-sm font-medium hover:from-purple-600 hover:to-pink-600 transition disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl text-sm font-medium hover:from-purple-600 hover:to-pink-600 transition disabled:opacity-50"
             >
               {aiGenerating ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
               {aiGenerating ? 'Generating...' : 'AI Generate'}
@@ -262,7 +262,7 @@ export default function WebsiteEditor() {
                   const desc = generateAIContent('hero').description;
                   setHero(prev => ({ ...prev, description: desc }));
                 }}
-                className="text-xs text-pink-500 hover:text-pink-600 font-medium flex items-center gap-1"
+                className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
               >
                 <Sparkles className="w-3 h-3" /> Rewrite with AI
               </button>
@@ -447,7 +447,7 @@ function EditModal({ type, item, onSave, onClose }) {
                     type="button"
                     onClick={generateServiceDesc}
                     disabled={aiGenerating || !form.title}
-                    className="text-xs text-pink-500 hover:text-pink-600 font-medium flex items-center gap-1 disabled:opacity-50"
+                    className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 disabled:opacity-50"
                   >
                     {aiGenerating ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
                     AI Write
@@ -481,7 +481,7 @@ function EditModal({ type, item, onSave, onClose }) {
                     type="button"
                     onClick={generateTestimonialText}
                     disabled={aiGenerating}
-                    className="text-xs text-pink-500 hover:text-pink-600 font-medium flex items-center gap-1 disabled:opacity-50"
+                    className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 disabled:opacity-50"
                   >
                     {aiGenerating ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
                     AI Write

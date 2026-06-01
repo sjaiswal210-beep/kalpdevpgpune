@@ -35,15 +35,15 @@ export default function PaymentPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-rose-50">
-        <div className="animate-spin w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-50">
+        <div className="animate-spin w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full"></div>
       </div>
     );
   }
 
   if (!link) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-rose-50 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-50 p-4">
         <div className="bg-white rounded-2xl p-8 shadow-xl text-center max-w-sm w-full">
           <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
           <h1 className="text-xl font-bold text-gray-900 mb-2">Invalid Payment Link</h1>
@@ -105,14 +105,14 @@ export default function PaymentPage() {
   const monthLabel = link.month ? new Date(link.month + '-01').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) : '';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-rose-50 p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-50 p-4 flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden"
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-pink-400 to-rose-400 p-6 text-white text-center">
+        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white text-center">
           <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center mx-auto mb-3">
             <Building2 className="w-7 h-7" />
           </div>
@@ -139,27 +139,27 @@ export default function PaymentPage() {
             </div>
             <div className="border-t border-gray-200 pt-3 flex justify-between">
               <span className="font-semibold text-gray-700">Amount Due</span>
-              <span className="text-xl font-bold text-pink-500">{formatCurrency(link.amount)}</span>
+              <span className="text-xl font-bold text-purple-600">{formatCurrency(link.amount)}</span>
             </div>
           </div>
 
           {/* UPI Section */}
-          <div className="bg-pink-50 rounded-xl p-4">
+          <div className="bg-purple-50 rounded-xl p-4">
             <p className="text-sm font-medium text-purple-800 mb-2">Pay via UPI</p>
-            <div className="flex items-center gap-2 bg-white rounded-lg p-3 border border-pink-200">
+            <div className="flex items-center gap-2 bg-white rounded-lg p-3 border border-purple-200">
               <span className="flex-1 text-sm font-mono text-gray-700">kalpdevpg@upi</span>
-              <button onClick={copyUPI} className="p-1.5 rounded-lg bg-pink-100 text-pink-500 hover:bg-purple-200 transition">
+              <button onClick={copyUPI} className="p-1.5 rounded-lg bg-purple-100 text-purple-600 hover:bg-purple-200 transition">
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
-            <p className="text-xs text-pink-500 mt-2">Copy UPI ID and pay using any UPI app (GPay, PhonePe, Paytm)</p>
+            <p className="text-xs text-purple-600 mt-2">Copy UPI ID and pay using any UPI app (GPay, PhonePe, Paytm)</p>
           </div>
 
           {/* Confirm Payment Button */}
           <button
             onClick={handlePay}
             disabled={processing}
-            className="w-full py-3.5 bg-gradient-to-r from-pink-400 to-rose-400 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {processing ? (
               <>
