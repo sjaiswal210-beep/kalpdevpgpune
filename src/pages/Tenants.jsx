@@ -306,7 +306,7 @@ export default function Tenants() {
                 <DetailRow label="Aadhaar" value={viewTenant.aadhaar || '-'} />
                 <DetailRow label="Room" value={`Room ${viewTenant.roomNumber}`} />
                 <DetailRow label="Bed" value={`Bed ${viewTenant.bed}`} />
-                <DetailRow label="Rent" value={formatCurrency(RENT_PER_PERSON)} />
+                <DetailRow label="Rent" value={formatCurrency(getRentForRoom(viewTenant.roomNumber))} />
                 <DetailRow label="Deposit" value={formatCurrency(viewTenant.deposit || 0)} />
                 <DetailRow label="Join Date" value={formatDate(viewTenant.joinDate)} />
                 <DetailRow label="Occupation" value={viewTenant.occupation || '-'} />

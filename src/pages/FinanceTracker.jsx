@@ -4,7 +4,7 @@ import {
   Wallet, TrendingUp, TrendingDown, Plus, X, ArrowUpRight, ArrowDownRight,
   Calendar, Filter, IndianRupee, PiggyBank
 } from 'lucide-react';
-import { formatCurrency, formatDate, getMonthKey, RENT_PER_PERSON } from '../data/store';
+import { formatCurrency, formatDate, getMonthKey, RENT_PER_PERSON, getRentForRoom } from '../data/store';
 import { useData } from '../data/DataContext';
 
 export default function FinanceTracker() {
@@ -23,7 +23,7 @@ export default function FinanceTracker() {
         type: 'income',
         category: 'Rent',
         description: `Rent from ${tenant?.name || 'Unknown'} - ${r.month}`,
-        amount: r.amount || RENT_PER_PERSON,
+        amount: r.amount || getRentForRoom(tenant?.roomNumber),
         date: r.paidDate || r.createdAt,
         month: r.month,
       });

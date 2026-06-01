@@ -8,7 +8,7 @@ import {
 import {
   getLoggedInStudent, studentLogout, getTenantRentHistory, getTenantElectricity,
   formatCurrency, formatDate, getMonthKey,
-  RENT_PER_PERSON, getDarkMode, setDarkMode as saveDarkMode
+  RENT_PER_PERSON, getDarkMode, setDarkMode as saveDarkMode, getRentForRoom
 } from '../data/store';
 import { useData } from '../data/DataContext';
 import StudentRewards from './StudentRewards';
@@ -116,7 +116,7 @@ export default function StudentDashboard() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
               <div className="bg-white/10 rounded-xl p-3 text-center">
-                <div className="text-lg font-bold">{formatCurrency(RENT_PER_PERSON)}</div>
+                <div className="text-lg font-bold">{formatCurrency(getRentForRoom(tenant.roomNumber))}</div>
                 <div className="text-xs text-white/70">Monthly Rent</div>
               </div>
               <div className="bg-white/10 rounded-xl p-3 text-center">
@@ -191,7 +191,7 @@ export default function StudentDashboard() {
                 <div className="space-y-4">
                   <InfoRow icon={Building2} label="Room Number" value={tenant.roomNumber} />
                   <InfoRow icon={BedDouble} label="Bed" value={`Bed ${tenant.bed}`} />
-                  <InfoRow icon={CreditCard} label="Monthly Rent" value={formatCurrency(RENT_PER_PERSON)} />
+                  <InfoRow icon={CreditCard} label="Monthly Rent" value={formatCurrency(getRentForRoom(tenant.roomNumber))} />
                   <InfoRow icon={CreditCard} label="Deposit Paid" value={formatCurrency(tenant.deposit || 0)} />
                   <InfoRow icon={Calendar} label="Join Date" value={formatDate(tenant.joinDate)} />
                 </div>
@@ -237,7 +237,7 @@ export default function StudentDashboard() {
                       {rentHistory.map((r, i) => (
                         <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                           <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{r.month}</td>
-                          <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{formatCurrency(r.amount || RENT_PER_PERSON)}</td>
+                          <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{formatCurrency(r.amount || getRentForRoom(tenant.roomNumber))}</td>
                           <td className="px-6 py-4">
                             <span className="badge-green">Paid</span>
                           </td>
