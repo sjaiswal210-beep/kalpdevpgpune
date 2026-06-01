@@ -11,7 +11,7 @@ export default function PGMembers() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3 mb-2">
-        <Users className="w-6 h-6 text-pink-600" />
+        <Users className="w-6 h-6 text-pink-500" />
         <div>
           <h3 className="font-semibold text-gray-900 dark:text-white text-lg">PG Members</h3>
           <p className="text-xs text-gray-500 dark:text-gray-400">{tenants.length} members living here</p>
@@ -47,7 +47,7 @@ export default function PGMembers() {
                   />
                 ) : (
                   <div className="w-14 h-14 rounded-xl bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center flex-shrink-0">
-                    <span className="text-lg font-bold text-pink-600 dark:text-pink-400">{t.name?.[0] || '?'}</span>
+                    <span className="text-lg font-bold text-pink-500 dark:text-pink-400">{t.name?.[0] || '?'}</span>
                   </div>
                 )}
 
@@ -56,7 +56,7 @@ export default function PGMembers() {
                   <div className="flex items-center gap-2">
                     <h4 className="font-semibold text-gray-900 dark:text-white text-sm truncate">{t.name}</h4>
                     {currentTenant && currentTenant.id === t.id && (
-                      <span className="px-1.5 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 rounded text-[10px] font-bold">YOU</span>
+                      <span className="px-1.5 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-500 dark:text-pink-400 rounded text-[10px] font-bold">YOU</span>
                     )}
                   </div>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">

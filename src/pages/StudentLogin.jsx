@@ -35,7 +35,7 @@ export default function StudentLogin() {
   };
 
   return (
-    <div className="min-h-screen font-poppins bg-gradient-to-br from-pink-900 via-rose-900 to-gray-900 flex items-center justify-center p-4">
+    <div className="min-h-screen font-poppins bg-gradient-to-br from-pink-800 via-rose-700 to-gray-900 flex items-center justify-center p-4">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-rose-500/20 rounded-full blur-3xl"></div>
@@ -57,7 +57,7 @@ export default function StudentLogin() {
         <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl p-8 shadow-2xl">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center mb-4 shadow-premium">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center mb-4 shadow-premium">
               <Users className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-white mb-2">Tenant Portal</h1>

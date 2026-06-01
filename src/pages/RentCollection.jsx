@@ -114,7 +114,7 @@ export default function RentCollection() {
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
-                            <span className="text-xs font-bold text-pink-600 dark:text-pink-400">{t.name[0]}</span>
+                            <span className="text-xs font-bold text-pink-500 dark:text-pink-400">{t.name[0]}</span>
                           </div>
                           <span className="font-medium text-gray-900 dark:text-white text-sm">{t.name}</span>
                         </div>

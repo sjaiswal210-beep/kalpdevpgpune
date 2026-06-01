@@ -32,7 +32,7 @@ export default function Dashboard() {
     { name: 'Occupied', value: stats.occupied },
     { name: 'Vacant', value: stats.vacant },
   ];
-  const COLORS = ['#E11D73', '#E5E7EB'];
+  const COLORS = ['#F472B6', '#E5E7EB'];
 
   // Monthly collection data (last 6 months)
   const barData = [];
@@ -57,7 +57,7 @@ export default function Dashboard() {
             className="stat-card"
           >
             <div className={`w-12 h-12 rounded-xl ${card.bg} flex items-center justify-center flex-shrink-0`}>
-              <card.icon className={`w-6 h-6 bg-gradient-to-br ${card.color} bg-clip-text text-pink-600`} />
+              <card.icon className={`w-6 h-6 bg-gradient-to-br ${card.color} bg-clip-text text-pink-500`} />
             </div>
             <div>
               <div className="text-xl font-bold text-gray-900 dark:text-white">{card.value}</div>
@@ -98,7 +98,7 @@ export default function Dashboard() {
           </div>
           <div className="flex justify-center gap-6 mt-2">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-pink-600"></div>
+              <div className="w-3 h-3 rounded-full bg-pink-400"></div>
               <span className="text-sm text-gray-600 dark:text-gray-400">Occupied ({stats.occupied})</span>
             </div>
             <div className="flex items-center gap-2">
@@ -123,7 +123,7 @@ export default function Dashboard() {
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip formatter={(value) => formatCurrency(value)} />
-                <Bar dataKey="collected" fill="#E11D73" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="collected" fill="#F472B6" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -167,7 +167,7 @@ export default function Dashboard() {
                 {room.type === 'premium' ? (
                   <div className="space-y-2">
                     <BedStatus label="Double Bed" tenant={occupants.find(t => t.bed === 'A')} />
-                    <span className="text-[10px] text-pink-600 font-medium">Premium • ₹7,500/mo</span>
+                    <span className="text-[10px] text-pink-500 font-medium">Premium • ₹7,500/mo</span>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -187,7 +187,7 @@ export default function Dashboard() {
 function BedStatus({ label, tenant }) {
   return (
     <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs ${
-      tenant ? 'bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+      tenant ? 'bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
     }`}>
       <BedDouble className="w-3 h-3" />
       <span className="truncate">{tenant ? tenant.name : `${label} - Empty`}</span>

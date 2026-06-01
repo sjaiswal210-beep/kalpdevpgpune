@@ -75,7 +75,7 @@ export default function Settings() {
         >
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-xl bg-pink-50 dark:bg-pink-900/20 flex items-center justify-center">
-              <Key className="w-5 h-5 text-pink-600" />
+              <Key className="w-5 h-5 text-pink-500" />
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 dark:text-white">Admin Credentials</h3>

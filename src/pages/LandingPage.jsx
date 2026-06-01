@@ -69,20 +69,20 @@ export default function LandingPage() {
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-600 to-rose-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-400 to-rose-400 flex items-center justify-center">
               <Building2 className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">KalpDev <span className="text-pink-600">PG</span></span>
+            <span className="text-xl font-bold text-gray-900">KalpDev <span className="text-pink-500">PG</span></span>
           </div>
           <div className="hidden md:flex items-center gap-8">
-            <a href="#services" className="text-gray-600 hover:text-pink-600 transition font-medium text-sm">Services</a>
-            <a href="#rooms" className="text-gray-600 hover:text-pink-600 transition font-medium text-sm">Rooms</a>
-            <a href="#testimonials" className="text-gray-600 hover:text-pink-600 transition font-medium text-sm">Reviews</a>
-            <a href="#contact" className="text-gray-600 hover:text-pink-600 transition font-medium text-sm">Contact</a>
+            <a href="#services" className="text-gray-600 hover:text-pink-500 transition font-medium text-sm">Services</a>
+            <a href="#rooms" className="text-gray-600 hover:text-pink-500 transition font-medium text-sm">Rooms</a>
+            <a href="#testimonials" className="text-gray-600 hover:text-pink-500 transition font-medium text-sm">Reviews</a>
+            <a href="#contact" className="text-gray-600 hover:text-pink-500 transition font-medium text-sm">Contact</a>
           </div>
           <div className="flex items-center gap-3">
-            <Link to="/student/login" className="px-4 py-2 text-sm font-semibold text-pink-600 border-2 border-pink-200 rounded-xl hover:bg-pink-50 transition">Tenant Login</Link>
-            <Link to="/admin/login" className="hidden sm:block px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-pink-600 to-rose-600 rounded-xl hover:shadow-premium transition">Admin Login</Link>
+            <Link to="/student/login" className="px-4 py-2 text-sm font-semibold text-pink-500 border-2 border-pink-200 rounded-xl hover:bg-pink-50 transition">Tenant Login</Link>
+            <Link to="/admin/login" className="hidden sm:block px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-pink-400 to-rose-400 rounded-xl hover:shadow-premium transition">Admin Login</Link>
           </div>
         </div>
       </nav>
@@ -94,17 +94,17 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative">
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-100 rounded-full mb-6">
-              <Star className="w-4 h-4 text-pink-600" />
-              <span className="text-sm font-semibold text-pink-700">{hero.tagline}</span>
+              <Star className="w-4 h-4 text-pink-500" />
+              <span className="text-sm font-semibold text-pink-600">{hero.tagline}</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
               {hero.title} —<br />
-              <span className="bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">{hero.subtitle}</span>
+              <span className="bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">{hero.subtitle}</span>
             </h1>
             <p className="text-lg text-gray-600 mb-8 max-w-lg">{hero.description}</p>
             <div className="flex flex-wrap gap-4">
               <Link to="/student/login" className="btn-premium flex items-center gap-2">Book Your Bed <ChevronRight className="w-4 h-4" /></Link>
-              <a href="#services" className="px-6 py-3 border-2 border-gray-200 rounded-xl font-semibold text-gray-700 hover:border-pink-300 hover:text-pink-600 transition">View Services</a>
+              <a href="#services" className="px-6 py-3 border-2 border-gray-200 rounded-xl font-semibold text-gray-700 hover:border-pink-300 hover:text-pink-500 transition">View Services</a>
             </div>
             <div className="flex items-center gap-8 mt-10">
               <div><div className="text-2xl font-bold text-gray-900">9</div><div className="text-sm text-gray-500">Rooms</div></div>
@@ -127,7 +127,7 @@ export default function LandingPage() {
             </div>
             <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center">
-                <GraduationCap className="w-6 h-6 text-pink-600" />
+                <GraduationCap className="w-6 h-6 text-pink-500" />
               </div>
               <div>
                 <div className="font-semibold text-gray-900 text-sm">Career Support</div>
@@ -142,7 +142,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-              <span className="inline-block px-4 py-1.5 bg-pink-100 text-pink-700 rounded-full text-sm font-semibold mb-4">Our Services</span>
+              <span className="inline-block px-4 py-1.5 bg-pink-100 text-pink-600 rounded-full text-sm font-semibold mb-4">Our Services</span>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Everything You Need, Under One Roof</h2>
               <p className="text-gray-600 max-w-2xl mx-auto">From safety to career growth — we go beyond just providing a bed.</p>
             </motion.div>
@@ -185,7 +185,7 @@ export default function LandingPage() {
                     <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
                     <span className="text-sm">{f.beds}</span>
                   </div>
-                  <div className="text-sm font-semibold text-pink-600">{f.floor === '1st Floor' ? '₹7,500/month (Premium)' : '₹3,500/month per bed'}</div>
+                  <div className="text-sm font-semibold text-pink-500">{f.floor === '1st Floor' ? '₹7,500/month (Premium)' : '₹3,500/month per bed'}</div>
                 </div>
               </motion.div>
             ))}
@@ -211,7 +211,7 @@ export default function LandingPage() {
                 <p className="text-gray-600 mb-4 italic">"{t.text}"</p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center">
-                    <span className="text-sm font-bold text-pink-600">{t.name[0]}</span>
+                    <span className="text-sm font-bold text-pink-500">{t.name[0]}</span>
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900 text-sm">{t.name}</div>
@@ -260,7 +260,7 @@ export default function LandingPage() {
                 <input type="text" required placeholder="Your Name" value={contactForm.name} onChange={e => setContactForm({...contactForm, name: e.target.value})} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 outline-none" />
                 <input type="tel" required placeholder="Phone Number" value={contactForm.phone} onChange={e => setContactForm({...contactForm, phone: e.target.value})} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 outline-none" />
                 <textarea rows="4" placeholder="Your Message" value={contactForm.message} onChange={e => setContactForm({...contactForm, message: e.target.value})} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 outline-none resize-none"></textarea>
-                <button type="submit" disabled={formSubmitting} className="w-full py-3 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl font-semibold hover:from-purple-600 hover:to-indigo-600 transition disabled:opacity-50">
+                <button type="submit" disabled={formSubmitting} className="w-full py-3 bg-gradient-to-r from-pink-400 to-rose-400 rounded-xl font-semibold hover:from-purple-600 hover:to-indigo-600 transition disabled:opacity-50">
                   {formSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
               </form>

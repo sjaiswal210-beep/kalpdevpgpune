@@ -16,7 +16,7 @@ const ICON_MAP = {
 const COLOR_MAP = {
   payment_received: 'text-green-600 bg-green-100 dark:bg-green-900/30',
   reminder_sent: 'text-blue-600 bg-blue-100 dark:bg-blue-900/30',
-  profile_update: 'text-pink-600 bg-pink-100 dark:bg-pink-900/30',
+  profile_update: 'text-pink-500 bg-pink-100 dark:bg-pink-900/30',
   new_tenant: 'text-rose-600 bg-rose-100 dark:bg-indigo-900/30',
   overdue: 'text-red-600 bg-red-100 dark:bg-red-900/30',
   reward: 'text-amber-600 bg-amber-100 dark:bg-amber-900/30',
@@ -71,7 +71,7 @@ export default function NotificationBell() {
             <div className="p-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
               <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Notifications</h3>
               {unreadCount > 0 && (
-                <button onClick={handleMarkAllRead} className="text-xs text-pink-600 hover:text-pink-700 font-medium flex items-center gap-1">
+                <button onClick={handleMarkAllRead} className="text-xs text-pink-500 hover:text-pink-600 font-medium flex items-center gap-1">
                   <CheckCheck className="w-3.5 h-3.5" /> Mark all read
                 </button>
               )}

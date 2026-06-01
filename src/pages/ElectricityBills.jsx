@@ -85,7 +85,7 @@ export default function ElectricityBills() {
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{r.month}</td>
                     <td className="px-6 py-4 text-sm text-gray-900 dark:text-white font-medium">{formatCurrency(r.totalBill)}</td>
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{r.occupants}</td>
-                    <td className="px-6 py-4 text-sm font-semibold text-pink-600 dark:text-pink-400">{formatCurrency(r.perPersonAmount)}</td>
+                    <td className="px-6 py-4 text-sm font-semibold text-pink-500 dark:text-pink-400">{formatCurrency(r.perPersonAmount)}</td>
                     <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{r.tenantNames?.join(', ') || '-'}</td>
                   </tr>
                 ))}
@@ -163,10 +163,10 @@ export default function ElectricityBills() {
                 {selectedRoom && (
                   <div className="p-4 rounded-xl bg-pink-50 dark:bg-pink-900/20 border border-purple-100 dark:border-purple-800">
                     <div className="flex items-center gap-2 mb-2">
-                      <Calculator className="w-4 h-4 text-pink-600" />
-                      <span className="text-sm font-semibold text-pink-700 dark:text-pink-300">Auto Split Preview</span>
+                      <Calculator className="w-4 h-4 text-pink-500" />
+                      <span className="text-sm font-semibold text-pink-600 dark:text-pink-300">Auto Split Preview</span>
                     </div>
-                    <div className="text-sm text-pink-600 dark:text-pink-400 space-y-1">
+                    <div className="text-sm text-pink-500 dark:text-pink-400 space-y-1">
                       <p>Occupied beds: <strong>{selectedOccupants.length}</strong></p>
                       {selectedOccupants.map(t => (
                         <p key={t.id}>• {t.name} (Bed {t.bed})</p>

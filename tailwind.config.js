@@ -28,7 +28,7 @@ export default {
       boxShadow: {
         'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
         'glass-lg': '0 16px 48px 0 rgba(31, 38, 135, 0.12)',
-        'premium': '0 4px 24px -2px rgba(225, 29, 115, 0.15)',
+        'premium': '0 4px 24px -2px rgba(244, 114, 182, 0.2)',
         'card': '0 2px 16px rgba(0, 0, 0, 0.04)',
         'card-hover': '0 8px 32px rgba(0, 0, 0, 0.08)',
       },

@@ -210,7 +210,7 @@ export default function WebsiteEditor() {
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
               activeTab === tab.id
-                ? 'bg-pink-600 text-white shadow-premium'
+                ? 'bg-pink-400 text-white shadow-premium'
                 : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-pink-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
             }`}
           >
@@ -225,7 +225,7 @@ export default function WebsiteEditor() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card-solid p-6 space-y-5">
           <div className="flex items-center justify-between">
             <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-              <Layout className="w-5 h-5 text-pink-600" /> Edit Hero Section
+              <Layout className="w-5 h-5 text-pink-500" /> Edit Hero Section
             </h3>
             <button
               onClick={generateHeroAI}
@@ -262,7 +262,7 @@ export default function WebsiteEditor() {
                   const desc = generateAIContent('hero').description;
                   setHero(prev => ({ ...prev, description: desc }));
                 }}
-                className="text-xs text-pink-600 hover:text-pink-700 font-medium flex items-center gap-1"
+                className="text-xs text-pink-500 hover:text-pink-600 font-medium flex items-center gap-1"
               >
                 <Sparkles className="w-3 h-3" /> Rewrite with AI
               </button>
@@ -447,7 +447,7 @@ function EditModal({ type, item, onSave, onClose }) {
                     type="button"
                     onClick={generateServiceDesc}
                     disabled={aiGenerating || !form.title}
-                    className="text-xs text-pink-600 hover:text-pink-700 font-medium flex items-center gap-1 disabled:opacity-50"
+                    className="text-xs text-pink-500 hover:text-pink-600 font-medium flex items-center gap-1 disabled:opacity-50"
                   >
                     {aiGenerating ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
                     AI Write
@@ -481,7 +481,7 @@ function EditModal({ type, item, onSave, onClose }) {
                     type="button"
                     onClick={generateTestimonialText}
                     disabled={aiGenerating}
-                    className="text-xs text-pink-600 hover:text-pink-700 font-medium flex items-center gap-1 disabled:opacity-50"
+                    className="text-xs text-pink-500 hover:text-pink-600 font-medium flex items-center gap-1 disabled:opacity-50"
                   >
                     {aiGenerating ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
                     AI Write

@@ -83,7 +83,7 @@ export default function RewardsAdmin() {
       {/* Tabs */}
       <div className="flex gap-2 flex-wrap">
         {tabs.map(tab => (
-          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${activeTab === tab.id ? 'bg-pink-600 text-white shadow-premium' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-pink-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'}`}>
+          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${activeTab === tab.id ? 'bg-pink-400 text-white shadow-premium' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-pink-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'}`}>
             <tab.icon className="w-4 h-4" />{tab.label}
           </button>
         ))}
@@ -103,7 +103,7 @@ export default function RewardsAdmin() {
               <div className="p-4">
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{p.name}</h4>
-                  <span className="px-2 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 rounded-full text-xs font-bold">₹{p.pointsReward} cashback</span>
+                  <span className="px-2 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 rounded-full text-xs font-bold">₹{p.pointsReward} cashback</span>
                 </div>
                 <p className="text-xs text-gray-500 mb-3">{p.category}</p>
                 <div className="space-y-1 text-xs">
@@ -142,7 +142,7 @@ export default function RewardsAdmin() {
                     <div className="flex items-center gap-3">
                       {p.verified ? (
                         <>
-                          <span className="text-sm font-bold text-pink-600">+{p.pointsEarned} pts</span>
+                          <span className="text-sm font-bold text-pink-500">+{p.pointsEarned} pts</span>
                           <span className="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-bold">Verified</span>
                         </>
                       ) : (
@@ -205,7 +205,7 @@ export default function RewardsAdmin() {
                 return (
                   <div key={t.id} className="p-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${i === 0 ? 'bg-yellow-100 text-yellow-700' : i === 1 ? 'bg-gray-200 text-gray-600' : i === 2 ? 'bg-orange-100 text-orange-700' : 'bg-pink-50 text-pink-600'}`}>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${i === 0 ? 'bg-yellow-100 text-yellow-700' : i === 1 ? 'bg-gray-200 text-gray-600' : i === 2 ? 'bg-orange-100 text-orange-700' : 'bg-pink-50 text-pink-500'}`}>
                         {i + 1}
                       </div>
                       <div>
@@ -214,7 +214,7 @@ export default function RewardsAdmin() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-bold text-pink-600 text-sm">{pts} pts</div>
+                      <div className="font-bold text-pink-500 text-sm">{pts} pts</div>
                       <div className="text-xs text-gray-500">= ₹{discount} discount</div>
                     </div>
                   </div>

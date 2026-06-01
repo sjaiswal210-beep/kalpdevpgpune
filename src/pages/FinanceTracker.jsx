@@ -80,7 +80,7 @@ export default function FinanceTracker() {
           className="glass-card-solid p-5 border-l-4 border-pink-500"
         >
           <div className="flex items-center gap-2 mb-2">
-            <Wallet className="w-5 h-5 text-pink-600" />
+            <Wallet className="w-5 h-5 text-pink-500" />
             <span className="text-xs text-gray-500 dark:text-gray-400">Total Balance</span>
           </div>
           <div className={`text-2xl font-bold ${balance >= 0 ? 'text-green-600' : 'text-red-600'}`}>

@@ -74,7 +74,7 @@ export default function Enquiries() {
                     <User className="w-4 h-4 text-gray-500" />
                     <span className="font-semibold text-gray-900 dark:text-white text-sm">{e.name}</span>
                     {e.status === 'new' && (
-                      <span className="px-1.5 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 rounded text-[10px] font-bold">NEW</span>
+                      <span className="px-1.5 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 rounded text-[10px] font-bold">NEW</span>
                     )}
                   </div>
                   <div className="flex items-center gap-2 mb-2">
