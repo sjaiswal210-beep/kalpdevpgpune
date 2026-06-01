@@ -109,7 +109,7 @@ export default function LandingPage() {
             <div className="flex items-center gap-8 mt-10">
               <div><div className="text-2xl font-bold text-gray-900">9</div><div className="text-sm text-gray-500">Rooms</div></div>
               <div className="w-px h-10 bg-gray-200"></div>
-              <div><div className="text-2xl font-bold text-gray-900">18</div><div className="text-sm text-gray-500">Beds</div></div>
+              <div><div className="text-2xl font-bold text-gray-900">17</div><div className="text-sm text-gray-500">Beds</div></div>
               <div className="w-px h-10 bg-gray-200"></div>
               <div><div className="text-2xl font-bold text-gray-900">12+</div><div className="text-sm text-gray-500">Services</div></div>
             </div>
@@ -172,7 +172,7 @@ export default function LandingPage() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { floor: '1st Floor', rooms: '1 Room', beds: '2 Beds', img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&h=250&fit=crop' },
+              { floor: '1st Floor', rooms: '1 Premium Room', beds: '1 Double Bed', img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&h=250&fit=crop' },
               { floor: '2nd Floor', rooms: '4 Rooms', beds: '8 Beds', img: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=250&fit=crop' },
               { floor: '3rd Floor', rooms: '4 Rooms', beds: '8 Beds', img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=250&fit=crop' },
             ].map((f, i) => (
@@ -185,7 +185,7 @@ export default function LandingPage() {
                     <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
                     <span className="text-sm">{f.beds}</span>
                   </div>
-                  <div className="text-sm font-semibold text-purple-600">₹3,500/month per bed</div>
+                  <div className="text-sm font-semibold text-purple-600">{f.floor === '1st Floor' ? '₹7,500/month (Premium)' : '₹3,500/month per bed'}</div>
                 </div>
               </motion.div>
             ))}

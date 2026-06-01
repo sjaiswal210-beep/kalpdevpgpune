@@ -142,14 +142,15 @@ export default function Dashboard() {
           {ALL_ROOMS.map((room) => {
             const occupants = getRoomOccupancy(tenants, room.number);
             const count = occupants.length;
+            const maxBeds = room.type === 'premium' ? 1 : 2;
             let statusColor = 'border-red-200 bg-red-50 dark:bg-red-900/10';
             let statusBadge = 'badge-red';
             let statusText = 'Vacant';
-            if (count === 2) {
+            if (count >= maxBeds) {
               statusColor = 'border-green-200 bg-green-50 dark:bg-green-900/10';
               statusBadge = 'badge-green';
               statusText = 'Full';
-            } else if (count === 1) {
+            } else if (count > 0) {
               statusColor = 'border-amber-200 bg-amber-50 dark:bg-amber-900/10';
               statusBadge = 'badge-yellow';
               statusText = 'Partial';
@@ -158,13 +159,22 @@ export default function Dashboard() {
             return (
               <div key={room.number} className={`p-4 rounded-xl border-2 ${statusColor} transition-all hover:scale-105`}>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="font-bold text-gray-900 dark:text-white text-sm">Room {room.number}</span>
+                  <span className="font-bold text-gray-900 dark:text-white text-sm">
+                    {room.type === 'premium' ? '⭐ 101' : `Room ${room.number}`}
+                  </span>
                   <span className={statusBadge}>{statusText}</span>
                 </div>
-                <div className="space-y-2">
-                  <BedStatus label="Bed A" tenant={occupants.find(t => t.bed === 'A')} />
-                  <BedStatus label="Bed B" tenant={occupants.find(t => t.bed === 'B')} />
-                </div>
+                {room.type === 'premium' ? (
+                  <div className="space-y-2">
+                    <BedStatus label="Double Bed" tenant={occupants.find(t => t.bed === 'A')} />
+                    <span className="text-[10px] text-purple-600 font-medium">Premium • ₹7,500/mo</span>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <BedStatus label="Bed A" tenant={occupants.find(t => t.bed === 'A')} />
+                    <BedStatus label="Bed B" tenant={occupants.find(t => t.bed === 'B')} />
+                  </div>
+                )}
               </div>
             );
           })}

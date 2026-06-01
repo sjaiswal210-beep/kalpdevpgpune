@@ -6,7 +6,7 @@ import {
 import {
   addTenant, updateTenant, deleteTenant as removeTenant, markTenantAsLeft,
   ALL_ROOMS, PG_STRUCTURE, getRoomOccupancy, formatCurrency, formatDate,
-  RENT_PER_PERSON, DEPOSIT_PER_BED
+  RENT_PER_PERSON, DEPOSIT_PER_BED, isPremiumRoom, getRentForRoom, getDepositForRoom, PREMIUM_DEPOSIT
 } from '../data/store';
 import { useData } from '../data/DataContext';
 
@@ -74,9 +74,11 @@ export default function Tenants() {
 
   const availableBeds = (roomNumber) => {
     if (!roomNumber) return ['A', 'B'];
+    const room = ALL_ROOMS.find(r => r.number === roomNumber);
+    const allBeds = room && room.type === 'premium' ? ['A'] : ['A', 'B'];
     const occupants = getRoomOccupancy(tenants, roomNumber);
     const taken = occupants.filter(t => t.id !== editId).map(t => t.bed);
-    return ['A', 'B'].filter(b => !taken.includes(b));
+    return allBeds.filter(b => !taken.includes(b));
   };
 
   return (
@@ -140,7 +142,7 @@ export default function Tenants() {
                       Room {t.roomNumber} • Bed {t.bed}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{t.phone}</td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{formatCurrency(RENT_PER_PERSON)}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{formatCurrency(getRentForRoom(t.roomNumber))}</td>
                     <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{formatDate(t.joinDate)}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
@@ -214,7 +216,7 @@ export default function Tenants() {
                     <select required value={form.roomNumber} onChange={e => setForm({...form, roomNumber: e.target.value, bed: ''})} className="input-field">
                       <option value="">Select Room</option>
                       {ALL_ROOMS.map(r => (
-                        <option key={r.number} value={r.number}>Room {r.number} ({PG_STRUCTURE[r.floor].label})</option>
+                        <option key={r.number} value={r.number}>Room {r.number} ({PG_STRUCTURE[r.floor].label}){r.type === 'premium' ? ' ⭐ Premium' : ''}</option>
                       ))}
                     </select>
                   </div>

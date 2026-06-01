@@ -9,21 +9,23 @@ export const PG_STRUCTURE = {
 };
 
 export const ALL_ROOMS = [
-  { floor: 1, room: 1, number: '101', beds: 2 },
-  { floor: 2, room: 1, number: '201', beds: 2 },
-  { floor: 2, room: 2, number: '202', beds: 2 },
-  { floor: 2, room: 3, number: '203', beds: 2 },
-  { floor: 2, room: 4, number: '204', beds: 2 },
-  { floor: 3, room: 1, number: '301', beds: 2 },
-  { floor: 3, room: 2, number: '302', beds: 2 },
-  { floor: 3, room: 3, number: '303', beds: 2 },
-  { floor: 3, room: 4, number: '304', beds: 2 },
+  { floor: 1, room: 1, number: '101', beds: 1, type: 'premium', label: 'Premium Room' },
+  { floor: 2, room: 1, number: '201', beds: 2, type: 'standard' },
+  { floor: 2, room: 2, number: '202', beds: 2, type: 'standard' },
+  { floor: 2, room: 3, number: '203', beds: 2, type: 'standard' },
+  { floor: 2, room: 4, number: '204', beds: 2, type: 'standard' },
+  { floor: 3, room: 1, number: '301', beds: 2, type: 'standard' },
+  { floor: 3, room: 2, number: '302', beds: 2, type: 'standard' },
+  { floor: 3, room: 3, number: '303', beds: 2, type: 'standard' },
+  { floor: 3, room: 4, number: '304', beds: 2, type: 'standard' },
 ];
 
 export const RENT_PER_PERSON = 3500;
+export const PREMIUM_RENT = 7500;
 export const DEPOSIT_PER_BED = 3500;
+export const PREMIUM_DEPOSIT = 7500;
 export const TOTAL_ROOMS = 9;
-export const TOTAL_BEDS = 18;
+export const TOTAL_BEDS = 17; // 8 rooms × 2 beds + 1 premium room × 1 bed
 export const POINTS_TO_RUPEE = 1;
 export const REFERRAL_REWARD_RUPEES = 500;
 export const REFERRAL_REWARD_POINTS = 500 * 1; // 500 points = ₹500
@@ -207,6 +209,21 @@ export function setDarkMode(value) {
 // ===== COMPUTED HELPERS =====
 export function getRoomOccupancy(tenants, roomNumber) {
   return tenants.filter(t => t.roomNumber === roomNumber);
+}
+
+export function getRentForRoom(roomNumber) {
+  const room = ALL_ROOMS.find(r => r.number === roomNumber);
+  return room && room.type === 'premium' ? PREMIUM_RENT : RENT_PER_PERSON;
+}
+
+export function getDepositForRoom(roomNumber) {
+  const room = ALL_ROOMS.find(r => r.number === roomNumber);
+  return room && room.type === 'premium' ? PREMIUM_DEPOSIT : DEPOSIT_PER_BED;
+}
+
+export function isPremiumRoom(roomNumber) {
+  const room = ALL_ROOMS.find(r => r.number === roomNumber);
+  return room && room.type === 'premium';
 }
 
 export function getOccupancyStats(tenants) {
