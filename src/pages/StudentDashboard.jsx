@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Building2, LogOut, User, Phone, Mail, MapPin, Calendar, CreditCard,
-  Zap, BedDouble, FileText, Bell, Moon, Sun, MessageCircle, Gift, UserCog
+  Zap, BedDouble, FileText, Bell, Moon, Sun, MessageCircle, Gift, UserCog, Wifi
 } from 'lucide-react';
 import {
   getLoggedInStudent, studentLogout, getTenantRentHistory, getTenantElectricity,
@@ -14,6 +14,7 @@ import { useData } from '../data/DataContext';
 import StudentRewards from './StudentRewards';
 import StudentProfile from './StudentProfile';
 import PGMembers from './PGMembers';
+import WifiDetails from './WifiDetails';
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ export default function StudentDashboard() {
     { id: 'rewards', label: '🎁 Rewards', icon: Gift },
     { id: 'overview', label: 'Overview', icon: User },
     { id: 'members', label: 'PG Members', icon: UserCog },
+    { id: 'wifi', label: 'WiFi', icon: Wifi },
     { id: 'profile', label: 'My Profile', icon: UserCog },
     { id: 'rent', label: 'Rent History', icon: CreditCard },
     { id: 'electricity', label: 'Electricity', icon: Zap },
@@ -328,6 +330,10 @@ export default function StudentDashboard() {
 
           {activeTab === 'members' && (
             <PGMembers />
+          )}
+
+          {activeTab === 'wifi' && (
+            <WifiDetails />
           )}
         </motion.div>
       </div>
