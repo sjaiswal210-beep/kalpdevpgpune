@@ -119,8 +119,8 @@ export default function SharingManagement() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="w-9 h-9 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                        <Users className="w-4 h-4 text-purple-600" />
+                      <div className="w-9 h-9 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
+                        <Users className="w-4 h-4 text-pink-600" />
                       </div>
                       <div>
                         <div className="font-semibold text-gray-900 dark:text-white text-sm">
@@ -196,8 +196,8 @@ export default function SharingManagement() {
                 </button>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                <div className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl">
-                  <p className="text-xs font-semibold text-purple-700 dark:text-purple-400 mb-2">Referred Person (New Lead)</p>
+                <div className="p-3 bg-pink-50 dark:bg-pink-900/20 rounded-xl">
+                  <p className="text-xs font-semibold text-pink-700 dark:text-pink-400 mb-2">Referred Person (New Lead)</p>
                   <div className="grid grid-cols-2 gap-3">
                     <input type="text" required placeholder="Name" value={form.referredName} onChange={e => setForm({...form, referredName: e.target.value})} className="input-field text-sm" />
                     <input type="tel" required placeholder="Phone" value={form.referredPhone} onChange={e => setForm({...form, referredPhone: e.target.value})} className="input-field text-sm" />

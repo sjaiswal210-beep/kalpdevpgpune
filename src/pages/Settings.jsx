@@ -54,7 +54,7 @@ export default function Settings() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-12">
-        <div className="animate-spin w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full"></div>
+        <div className="animate-spin w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full"></div>
       </div>
     );
   }
@@ -74,8 +74,8 @@ export default function Settings() {
           className="glass-card-solid p-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
-              <Key className="w-5 h-5 text-purple-600" />
+            <div className="w-10 h-10 rounded-xl bg-pink-50 dark:bg-pink-900/20 flex items-center justify-center">
+              <Key className="w-5 h-5 text-pink-600" />
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 dark:text-white">Admin Credentials</h3>
@@ -118,8 +118,8 @@ export default function Settings() {
           className="glass-card-solid p-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-indigo-600" />
+            <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-indigo-900/20 flex items-center justify-center">
+              <Building2 className="w-5 h-5 text-rose-600" />
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 dark:text-white">PG Information</h3>

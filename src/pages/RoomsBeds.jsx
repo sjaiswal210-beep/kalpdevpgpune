@@ -36,8 +36,8 @@ export default function RoomsBeds() {
             onClick={() => setSelectedFloor(f.id)}
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
               selectedFloor === f.id
-                ? 'bg-purple-600 text-white shadow-premium'
-                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
+                ? 'bg-pink-600 text-white shadow-premium'
+                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-pink-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
             }`}
           >
             {f.label}
@@ -97,7 +97,7 @@ export default function RoomsBeds() {
                 </div>
                 <div className="mt-2 w-full h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full transition-all"
+                    className="h-full bg-gradient-to-r from-pink-500 to-rose-500 rounded-full transition-all"
                     style={{ width: `${(count / 2) * 100}%` }}
                   ></div>
                 </div>
@@ -114,14 +114,14 @@ function BedCard({ label, tenant }) {
   return (
     <div className={`flex items-center justify-between p-3 rounded-xl ${
       tenant
-        ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800'
+        ? 'bg-pink-50 dark:bg-pink-900/20 border border-purple-100 dark:border-purple-800'
         : 'bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-600'
     }`}>
       <div className="flex items-center gap-3">
         <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
           tenant ? 'bg-purple-200 dark:bg-purple-800' : 'bg-gray-200 dark:bg-gray-600'
         }`}>
-          {tenant ? <User className="w-4 h-4 text-purple-700 dark:text-purple-300" /> : <BedDouble className="w-4 h-4 text-gray-500" />}
+          {tenant ? <User className="w-4 h-4 text-pink-700 dark:text-pink-300" /> : <BedDouble className="w-4 h-4 text-gray-500" />}
         </div>
         <div>
           <div className="text-sm font-medium text-gray-900 dark:text-white">
@@ -131,7 +131,7 @@ function BedCard({ label, tenant }) {
         </div>
       </div>
       {tenant && (
-        <span className="text-xs text-purple-600 dark:text-purple-400 font-medium">{tenant.phone}</span>
+        <span className="text-xs text-pink-600 dark:text-pink-400 font-medium">{tenant.phone}</span>
       )}
     </div>
   );

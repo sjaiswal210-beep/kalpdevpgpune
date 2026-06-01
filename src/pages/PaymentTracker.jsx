@@ -106,7 +106,7 @@ export default function PaymentTracker() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard icon={CreditCard} label="Total Due" value={formatCurrency(paymentStatus.length * RENT_PER_PERSON)} color="bg-purple-50 dark:bg-purple-900/20 text-purple-600" />
+        <StatCard icon={CreditCard} label="Total Due" value={formatCurrency(paymentStatus.length * RENT_PER_PERSON)} color="bg-pink-50 dark:bg-pink-900/20 text-pink-600" />
         <StatCard icon={CheckCircle2} label="Paid" value={`${paid.length} tenants`} color="bg-green-50 dark:bg-green-900/20 text-green-600" />
         <StatCard icon={Clock} label="Pending" value={`${unpaid.length} tenants`} color="bg-amber-50 dark:bg-amber-900/20 text-amber-600" />
         <StatCard icon={Link2} label="Links Sent" value={`${monthLinks.length}`} color="bg-blue-50 dark:bg-blue-900/20 text-blue-600" />
@@ -117,17 +117,17 @@ export default function PaymentTracker() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 rounded-2xl bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 flex items-center justify-between flex-wrap gap-3"
+          className="p-4 rounded-2xl bg-pink-50 dark:bg-pink-900/20 border border-pink-200 dark:border-purple-800 flex items-center justify-between flex-wrap gap-3"
         >
           <div className="flex items-center gap-3">
-            <CalendarClock className="w-6 h-6 text-purple-600" />
+            <CalendarClock className="w-6 h-6 text-pink-600" />
             <div>
-              <p className="font-semibold text-purple-700 dark:text-purple-400">It's the 2nd! Time to send rent reminders</p>
-              <p className="text-sm text-purple-600 dark:text-purple-400">{unpaid.length} tenant(s) haven't paid yet for {monthLabel}</p>
+              <p className="font-semibold text-pink-700 dark:text-pink-400">It's the 2nd! Time to send rent reminders</p>
+              <p className="text-sm text-pink-600 dark:text-pink-400">{unpaid.length} tenant(s) haven't paid yet for {monthLabel}</p>
             </div>
           </div>
           <div className="flex gap-2">
-            <button onClick={sendBulkReminders} className="px-4 py-2 bg-purple-600 text-white rounded-xl text-sm font-medium hover:bg-purple-700 transition flex items-center gap-2">
+            <button onClick={sendBulkReminders} className="px-4 py-2 bg-pink-600 text-white rounded-xl text-sm font-medium hover:bg-purple-700 transition flex items-center gap-2">
               <Send className="w-4 h-4" /> Send All Reminders
             </button>
             <button onClick={() => setAutoReminderDismissed(true)} className="px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-medium hover:bg-gray-300 transition">

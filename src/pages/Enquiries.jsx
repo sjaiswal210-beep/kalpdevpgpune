@@ -37,7 +37,7 @@ export default function Enquiries() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-12">
-        <div className="animate-spin w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full"></div>
+        <div className="animate-spin w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full"></div>
       </div>
     );
   }
@@ -66,7 +66,7 @@ export default function Enquiries() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.03 }}
-              className={`glass-card-solid p-5 border-l-4 ${e.status === 'new' ? 'border-purple-500' : 'border-gray-200 dark:border-gray-600'}`}
+              className={`glass-card-solid p-5 border-l-4 ${e.status === 'new' ? 'border-pink-500' : 'border-gray-200 dark:border-gray-600'}`}
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
@@ -74,7 +74,7 @@ export default function Enquiries() {
                     <User className="w-4 h-4 text-gray-500" />
                     <span className="font-semibold text-gray-900 dark:text-white text-sm">{e.name}</span>
                     {e.status === 'new' && (
-                      <span className="px-1.5 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded text-[10px] font-bold">NEW</span>
+                      <span className="px-1.5 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 rounded text-[10px] font-bold">NEW</span>
                     )}
                   </div>
                   <div className="flex items-center gap-2 mb-2">

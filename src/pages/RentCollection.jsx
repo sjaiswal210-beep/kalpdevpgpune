@@ -113,8 +113,8 @@ export default function RentCollection() {
                     <tr key={t.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                            <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{t.name[0]}</span>
+                          <div className="w-8 h-8 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
+                            <span className="text-xs font-bold text-pink-600 dark:text-pink-400">{t.name[0]}</span>
                           </div>
                           <span className="font-medium text-gray-900 dark:text-white text-sm">{t.name}</span>
                         </div>

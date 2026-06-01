@@ -71,7 +71,7 @@ export default function StudentRewards() {
   return (
     <div className="space-y-6">
       {/* Points Card */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl p-6 text-white relative overflow-hidden">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-r from-pink-600 to-rose-600 rounded-2xl p-6 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
         <div className="relative">
           <div className="flex items-center justify-between mb-4">
@@ -98,14 +98,14 @@ export default function StudentRewards() {
       {/* Products to Compare */}
       <div>
         <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
-          <ShoppingBag className="w-5 h-5 text-purple-600" /> Shop & Earn Points
+          <ShoppingBag className="w-5 h-5 text-pink-600" /> Shop & Earn Points
         </h3>
 
         {/* Amazon Affiliate CTA */}
         <div className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 border border-orange-200 dark:border-orange-800 rounded-2xl p-5 mb-5">
           <div className="flex items-center gap-2 mb-2">
             <span className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 rounded-full text-xs font-bold">Amazon</span>
-            <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-full text-xs font-bold">Cashback</span>
+            <span className="px-2 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 rounded-full text-xs font-bold">Cashback</span>
           </div>
           <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
             Buy anything from the link below. Submit the amount you paid and you'll get <strong>cashback points</strong> on every valid purchase.
@@ -132,7 +132,7 @@ export default function StudentRewards() {
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-gray-900 dark:text-white">{p.name}</h4>
-                    <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-full text-xs font-bold flex items-center gap-1">
+                    <span className="px-2 py-0.5 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 rounded-full text-xs font-bold flex items-center gap-1">
                       <Star className="w-3 h-3" /> Cashback
                     </span>
                   </div>
@@ -169,7 +169,7 @@ export default function StudentRewards() {
                     )}
                   </div>
 
-                  <button onClick={() => setShowClaim(p)} className="w-full py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl text-sm font-semibold hover:from-purple-700 hover:to-indigo-700 transition">
+                  <button onClick={() => setShowClaim(p)} className="w-full py-2.5 bg-gradient-to-r from-pink-600 to-rose-600 text-white rounded-xl text-sm font-semibold hover:from-purple-700 hover:to-indigo-700 transition">
                     I Purchased This → Claim Cashback
                   </button>
                 </div>
@@ -228,7 +228,7 @@ export default function StudentRewards() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount Paid (₹) *</label>
                   <input type="number" required min="1" value={claimAmount} onChange={e => setClaimAmount(e.target.value)} className="input-field" />
                 </div>
-                <p className="text-xs text-purple-600 font-medium">You'll earn cashback points after admin verification</p>
+                <p className="text-xs text-pink-600 font-medium">You'll earn cashback points after admin verification</p>
                 <button type="submit" className="btn-premium w-full">Submit Claim</button>
               </form>
             </motion.div>
@@ -246,9 +246,9 @@ export default function StudentRewards() {
                 <button onClick={() => setShowRedeem(false)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"><X className="w-5 h-5 text-gray-500" /></button>
               </div>
               <form onSubmit={handleRedeem} className="p-6 space-y-4">
-                <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl text-center">
-                  <div className="text-2xl font-bold text-purple-700 dark:text-purple-400">{points.balance} pts</div>
-                  <div className="text-sm text-purple-600">Max discount: ₹{maxDiscount}</div>
+                <div className="p-4 bg-pink-50 dark:bg-pink-900/20 rounded-xl text-center">
+                  <div className="text-2xl font-bold text-pink-700 dark:text-pink-400">{points.balance} pts</div>
+                  <div className="text-sm text-pink-600">Max discount: ₹{maxDiscount}</div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Discount Amount (₹) *</label>

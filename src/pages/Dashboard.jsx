@@ -19,12 +19,12 @@ export default function Dashboard() {
 
   const statCards = [
     { label: 'Total Rooms', value: TOTAL_ROOMS, icon: Building2, color: 'from-blue-500 to-blue-600', bg: 'bg-blue-50 dark:bg-blue-900/20' },
-    { label: 'Total Beds', value: TOTAL_BEDS, icon: BedDouble, color: 'from-purple-500 to-purple-600', bg: 'bg-purple-50 dark:bg-purple-900/20' },
+    { label: 'Total Beds', value: TOTAL_BEDS, icon: BedDouble, color: 'from-pink-500 to-purple-600', bg: 'bg-pink-50 dark:bg-pink-900/20' },
     { label: 'Occupied Beds', value: stats.occupied, icon: Users, color: 'from-green-500 to-green-600', bg: 'bg-green-50 dark:bg-green-900/20' },
     { label: 'Vacant Beds', value: stats.vacant, icon: AlertCircle, color: 'from-amber-500 to-amber-600', bg: 'bg-amber-50 dark:bg-amber-900/20' },
     { label: 'Monthly Collection', value: formatCurrency(collected), icon: CheckCircle2, color: 'from-emerald-500 to-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-900/20' },
     { label: 'Pending Rent', value: formatCurrency(pending), icon: CreditCard, color: 'from-red-500 to-red-600', bg: 'bg-red-50 dark:bg-red-900/20' },
-    { label: 'Total Tenants', value: tenants.length, icon: Users, color: 'from-indigo-500 to-indigo-600', bg: 'bg-indigo-50 dark:bg-indigo-900/20' },
+    { label: 'Total Tenants', value: tenants.length, icon: Users, color: 'from-indigo-500 to-indigo-600', bg: 'bg-rose-50 dark:bg-indigo-900/20' },
     { label: 'Occupancy Rate', value: `${stats.percentage}%`, icon: Percent, color: 'from-pink-500 to-pink-600', bg: 'bg-pink-50 dark:bg-pink-900/20' },
   ];
 
@@ -32,7 +32,7 @@ export default function Dashboard() {
     { name: 'Occupied', value: stats.occupied },
     { name: 'Vacant', value: stats.vacant },
   ];
-  const COLORS = ['#7C3AED', '#E5E7EB'];
+  const COLORS = ['#E11D73', '#E5E7EB'];
 
   // Monthly collection data (last 6 months)
   const barData = [];
@@ -57,7 +57,7 @@ export default function Dashboard() {
             className="stat-card"
           >
             <div className={`w-12 h-12 rounded-xl ${card.bg} flex items-center justify-center flex-shrink-0`}>
-              <card.icon className={`w-6 h-6 bg-gradient-to-br ${card.color} bg-clip-text text-purple-600`} />
+              <card.icon className={`w-6 h-6 bg-gradient-to-br ${card.color} bg-clip-text text-pink-600`} />
             </div>
             <div>
               <div className="text-xl font-bold text-gray-900 dark:text-white">{card.value}</div>
@@ -98,7 +98,7 @@ export default function Dashboard() {
           </div>
           <div className="flex justify-center gap-6 mt-2">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-purple-600"></div>
+              <div className="w-3 h-3 rounded-full bg-pink-600"></div>
               <span className="text-sm text-gray-600 dark:text-gray-400">Occupied ({stats.occupied})</span>
             </div>
             <div className="flex items-center gap-2">
@@ -123,7 +123,7 @@ export default function Dashboard() {
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip formatter={(value) => formatCurrency(value)} />
-                <Bar dataKey="collected" fill="#7C3AED" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="collected" fill="#E11D73" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -167,7 +167,7 @@ export default function Dashboard() {
                 {room.type === 'premium' ? (
                   <div className="space-y-2">
                     <BedStatus label="Double Bed" tenant={occupants.find(t => t.bed === 'A')} />
-                    <span className="text-[10px] text-purple-600 font-medium">Premium • ₹7,500/mo</span>
+                    <span className="text-[10px] text-pink-600 font-medium">Premium • ₹7,500/mo</span>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -187,7 +187,7 @@ export default function Dashboard() {
 function BedStatus({ label, tenant }) {
   return (
     <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs ${
-      tenant ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+      tenant ? 'bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
     }`}>
       <BedDouble className="w-3 h-3" />
       <span className="truncate">{tenant ? tenant.name : `${label} - Empty`}</span>

@@ -45,8 +45,8 @@ export default function Reports() {
     { label: 'Pending Rent', value: formatCurrency(totalPotential - currentCollection), icon: TrendingDown, color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-900/20' },
     { label: 'Electricity Recovery', value: formatCurrency(totalElecRecovery), icon: BarChart3, color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-900/20' },
     { label: 'Vacant Room Loss', value: formatCurrency(vacantLoss), icon: Building2, color: 'text-red-600', bg: 'bg-red-50 dark:bg-red-900/20' },
-    { label: 'Total Expenses', value: formatCurrency(totalExpenses), icon: TrendingDown, color: 'text-purple-600', bg: 'bg-purple-50 dark:bg-purple-900/20' },
-    { label: 'Occupancy Rate', value: `${stats.percentage}%`, icon: TrendingUp, color: 'text-indigo-600', bg: 'bg-indigo-50 dark:bg-indigo-900/20' },
+    { label: 'Total Expenses', value: formatCurrency(totalExpenses), icon: TrendingDown, color: 'text-pink-600', bg: 'bg-pink-50 dark:bg-pink-900/20' },
+    { label: 'Occupancy Rate', value: `${stats.percentage}%`, icon: TrendingUp, color: 'text-rose-600', bg: 'bg-rose-50 dark:bg-indigo-900/20' },
   ];
 
   return (
@@ -91,7 +91,7 @@ export default function Reports() {
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip formatter={(value) => formatCurrency(value)} />
-                <Bar dataKey="collected" fill="#7C3AED" radius={[6, 6, 0, 0]} name="Collected" />
+                <Bar dataKey="collected" fill="#E11D73" radius={[6, 6, 0, 0]} name="Collected" />
               </BarChart>
             </ResponsiveContainer>
           </div>

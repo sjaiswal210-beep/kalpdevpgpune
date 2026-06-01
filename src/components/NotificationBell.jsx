@@ -16,8 +16,8 @@ const ICON_MAP = {
 const COLOR_MAP = {
   payment_received: 'text-green-600 bg-green-100 dark:bg-green-900/30',
   reminder_sent: 'text-blue-600 bg-blue-100 dark:bg-blue-900/30',
-  profile_update: 'text-purple-600 bg-purple-100 dark:bg-purple-900/30',
-  new_tenant: 'text-indigo-600 bg-indigo-100 dark:bg-indigo-900/30',
+  profile_update: 'text-pink-600 bg-pink-100 dark:bg-pink-900/30',
+  new_tenant: 'text-rose-600 bg-rose-100 dark:bg-indigo-900/30',
   overdue: 'text-red-600 bg-red-100 dark:bg-red-900/30',
   reward: 'text-amber-600 bg-amber-100 dark:bg-amber-900/30',
 };
@@ -71,7 +71,7 @@ export default function NotificationBell() {
             <div className="p-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
               <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Notifications</h3>
               {unreadCount > 0 && (
-                <button onClick={handleMarkAllRead} className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1">
+                <button onClick={handleMarkAllRead} className="text-xs text-pink-600 hover:text-pink-700 font-medium flex items-center gap-1">
                   <CheckCheck className="w-3.5 h-3.5" /> Mark all read
                 </button>
               )}
@@ -89,7 +89,7 @@ export default function NotificationBell() {
                   return (
                     <div
                       key={n.id}
-                      className={`p-3 flex items-start gap-3 border-b border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition cursor-pointer ${!n.read ? 'bg-purple-50/50 dark:bg-purple-900/10' : ''}`}
+                      className={`p-3 flex items-start gap-3 border-b border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition cursor-pointer ${!n.read ? 'bg-pink-50/50 dark:bg-pink-900/10' : ''}`}
                       onClick={() => !n.read && handleMarkRead(n.id)}
                     >
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${colorClass}`}>
@@ -104,7 +104,7 @@ export default function NotificationBell() {
                           {new Date(n.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                         </p>
                       </div>
-                      {!n.read && <div className="w-2 h-2 rounded-full bg-purple-500 mt-2 flex-shrink-0"></div>}
+                      {!n.read && <div className="w-2 h-2 rounded-full bg-pink-500 mt-2 flex-shrink-0"></div>}
                     </div>
                   );
                 })

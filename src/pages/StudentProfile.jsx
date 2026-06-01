@@ -98,19 +98,19 @@ export default function StudentProfile() {
         {/* Profile Image */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-card">
           <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-            <Camera className="w-5 h-5 text-purple-600" />
+            <Camera className="w-5 h-5 text-pink-600" />
             Profile Photo
           </h3>
           <div className="flex items-center gap-6">
             <div className="relative">
               {imagePreview ? (
-                <img src={imagePreview} alt="Profile" className="w-24 h-24 rounded-2xl object-cover border-2 border-purple-200" />
+                <img src={imagePreview} alt="Profile" className="w-24 h-24 rounded-2xl object-cover border-2 border-pink-200" />
               ) : (
-                <div className="w-24 h-24 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                  <User className="w-10 h-10 text-purple-400" />
+                <div className="w-24 h-24 rounded-2xl bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
+                  <User className="w-10 h-10 text-pink-400" />
                 </div>
               )}
-              <label className="absolute -bottom-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-purple-700 transition shadow-lg">
+              <label className="absolute -bottom-2 -right-2 w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-purple-700 transition shadow-lg">
                 <Camera className="w-4 h-4 text-white" />
                 <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
               </label>
@@ -126,7 +126,7 @@ export default function StudentProfile() {
         {/* Personal Details */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-card">
           <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-            <User className="w-5 h-5 text-purple-600" />
+            <User className="w-5 h-5 text-pink-600" />
             Personal Details
           </h3>
           <div className="grid md:grid-cols-2 gap-4">
@@ -279,7 +279,7 @@ export default function StudentProfile() {
         <button
           type="submit"
           disabled={saving}
-          className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full py-3.5 bg-gradient-to-r from-pink-600 to-rose-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {saving ? (
             <>
