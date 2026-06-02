@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Building2, LogOut, User, Phone, Mail, MapPin, Calendar, CreditCard,
-  Zap, BedDouble, FileText, Bell, Moon, Sun, MessageCircle, Gift, UserCog, Wifi
+  Zap, BedDouble, FileText, Bell, Moon, Sun, MessageCircle, Gift, UserCog, Wifi, Copy, Check
 } from 'lucide-react';
 import {
   getLoggedInStudent, studentLogout, getTenantRentHistory, getTenantElectricity,
   formatCurrency, formatDate, getMonthKey,
-  RENT_PER_PERSON, getDarkMode, setDarkMode as saveDarkMode, getRentForRoom
+  RENT_PER_PERSON, getDarkMode, setDarkMode as saveDarkMode, getRentForRoom,
+  createPaymentLink, markPaymentLinkPaid, getPaymentLinkByLinkId
 } from '../data/store';
 import { useData } from '../data/DataContext';
 import StudentRewards from './StudentRewards';
@@ -78,7 +79,18 @@ export default function StudentDashboard() {
               <p className="text-xs text-gray-500 dark:text-gray-400">Tenant Portal</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setActiveTab('notices')}
+              className="relative p-2 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+            >
+              <Bell className="w-5 h-5" />
+              {notices.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {notices.length > 9 ? '9+' : notices.length}
+                </span>
+              )}
+            </button>
             <button
               onClick={() => setDarkMode(!darkMode)}
               className="p-2 rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
@@ -87,10 +99,10 @@ export default function StudentDashboard() {
             </button>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition text-sm font-medium"
+              className="flex items-center gap-2 px-3 py-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition text-sm font-medium"
             >
               <LogOut className="w-4 h-4" />
-              Logout
+              <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
         </div>
@@ -136,6 +148,11 @@ export default function StudentDashboard() {
             </div>
           </div>
         </motion.div>
+
+        {/* Pay Rent Section - shows when rent is pending */}
+        {!isCurrentMonthPaid && tenant && (
+          <PayRentCard tenant={tenant} month={currentMonth} />
+        )}
 
         {/* Tabs */}
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
@@ -350,5 +367,119 @@ function InfoRow({ icon: Icon, label, value }) {
       </div>
       <span className="text-sm font-medium text-gray-900 dark:text-white">{value}</span>
     </div>
+  );
+}
+
+function PayRentCard({ tenant, month }) {
+  const { paymentLinks } = useData();
+  const [processing, setProcessing] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const rentAmount = getRentForRoom(tenant.roomNumber);
+  const monthLabel = new Date(month + '-01').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+
+  // Check if there's already a pending/awaiting link for this tenant this month
+  const existingLink = paymentLinks.find(
+    l => l.tenantId === tenant.id && l.month === month && (l.status === 'awaiting_approval' || l.status === 'pending')
+  );
+
+  const isAwaiting = existingLink?.status === 'awaiting_approval';
+
+  const handlePay = async () => {
+    setProcessing(true);
+    // Create a payment link and immediately mark as awaiting approval
+    const link = await createPaymentLink({
+      tenantId: tenant.id,
+      tenantName: tenant.name,
+      phone: tenant.phone,
+      amount: rentAmount,
+      month,
+      sentVia: 'tenant_dashboard',
+    });
+    await markPaymentLinkPaid(link.linkId);
+    setSubmitted(true);
+    setProcessing(false);
+  };
+
+  const copyUPI = () => {
+    navigator.clipboard.writeText('kalpdevpg@upi');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  if (isAwaiting || submitted) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-5 mb-6"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+            <CreditCard className="w-5 h-5 text-amber-600" />
+          </div>
+          <div>
+            <p className="font-semibold text-amber-800 dark:text-amber-400">⏳ Waiting for Admin Approval</p>
+            <p className="text-xs text-amber-600 dark:text-amber-500">Your payment of {formatCurrency(rentAmount)} for {monthLabel} is being verified.</p>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white dark:bg-gray-800 border border-red-200 dark:border-red-800 rounded-2xl p-5 mb-6 shadow-card"
+    >
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+            <CreditCard className="w-5 h-5 text-red-600" />
+          </div>
+          <div>
+            <p className="font-semibold text-gray-900 dark:text-white">Rent Due — {monthLabel}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Pay before the 2nd to avoid overdue</p>
+          </div>
+        </div>
+        <span className="text-xl font-bold text-red-600">{formatCurrency(rentAmount)}</span>
+      </div>
+
+      {/* UPI Section */}
+      <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 mb-4">
+        <p className="text-sm font-medium text-purple-800 dark:text-purple-300 mb-2">Pay via UPI</p>
+        <div className="flex items-center gap-2 bg-white dark:bg-gray-700 rounded-lg p-3 border border-purple-200 dark:border-purple-700">
+          <span className="flex-1 text-sm font-mono text-gray-700 dark:text-gray-300">kalpdevpg@upi</span>
+          <button onClick={copyUPI} className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-800 text-purple-600 dark:text-purple-300 hover:bg-purple-200 transition">
+            {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+          </button>
+        </div>
+        <p className="text-xs text-purple-600 dark:text-purple-400 mt-2">Copy UPI ID and pay using GPay, PhonePe, or Paytm</p>
+      </div>
+
+      {/* Confirm Payment Button */}
+      <button
+        onClick={handlePay}
+        disabled={processing}
+        className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
+      >
+        {processing ? (
+          <>
+            <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
+            Submitting...
+          </>
+        ) : (
+          <>
+            <CreditCard className="w-5 h-5" />
+            I Have Paid — Confirm Payment
+          </>
+        )}
+      </button>
+      <p className="text-xs text-center text-gray-400 dark:text-gray-500 mt-2">
+        Admin will verify and approve your payment.
+      </p>
+    </motion.div>
   );
 }
