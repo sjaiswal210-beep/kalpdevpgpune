@@ -118,13 +118,24 @@ export default function StudentDashboard() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
           <div className="relative">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center">
-                <User className="w-8 h-8" />
+              <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center overflow-hidden">
+                {tenant.profileImage ? (
+                  <img src={tenant.profileImage} alt={tenant.name} className="w-full h-full object-cover" />
+                ) : (
+                  <User className="w-8 h-8" />
+                )}
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold">Welcome, {tenant.name}!</h2>
                 <p className="text-white/70">Room {tenant.roomNumber} • Bed {tenant.bed}</p>
               </div>
+              <button
+                onClick={() => setActiveTab('profile')}
+                className="px-3 py-2 bg-white/20 rounded-xl text-sm font-medium hover:bg-white/30 transition flex items-center gap-1.5"
+              >
+                <UserCog className="w-4 h-4" />
+                <span className="hidden sm:inline">Edit Profile</span>
+              </button>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
               <div className="bg-white/10 rounded-xl p-3 text-center">
