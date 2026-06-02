@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
-  User, Phone, Mail, MapPin, Camera, Save, CheckCircle2, FileText, Briefcase, AlertCircle
+  User, Phone, Mail, MapPin, Save, CheckCircle2, FileText, Briefcase, AlertCircle
 } from 'lucide-react';
 import { getLoggedInStudent, updateTenantProfile } from '../data/store';
-import { uploadFile } from '../data/firebase';
 
 export default function StudentProfile({ onSaved }) {
   const [tenant, setTenant] = useState(null);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [imagePreview, setImagePreview] = useState('');
-  const [imageFile, setImageFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const t = getLoggedInStudent();
@@ -32,45 +28,16 @@ export default function StudentProfile({ onSaved }) {
         parentPhone: t.parentPhone || '',
         profileImage: t.profileImage || '',
       });
-      setImagePreview(t.profileImage || '');
     }
   }, []);
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    // Show preview immediately
-    const previewUrl = URL.createObjectURL(file);
-    setImagePreview(previewUrl);
-    setImageFile(file);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
 
-    let profileImageUrl = form.profileImage;
-
-    // Upload image to Firebase Storage if a new file was selected
-    if (imageFile) {
-      try {
-        setUploading(true);
-        const path = `profile-images/${tenant.id}_${Date.now()}.${imageFile.name.split('.').pop()}`;
-        profileImageUrl = await uploadFile(path, imageFile);
-        setUploading(false);
-      } catch (err) {
-        console.error('Image upload failed:', err);
-        setUploading(false);
-        setSaving(false);
-        alert('Image upload failed. Please try a smaller image or check your internet connection.');
-        return;
-      }
-    }
-
-    const updatedForm = { ...form, profileImage: profileImageUrl };
+    const updatedForm = { ...form, profileImage: form.profileImage };
     await updateTenantProfile(tenant.id, updatedForm);
     setForm(updatedForm);
-    setImageFile(null);
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
@@ -96,34 +63,6 @@ export default function StudentProfile({ onSaved }) {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Profile Image */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-card">
-          <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-            <Camera className="w-5 h-5 text-purple-600" />
-            Profile Photo
-          </h3>
-          <div className="flex items-center gap-6">
-            <div className="relative">
-              {imagePreview ? (
-                <img src={imagePreview} alt="Profile" className="w-24 h-24 rounded-2xl object-cover border-2 border-purple-200" />
-              ) : (
-                <div className="w-24 h-24 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                  <User className="w-10 h-10 text-purple-400" />
-                </div>
-              )}
-              <label className="absolute -bottom-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-purple-700 transition shadow-lg">
-                <Camera className="w-4 h-4 text-white" />
-                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-              </label>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-900 dark:text-white">{tenant.name}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Room {tenant.roomNumber} • Bed {tenant.bed}</p>
-              <p className="text-xs text-gray-400 mt-1">Upload a clear photo of yourself</p>
-            </div>
-          </div>
-        </div>
-
         {/* Personal Details */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-card">
           <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
@@ -285,7 +224,7 @@ export default function StudentProfile({ onSaved }) {
           {saving ? (
             <>
               <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
-              {uploading ? 'Uploading image...' : 'Saving...'}
+              Saving...
             </>
           ) : (
             <>
