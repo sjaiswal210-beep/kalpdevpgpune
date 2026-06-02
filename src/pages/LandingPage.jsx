@@ -69,42 +69,42 @@ export default function LandingPage() {
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-400 to-rose-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center">
               <Building2 className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">KalpDev <span className="text-pink-500">PG</span></span>
+            <span className="text-xl font-bold text-gray-900">KalpDev <span className="text-purple-500">PG</span></span>
           </div>
           <div className="hidden md:flex items-center gap-8">
-            <a href="#services" className="text-gray-600 hover:text-pink-500 transition font-medium text-sm">Services</a>
-            <a href="#rooms" className="text-gray-600 hover:text-pink-500 transition font-medium text-sm">Rooms</a>
-            <a href="#testimonials" className="text-gray-600 hover:text-pink-500 transition font-medium text-sm">Reviews</a>
-            <a href="#contact" className="text-gray-600 hover:text-pink-500 transition font-medium text-sm">Contact</a>
+            <a href="#services" className="text-gray-600 hover:text-purple-500 transition font-medium text-sm">Services</a>
+            <a href="#rooms" className="text-gray-600 hover:text-purple-500 transition font-medium text-sm">Rooms</a>
+            <a href="#testimonials" className="text-gray-600 hover:text-purple-500 transition font-medium text-sm">Reviews</a>
+            <a href="#contact" className="text-gray-600 hover:text-purple-500 transition font-medium text-sm">Contact</a>
           </div>
           <div className="flex items-center gap-3">
-            <Link to="/student/login" className="px-4 py-2 text-sm font-semibold text-pink-500 border-2 border-pink-200 rounded-xl hover:bg-pink-50 transition">Tenant Login</Link>
-            <Link to="/admin/login" className="hidden sm:block px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-pink-400 to-rose-400 rounded-xl hover:shadow-premium transition">Admin Login</Link>
+            <Link to="/student/login" className="px-4 py-2 text-sm font-semibold text-purple-500 border-2 border-purple-200 rounded-xl hover:bg-purple-50 transition">Tenant Login</Link>
+            <Link to="/admin/login" className="hidden sm:block px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl hover:shadow-premium transition">Admin Login</Link>
           </div>
         </div>
       </nav>
 
       <section className="pt-28 pb-16 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-50 via-white to-rose-50"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-indigo-50"></div>
         <div className="absolute top-20 right-0 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-200/30 rounded-full blur-3xl"></div>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative">
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-100 rounded-full mb-6">
-              <Star className="w-4 h-4 text-pink-500" />
-              <span className="text-sm font-semibold text-pink-600">{hero.tagline}</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 rounded-full mb-6">
+              <Star className="w-4 h-4 text-purple-500" />
+              <span className="text-sm font-semibold text-purple-600">{hero.tagline}</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
               {hero.title} —<br />
-              <span className="bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">{hero.subtitle}</span>
+              <span className="bg-gradient-to-r from-purple-500 to-indigo-500 bg-clip-text text-transparent">{hero.subtitle}</span>
             </h1>
             <p className="text-lg text-gray-600 mb-8 max-w-lg">{hero.description}</p>
             <div className="flex flex-wrap gap-4">
               <Link to="/student/login" className="btn-premium flex items-center gap-2">Book Your Bed <ChevronRight className="w-4 h-4" /></Link>
-              <a href="#services" className="px-6 py-3 border-2 border-gray-200 rounded-xl font-semibold text-gray-700 hover:border-pink-300 hover:text-pink-500 transition">View Services</a>
+              <a href="#services" className="px-6 py-3 border-2 border-gray-200 rounded-xl font-semibold text-gray-700 hover:border-purple-300 hover:text-purple-500 transition">View Services</a>
             </div>
             <div className="flex items-center gap-8 mt-10">
               <div><div className="text-2xl font-bold text-gray-900">9</div><div className="text-sm text-gray-500">Rooms</div></div>
@@ -126,8 +126,8 @@ export default function LandingPage() {
               </div>
             </div>
             <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center">
-                <GraduationCap className="w-6 h-6 text-pink-500" />
+              <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
+                <GraduationCap className="w-6 h-6 text-purple-500" />
               </div>
               <div>
                 <div className="font-semibold text-gray-900 text-sm">Career Support</div>
@@ -142,14 +142,14 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-              <span className="inline-block px-4 py-1.5 bg-pink-100 text-pink-600 rounded-full text-sm font-semibold mb-4">Our Services</span>
+              <span className="inline-block px-4 py-1.5 bg-purple-100 text-purple-600 rounded-full text-sm font-semibold mb-4">Our Services</span>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Everything You Need, Under One Roof</h2>
               <p className="text-gray-600 max-w-2xl mx-auto">From safety to career growth — we go beyond just providing a bed.</p>
             </motion.div>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((s, i) => (
-              <motion.div key={s.id || i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-pink-200 hover:shadow-xl transition-all duration-300">
+              <motion.div key={s.id || i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-purple-200 hover:shadow-xl transition-all duration-300">
                 <div className="h-48 overflow-hidden">
                   <img src={s.img} alt={s.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
                 </div>
@@ -163,7 +163,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="rooms" className="py-20 px-6 bg-gradient-to-br from-pink-50 to-rose-50">
+      <section id="rooms" className="py-20 px-6 bg-gradient-to-br from-purple-50 to-indigo-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <span className="inline-block px-4 py-1.5 bg-rose-100 text-rose-700 rounded-full text-sm font-semibold mb-4">Accommodation</span>
@@ -185,7 +185,7 @@ export default function LandingPage() {
                     <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
                     <span className="text-sm">{f.beds}</span>
                   </div>
-                  <div className="text-sm font-semibold text-pink-500">{f.floor === '1st Floor' ? '₹7,500/month (Premium)' : '₹3,500/month per bed'}</div>
+                  <div className="text-sm font-semibold text-purple-500">{f.floor === '1st Floor' ? '₹7,500/month (Premium)' : '₹3,500/month per bed'}</div>
                 </div>
               </motion.div>
             ))}
@@ -210,8 +210,8 @@ export default function LandingPage() {
                 </div>
                 <p className="text-gray-600 mb-4 italic">"{t.text}"</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center">
-                    <span className="text-sm font-bold text-pink-500">{t.name[0]}</span>
+                  <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                    <span className="text-sm font-bold text-purple-500">{t.name[0]}</span>
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900 text-sm">{t.name}</div>
@@ -227,7 +227,7 @@ export default function LandingPage() {
       <section id="contact" className="py-20 px-6 bg-gradient-to-br from-gray-900 to-purple-900 text-white">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12">
           <div>
-            <span className="inline-block px-4 py-1.5 bg-white/10 text-pink-300 rounded-full text-sm font-semibold mb-4">Contact Us</span>
+            <span className="inline-block px-4 py-1.5 bg-white/10 text-purple-300 rounded-full text-sm font-semibold mb-4">Contact Us</span>
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Get In Touch</h2>
             <p className="text-gray-300 mb-8">Interested in a room? Have questions? Reach out to us anytime.</p>
             <div className="space-y-4">
@@ -260,7 +260,7 @@ export default function LandingPage() {
                 <input type="text" required placeholder="Your Name" value={contactForm.name} onChange={e => setContactForm({...contactForm, name: e.target.value})} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 outline-none" />
                 <input type="tel" required placeholder="Phone Number" value={contactForm.phone} onChange={e => setContactForm({...contactForm, phone: e.target.value})} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 outline-none" />
                 <textarea rows="4" placeholder="Your Message" value={contactForm.message} onChange={e => setContactForm({...contactForm, message: e.target.value})} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 outline-none resize-none"></textarea>
-                <button type="submit" disabled={formSubmitting} className="w-full py-3 bg-gradient-to-r from-pink-400 to-rose-400 rounded-xl font-semibold hover:from-purple-600 hover:to-indigo-600 transition disabled:opacity-50">
+                <button type="submit" disabled={formSubmitting} className="w-full py-3 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl font-semibold hover:from-purple-600 hover:to-indigo-600 transition disabled:opacity-50">
                   {formSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
@@ -271,7 +271,7 @@ export default function LandingPage() {
 
       <footer className="py-8 px-6 bg-gray-900 border-t border-gray-800">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2"><Building2 className="w-5 h-5 text-pink-400" /><span className="font-semibold text-white">KalpDev PG</span></div>
+          <div className="flex items-center gap-2"><Building2 className="w-5 h-5 text-purple-400" /><span className="font-semibold text-white">KalpDev PG</span></div>
           <p className="text-sm text-gray-400 flex items-center gap-1">Made with <Heart className="w-3 h-3 text-red-400 fill-red-400" /> by KalpDev</p>
           <div className="flex items-center gap-4">
             <a href="https://wa.me/917350785606" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-green-400 transition">WhatsApp</a>
@@ -286,3 +286,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
