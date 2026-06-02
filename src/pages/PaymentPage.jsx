@@ -28,7 +28,7 @@ export default function PaymentPage() {
   };
 
   const copyUPI = () => {
-    navigator.clipboard.writeText('kalpdevpg@upi');
+    navigator.clipboard.writeText('kalpdev@ybl');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -147,12 +147,18 @@ export default function PaymentPage() {
           <div className="bg-purple-50 rounded-xl p-4">
             <p className="text-sm font-medium text-purple-800 mb-2">Pay via UPI</p>
             <div className="flex items-center gap-2 bg-white rounded-lg p-3 border border-purple-200">
-              <span className="flex-1 text-sm font-mono text-gray-700">kalpdevpg@upi</span>
+              <span className="flex-1 text-sm font-mono text-gray-700">kalpdev@ybl</span>
               <button onClick={copyUPI} className="p-1.5 rounded-lg bg-purple-100 text-purple-600 hover:bg-purple-200 transition">
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
-            <p className="text-xs text-purple-600 mt-2">Copy UPI ID and pay using any UPI app (GPay, PhonePe, Paytm)</p>
+            <a
+              href={`upi://pay?pa=kalpdev@ybl&pn=KalpDev%20PG&am=${link.amount}&cu=INR&tn=Rent%20${monthLabel}`}
+              className="mt-3 block w-full py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-600 transition text-center"
+            >
+              Pay ₹{Number(link.amount).toLocaleString('en-IN')} Now
+            </a>
+            <p className="text-xs text-purple-600 mt-2">Click above to open your UPI app with amount pre-filled</p>
           </div>
 
           {/* Confirm Payment Button */}

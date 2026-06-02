@@ -446,7 +446,7 @@ function PayRentCard({ tenant, month }) {
   };
 
   const copyUPI = () => {
-    navigator.clipboard.writeText('kalpdevpg@upi');
+    navigator.clipboard.writeText('kalpdev@ybl');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -494,12 +494,19 @@ function PayRentCard({ tenant, month }) {
       <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 mb-4">
         <p className="text-sm font-medium text-purple-800 dark:text-purple-300 mb-2">Pay via UPI</p>
         <div className="flex items-center gap-2 bg-white dark:bg-gray-700 rounded-lg p-3 border border-purple-200 dark:border-purple-700">
-          <span className="flex-1 text-sm font-mono text-gray-700 dark:text-gray-300">kalpdevpg@upi</span>
+          <span className="flex-1 text-sm font-mono text-gray-700 dark:text-gray-300">kalpdev@ybl</span>
           <button onClick={copyUPI} className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-800 text-purple-600 dark:text-purple-300 hover:bg-purple-200 transition">
             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
           </button>
         </div>
-        <p className="text-xs text-purple-600 dark:text-purple-400 mt-2">Copy UPI ID and pay using GPay, PhonePe, or Paytm</p>
+        <a
+          href={`upi://pay?pa=kalpdev@ybl&pn=KalpDev%20PG&am=${rentAmount}&cu=INR&tn=Rent%20${monthLabel}`}
+          className="mt-3 w-full py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-600 transition flex items-center justify-center gap-2"
+        >
+          <CreditCard className="w-5 h-5" />
+          Pay ₹{rentAmount.toLocaleString('en-IN')} Now
+        </a>
+        <p className="text-xs text-purple-600 dark:text-purple-400 mt-2">Click above to open your UPI app with amount pre-filled</p>
       </div>
 
       {/* Confirm Payment Button */}
