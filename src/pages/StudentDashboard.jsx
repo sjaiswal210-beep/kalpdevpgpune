@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Building2, LogOut, User, Phone, Mail, MapPin, Calendar, CreditCard,
   Zap, BedDouble, FileText, Bell, Moon, Sun, MessageCircle, Gift, UserCog, Wifi, Copy, Check
@@ -23,6 +23,7 @@ export default function StudentDashboard() {
   const [tenant, setTenant] = useState(null);
   const [darkMode, setDarkMode] = useState(getDarkMode());
   const [activeTab, setActiveTab] = useState('rewards');
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   useEffect(() => {
     const t = getLoggedInStudent();
@@ -56,12 +57,12 @@ export default function StudentDashboard() {
 
   const tabs = [
     { id: 'rewards', label: '🎁 Rewards', icon: Gift },
-    { id: 'overview', label: 'Overview', icon: User },
-    { id: 'members', label: 'PG Members', icon: UserCog },
-    { id: 'wifi', label: 'WiFi', icon: Wifi },
-    { id: 'profile', label: 'My Profile', icon: UserCog },
     { id: 'rent', label: 'Rent History', icon: CreditCard },
     { id: 'electricity', label: 'Electricity', icon: Zap },
+    { id: 'members', label: 'PG Members', icon: UserCog },
+    { id: 'wifi', label: 'WiFi', icon: Wifi },
+    { id: 'overview', label: 'Overview', icon: User },
+    { id: 'profile', label: 'My Profile', icon: UserCog },
     { id: 'notices', label: 'Notices', icon: Bell },
   ];
 
@@ -130,7 +131,7 @@ export default function StudentDashboard() {
                 <p className="text-white/70">Room {tenant.roomNumber} • Bed {tenant.bed}</p>
               </div>
               <button
-                onClick={() => setActiveTab('profile')}
+                onClick={() => setShowProfileModal(true)}
                 className="px-3 py-2 bg-white/20 rounded-xl text-sm font-medium hover:bg-white/30 transition flex items-center gap-1.5"
               >
                 <UserCog className="w-4 h-4" />
@@ -365,6 +366,37 @@ export default function StudentDashboard() {
           )}
         </motion.div>
       </div>
+
+      {/* Profile Modal */}
+      <AnimatePresence>
+        {showProfileModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+            onClick={() => setShowProfileModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl"
+            >
+              <div className="p-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between sticky top-0 bg-white dark:bg-gray-800 z-10">
+                <h2 className="text-lg font-bold text-gray-900 dark:text-white">Edit Profile</h2>
+                <button onClick={() => setShowProfileModal(false)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <span className="text-gray-500 text-xl">✕</span>
+                </button>
+              </div>
+              <div className="p-4">
+                <StudentProfile onSaved={() => setShowProfileModal(false)} />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

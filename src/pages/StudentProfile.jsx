@@ -6,7 +6,7 @@ import {
 import { getLoggedInStudent, updateTenantProfile } from '../data/store';
 import { uploadFile } from '../data/firebase';
 
-export default function StudentProfile() {
+export default function StudentProfile({ onSaved }) {
   const [tenant, setTenant] = useState(null);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
@@ -77,6 +77,7 @@ export default function StudentProfile() {
     // Update local session
     const updated = { ...tenant, ...updatedForm };
     setTenant(updated);
+    if (onSaved) onSaved();
   };
 
   if (!tenant) return null;
