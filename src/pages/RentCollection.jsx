@@ -130,19 +130,12 @@ export default function RentCollection() {
                         )}
                       </td>
                       <td className="px-6 py-4 text-right">
-                        {isPaid ? (
+                        {isPaid && (
                           <button
                             onClick={() => handleMarkUnpaid(t.id)}
                             className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-xs font-medium hover:bg-red-100 transition"
                           >
                             <Undo2 className="w-3 h-3" /> Undo
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleMarkPaid(t.id)}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 text-xs font-medium hover:bg-green-100 transition"
-                          >
-                            <Check className="w-3 h-3" /> Mark Paid
                           </button>
                         )}
                       </td>
