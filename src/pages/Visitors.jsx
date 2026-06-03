@@ -43,6 +43,7 @@ export default function Visitors() {
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Phone</th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Purpose</th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Visiting</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Aadhaar</th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Date</th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Duration/Time</th>
                 </tr>
@@ -54,6 +55,7 @@ export default function Visitors() {
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{v.phone || v.visitorPhone}</td>
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{v.purpose || v.reason}</td>
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{v.visitingTenant || v.tenantName} {v.roomNumber ? `(Room ${v.roomNumber})` : ''}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{v.aadhaar || '-'}</td>
                     <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{formatDate(v.date || v.createdAt)}</td>
                     <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{v.days ? `${v.days} day(s)` : (v.timeIn ? `${v.timeIn}${v.timeOut ? ` - ${v.timeOut}` : ''}` : '-')}</td>
                   </tr>
