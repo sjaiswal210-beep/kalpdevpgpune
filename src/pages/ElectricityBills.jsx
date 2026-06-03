@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, Plus, X, Calculator } from 'lucide-react';
+import { Zap, Plus, X, Calculator, Edit2, Trash2 } from 'lucide-react';
 import {
   ALL_ROOMS, getRoomOccupancy, addElectricityBill,
   formatCurrency, formatDate, getMonthKey
 } from '../data/store';
+import { updateDocument, deleteDocument, COLLECTIONS } from '../data/firebase';
 import { useData } from '../data/DataContext';
 
 export default function ElectricityBills() {
   const { tenants, electricityRecords } = useData();
   const [showForm, setShowForm] = useState(false);
+  const [editId, setEditId] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState('');
   const [billAmount, setBillAmount] = useState('');
   const [billMonth, setBillMonth] = useState(getMonthKey());
@@ -35,10 +37,33 @@ export default function ElectricityBills() {
       tenantNames: occupants.map(t => t.name),
     };
 
-    await addElectricityBill(bill);
+    if (editId) {
+      await updateDocument(COLLECTIONS.ELECTRICITY, editId, bill);
+    } else {
+      await addElectricityBill(bill);
+    }
+    resetForm();
+  };
+
+  const handleEdit = (record) => {
+    setEditId(record.id);
+    setSelectedRoom(record.roomNumber);
+    setBillAmount(String(record.totalBill));
+    setBillMonth(record.month);
+    setShowForm(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Delete this electricity bill?')) return;
+    await deleteDocument(COLLECTIONS.ELECTRICITY, id);
+  };
+
+  const resetForm = () => {
     setShowForm(false);
+    setEditId(null);
     setSelectedRoom('');
     setBillAmount('');
+    setBillMonth(getMonthKey());
   };
 
   const selectedOccupants = selectedRoom ? getRoomOccupancy(tenants, selectedRoom) : [];
@@ -76,6 +101,7 @@ export default function ElectricityBills() {
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Occupants</th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Per Person</th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Tenants</th>
+                  <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -87,6 +113,16 @@ export default function ElectricityBills() {
                     <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{r.occupants}</td>
                     <td className="px-6 py-4 text-sm font-semibold text-pink-500 dark:text-pink-400">{formatCurrency(r.perPersonAmount)}</td>
                     <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{r.tenantNames?.join(', ') || '-'}</td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button onClick={() => handleEdit(r)} className="p-2 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-600 hover:bg-amber-100 transition">
+                          <Edit2 className="w-3.5 h-3.5" />
+                        </button>
+                        <button onClick={() => handleDelete(r.id)} className="p-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 hover:bg-red-100 transition">
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -103,7 +139,7 @@ export default function ElectricityBills() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-            onClick={() => setShowForm(false)}
+            onClick={resetForm}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -117,7 +153,7 @@ export default function ElectricityBills() {
                   <Zap className="w-5 h-5 text-yellow-500" />
                   Add Electricity Bill
                 </h2>
-                <button onClick={() => setShowForm(false)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                <button onClick={resetForm} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
                   <X className="w-5 h-5 text-gray-500" />
                 </button>
               </div>
@@ -196,3 +232,4 @@ export default function ElectricityBills() {
     </div>
   );
 }
+
