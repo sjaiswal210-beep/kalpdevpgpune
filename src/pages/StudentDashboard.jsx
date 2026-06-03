@@ -16,6 +16,7 @@ import StudentRewards from './StudentRewards';
 import StudentProfile from './StudentProfile';
 import PGMembers from './PGMembers';
 import WifiDetails from './WifiDetails';
+import TenantVisitors from './TenantVisitors';
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
@@ -60,6 +61,7 @@ export default function StudentDashboard() {
     { id: 'rent', label: 'Rent History', icon: CreditCard },
     { id: 'electricity', label: 'Electricity', icon: Zap },
     { id: 'members', label: 'PG Members', icon: UserCog },
+    { id: 'visitors', label: 'Visitors', icon: UserCog },
     { id: 'wifi', label: 'WiFi', icon: Wifi },
     { id: 'overview', label: 'Overview', icon: User },
     { id: 'profile', label: 'My Profile', icon: UserCog },
@@ -359,6 +361,10 @@ export default function StudentDashboard() {
 
           {activeTab === 'members' && (
             <PGMembers />
+          )}
+
+          {activeTab === 'visitors' && (
+            <TenantVisitors />
           )}
 
           {activeTab === 'wifi' && (
