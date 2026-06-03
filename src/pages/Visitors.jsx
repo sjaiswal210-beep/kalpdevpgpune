@@ -44,18 +44,18 @@ export default function Visitors() {
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Purpose</th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Visiting</th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Time</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Duration/Time</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {visitors.slice().reverse().map((v, i) => (
                   <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{v.name}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{v.phone}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{v.purpose}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{v.visitingTenant}</td>
-                    <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{formatDate(v.date)}</td>
-                    <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{v.timeIn}{v.timeOut ? ` - ${v.timeOut}` : ''}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{v.name || v.visitorName}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{v.phone || v.visitorPhone}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{v.purpose || v.reason}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{v.visitingTenant || v.tenantName} {v.roomNumber ? `(Room ${v.roomNumber})` : ''}</td>
+                    <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{formatDate(v.date || v.createdAt)}</td>
+                    <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{v.days ? `${v.days} day(s)` : (v.timeIn ? `${v.timeIn}${v.timeOut ? ` - ${v.timeOut}` : ''}` : '-')}</td>
                   </tr>
                 ))}
               </tbody>
