@@ -5,7 +5,6 @@ import AdminLogin from './pages/AdminLogin';
 import StudentLogin from './pages/StudentLogin';
 import StudentDashboard from './pages/StudentDashboard';
 import PaymentPage from './pages/PaymentPage';
-import ResetPayments from './pages/ResetPayments';
 import Dashboard from './pages/Dashboard';
 import RoomsBeds from './pages/RoomsBeds';
 import Tenants from './pages/Tenants';
@@ -99,7 +98,6 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/student/login" element={<StudentLogin />} />
           <Route path="/pay/:linkId" element={<PaymentPage />} />
-          <Route path="/reset-payments" element={<ResetPayments />} />
           <Route
             path="/student/dashboard"
             element={
