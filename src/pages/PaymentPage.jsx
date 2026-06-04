@@ -158,7 +158,27 @@ export default function PaymentPage() {
             >
               Pay ₹{Number(link.amount).toLocaleString('en-IN')} Now
             </a>
-            <p className="text-xs text-purple-600 mt-2">Click above to open your UPI app with amount pre-filled</p>
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              <a
+                href={`gpay://upi/pay?pa=kalpdev@ybl&pn=KalpDev%20PG&am=${link.amount}&cu=INR&tn=Rent%20${monthLabel}`}
+                className="py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs font-medium text-center text-gray-700 hover:bg-gray-100 transition"
+              >
+                GPay
+              </a>
+              <a
+                href={`phonepe://pay?pa=kalpdev@ybl&pn=KalpDev%20PG&am=${link.amount}&cu=INR&tn=Rent%20${monthLabel}`}
+                className="py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs font-medium text-center text-gray-700 hover:bg-gray-100 transition"
+              >
+                PhonePe
+              </a>
+              <a
+                href={`paytmmp://pay?pa=kalpdev@ybl&pn=KalpDev%20PG&am=${link.amount}&cu=INR&tn=Rent%20${monthLabel}`}
+                className="py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs font-medium text-center text-gray-700 hover:bg-gray-100 transition"
+              >
+                Paytm
+              </a>
+            </div>
+            <p className="text-xs text-purple-600 mt-2">Tap the green button to open any UPI app, or choose one below</p>
           </div>
 
           {/* Confirm Payment Button */}
