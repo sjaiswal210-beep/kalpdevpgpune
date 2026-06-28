@@ -27,6 +27,7 @@ import Sidebar from './components/Sidebar';
 import TopBar from './components/TopBar';
 import { getDarkMode, setDarkMode as saveDarkMode, isAdminLoggedIn, isStudentLoggedIn } from './data/store';
 import { DataProvider } from './data/DataContext';
+import InstallPrompt from './components/InstallPrompt';
 
 function AdminProtected({ children }) {
   if (!isAdminLoggedIn()) {
@@ -95,6 +96,7 @@ function App() {
   return (
     <DataProvider>
       <BrowserRouter>
+        <InstallPrompt />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/admin/login" element={<AdminLogin />} />
