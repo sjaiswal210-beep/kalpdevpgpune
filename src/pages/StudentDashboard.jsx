@@ -499,40 +499,39 @@ function PayRentCard({ tenant, month }) {
       {/* UPI Section */}
       <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 mb-4">
         <p className="text-sm font-medium text-purple-800 dark:text-purple-300 mb-2">Pay via UPI</p>
-        <div className="flex items-center gap-2 bg-white dark:bg-gray-700 rounded-lg p-3 border border-purple-200 dark:border-purple-700">
+        <div className="flex items-center gap-2 bg-white dark:bg-gray-700 rounded-lg p-3 border border-purple-200 dark:border-purple-700 mb-3">
           <span className="flex-1 text-sm font-mono text-gray-700 dark:text-gray-300">9834573544@ybl</span>
           <button onClick={copyUPI} className="p-1.5 rounded-lg bg-purple-100 dark:bg-purple-800 text-purple-600 dark:text-purple-300 hover:bg-purple-200 transition">
             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
           </button>
         </div>
-        <a
-          href={`upi://pay?pa=9834573544@ybl&pn=KalpDev%20PG&am=${rentAmount}&cu=INR&tn=Rent%20${monthLabel}`}
-          className="mt-3 w-full py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-600 transition flex items-center justify-center gap-2"
-        >
-          <CreditCard className="w-5 h-5" />
-          Pay ₹{rentAmount.toLocaleString('en-IN')} Now
-        </a>
-        <div className="mt-3 grid grid-cols-3 gap-2">
+        <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Select your UPI app to pay ₹{rentAmount.toLocaleString('en-IN')}:</p>
+        <div className="grid grid-cols-2 gap-2">
           <a
             href={`gpay://upi/pay?pa=9834573544@ybl&pn=KalpDev%20PG&am=${rentAmount}&cu=INR&tn=Rent%20${monthLabel}`}
-            className="py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-xs font-medium text-center text-gray-700 dark:text-gray-300 hover:bg-gray-50 transition"
+            className="py-3 bg-white dark:bg-gray-700 border-2 border-blue-200 dark:border-blue-800 rounded-xl text-sm font-semibold text-center text-blue-700 dark:text-blue-300 hover:bg-blue-50 transition flex items-center justify-center gap-2"
           >
-            GPay
+            💙 GPay
           </a>
           <a
             href={`phonepe://pay?pa=9834573544@ybl&pn=KalpDev%20PG&am=${rentAmount}&cu=INR&tn=Rent%20${monthLabel}`}
-            className="py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-xs font-medium text-center text-gray-700 dark:text-gray-300 hover:bg-gray-50 transition"
+            className="py-3 bg-white dark:bg-gray-700 border-2 border-purple-200 dark:border-purple-800 rounded-xl text-sm font-semibold text-center text-purple-700 dark:text-purple-300 hover:bg-purple-50 transition flex items-center justify-center gap-2"
           >
-            PhonePe
+            💜 PhonePe
           </a>
           <a
             href={`paytmmp://pay?pa=9834573544@ybl&pn=KalpDev%20PG&am=${rentAmount}&cu=INR&tn=Rent%20${monthLabel}`}
-            className="py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-xs font-medium text-center text-gray-700 dark:text-gray-300 hover:bg-gray-50 transition"
+            className="py-3 bg-white dark:bg-gray-700 border-2 border-sky-200 dark:border-sky-800 rounded-xl text-sm font-semibold text-center text-sky-700 dark:text-sky-300 hover:bg-sky-50 transition flex items-center justify-center gap-2"
           >
-            Paytm
+            💙 Paytm
+          </a>
+          <a
+            href={`upi://pay?pa=9834573544@ybl&pn=KalpDev%20PG&am=${rentAmount}&cu=INR&tn=Rent%20${monthLabel}`}
+            className="py-3 bg-white dark:bg-gray-700 border-2 border-green-200 dark:border-green-800 rounded-xl text-sm font-semibold text-center text-green-700 dark:text-green-300 hover:bg-green-50 transition flex items-center justify-center gap-2"
+          >
+            🔗 Other UPI
           </a>
         </div>
-        <p className="text-xs text-purple-600 dark:text-purple-400 mt-2">Tap the green button to open any UPI app, or choose one below</p>
       </div>
 
       {/* Confirm Payment Button */}

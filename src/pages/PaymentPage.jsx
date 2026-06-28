@@ -152,33 +152,33 @@ export default function PaymentPage() {
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
-            <a
-              href={`upi://pay?pa=9834573544@ybl&pn=KalpDev%20PG&am=${link.amount}&cu=INR&tn=Rent%20${monthLabel}`}
-              className="mt-3 block w-full py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-600 transition text-center"
-            >
-              Pay ₹{Number(link.amount).toLocaleString('en-IN')} Now
-            </a>
-            <div className="mt-3 grid grid-cols-3 gap-2">
+            <p className="text-xs text-purple-600 mb-2">Select your UPI app to pay ₹{Number(link.amount).toLocaleString('en-IN')}:</p>
+            <div className="grid grid-cols-2 gap-2">
               <a
                 href={`gpay://upi/pay?pa=9834573544@ybl&pn=KalpDev%20PG&am=${link.amount}&cu=INR&tn=Rent%20${monthLabel}`}
-                className="py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs font-medium text-center text-gray-700 hover:bg-gray-100 transition"
+                className="py-3 bg-white border-2 border-blue-200 rounded-xl text-sm font-semibold text-center text-blue-700 hover:bg-blue-50 transition"
               >
-                GPay
+                💙 GPay
               </a>
               <a
                 href={`phonepe://pay?pa=9834573544@ybl&pn=KalpDev%20PG&am=${link.amount}&cu=INR&tn=Rent%20${monthLabel}`}
-                className="py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs font-medium text-center text-gray-700 hover:bg-gray-100 transition"
+                className="py-3 bg-white border-2 border-purple-200 rounded-xl text-sm font-semibold text-center text-purple-700 hover:bg-purple-50 transition"
               >
-                PhonePe
+                💜 PhonePe
               </a>
               <a
                 href={`paytmmp://pay?pa=9834573544@ybl&pn=KalpDev%20PG&am=${link.amount}&cu=INR&tn=Rent%20${monthLabel}`}
-                className="py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs font-medium text-center text-gray-700 hover:bg-gray-100 transition"
+                className="py-3 bg-white border-2 border-sky-200 rounded-xl text-sm font-semibold text-center text-sky-700 hover:bg-sky-50 transition"
               >
-                Paytm
+                💙 Paytm
+              </a>
+              <a
+                href={`upi://pay?pa=9834573544@ybl&pn=KalpDev%20PG&am=${link.amount}&cu=INR&tn=Rent%20${monthLabel}`}
+                className="py-3 bg-white border-2 border-green-200 rounded-xl text-sm font-semibold text-center text-green-700 hover:bg-green-50 transition"
+              >
+                🔗 Other UPI
               </a>
             </div>
-            <p className="text-xs text-purple-600 mt-2">Tap the green button to open any UPI app, or choose one below</p>
           </div>
 
           {/* Confirm Payment Button */}
