@@ -16,6 +16,7 @@ import Visitors from './pages/Visitors';
 import Enquiries from './pages/Enquiries';
 import Reports from './pages/Reports';
 import FinanceTracker from './pages/FinanceTracker';
+import BulkReminders from './pages/BulkReminders';
 import Notices from './pages/Notices';
 import WebsiteEditor from './pages/WebsiteEditor';
 import PaymentTracker from './pages/PaymentTracker';
@@ -76,6 +77,7 @@ function AdminLayout() {
             <Route path="/enquiries" element={<Enquiries />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/finance" element={<FinanceTracker />} />
+            <Route path="/bulk-reminders" element={<BulkReminders />} />
             <Route path="/notices" element={<Notices />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/website" element={<WebsiteEditor />} />
