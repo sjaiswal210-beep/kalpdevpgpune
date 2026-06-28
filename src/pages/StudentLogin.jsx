@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Users, Phone, Building2, ArrowLeft } from 'lucide-react';
 import { studentLogin, isStudentLoggedIn } from '../data/store';
@@ -11,8 +11,7 @@ export default function StudentLogin() {
   const [loading, setLoading] = useState(false);
 
   if (isStudentLoggedIn()) {
-    navigate('/student/dashboard', { replace: true });
-    return null;
+    return <Navigate to="/student/dashboard" replace />;
   }
 
   const handleSubmit = async (e) => {

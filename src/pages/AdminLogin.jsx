@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Shield, Eye, EyeOff, Building2, ArrowLeft } from 'lucide-react';
 import { adminLogin, isAdminLoggedIn } from '../data/store';
@@ -14,8 +14,7 @@ export default function AdminLogin() {
 
   // Redirect if already logged in
   if (isAdminLoggedIn()) {
-    navigate('/admin', { replace: true });
-    return null;
+    return <Navigate to="/admin" replace />;
   }
 
   const handleSubmit = async (e) => {
