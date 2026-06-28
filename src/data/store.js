@@ -56,41 +56,41 @@ export async function adminLogin(username, password) {
   const settings = await getDocument(COLLECTIONS.SETTINGS, 'admin_creds');
   const creds = settings || { username: 'admin', password: 'admin123' };
   if (username === creds.username && password === creds.password) {
-    sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
+    localStorage.setItem(ADMIN_SESSION_KEY, 'true');
     return { success: true };
   }
   return { success: false, error: 'Invalid username or password' };
 }
 
 export function isAdminLoggedIn() {
-  return sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+  return localStorage.getItem(ADMIN_SESSION_KEY) === 'true';
 }
 
 export function adminLogout() {
-  sessionStorage.removeItem(ADMIN_SESSION_KEY);
+  localStorage.removeItem(ADMIN_SESSION_KEY);
 }
 
 export async function studentLogin(phone) {
   const tenants = await getCollection(COLLECTIONS.TENANTS);
   const tenant = tenants.find(t => t.phone === phone);
   if (tenant) {
-    sessionStorage.setItem(STUDENT_SESSION_KEY, JSON.stringify(tenant));
+    localStorage.setItem(STUDENT_SESSION_KEY, JSON.stringify(tenant));
     return { success: true, tenant };
   }
   return { success: false, error: 'No tenant found with this phone number' };
 }
 
 export function isStudentLoggedIn() {
-  return !!sessionStorage.getItem(STUDENT_SESSION_KEY);
+  return !!localStorage.getItem(STUDENT_SESSION_KEY);
 }
 
 export function getLoggedInStudent() {
-  const data = sessionStorage.getItem(STUDENT_SESSION_KEY);
+  const data = localStorage.getItem(STUDENT_SESSION_KEY);
   return data ? JSON.parse(data) : null;
 }
 
 export function studentLogout() {
-  sessionStorage.removeItem(STUDENT_SESSION_KEY);
+  localStorage.removeItem(STUDENT_SESSION_KEY);
 }
 
 export async function getAdminCreds() {
@@ -562,7 +562,7 @@ export async function updateTenantProfile(tenantId, data) {
   const current = getLoggedInStudent();
   if (current && current.id === tenantId) {
     const updated = { ...current, ...filtered };
-    sessionStorage.setItem(STUDENT_SESSION_KEY, JSON.stringify(updated));
+    localStorage.setItem(STUDENT_SESSION_KEY, JSON.stringify(updated));
   }
   return { success: true };
 }
@@ -613,3 +613,4 @@ export async function sendRentReminderWithLink(tenant, month, baseUrl) {
 
   return paymentLink;
 }
+
