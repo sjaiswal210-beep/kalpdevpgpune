@@ -1,0 +1,33 @@
+<svg width="1024" height="500" viewBox="0 0 1024 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="50%" stop-color="#6D28D9"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="cardgrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="500" fill="url(#bg)"/>
+  <!-- decorative circles -->
+  <circle cx="900" cy="80" r="180" fill="#ffffff" opacity="0.06"/>
+  <circle cx="120" cy="420" r="150" fill="#ffffff" opacity="0.06"/>
+
+  <!-- App icon card -->
+  <g transform="translate(120, 150)">
+    <rect x="0" y="0" width="200" height="200" rx="45" fill="#ffffff"/>
+    <rect x="55" y="45" width="90" height="110" rx="8" fill="#7C3AED"/>
+    <rect x="70" y="62" width="20" height="20" rx="3" fill="#ffffff"/>
+    <rect x="110" y="62" width="20" height="20" rx="3" fill="#ffffff"/>
+    <rect x="70" y="95" width="20" height="20" rx="3" fill="#ffffff"/>
+    <rect x="110" y="95" width="20" height="20" rx="3" fill="#ffffff"/>
+    <rect x="90" y="128" width="20" height="27" rx="3" fill="#ffffff"/>
+  </g>
+
+  <!-- Text -->
+  <text x="380" y="210" font-family="Poppins, Arial, sans-serif" font-size="72" font-weight="800" fill="#ffffff">KalpDev PG</text>
+  <text x="382" y="270" font-family="Poppins, Arial, sans-serif" font-size="34" font-weight="500" fill="#E9D5FF">Comfort • Safety • Better Living</text>
+  <text x="382" y="330" font-family="Poppins, Arial, sans-serif" font-size="24" font-weight="400" fill="#C4B5FD">Rent • Payments • Rewards • Community</text>
+</svg>

@@ -1,0 +1,72 @@
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1080" height="1920" fill="#F5F3FF"/>
+  <!-- Header -->
+  <rect width="1080" height="140" fill="#ffffff"/>
+  <rect x="60" y="45" width="50" height="50" rx="12" fill="#7C3AED"/>
+  <text x="130" y="80" font-family="Poppins, Arial" font-size="30" font-weight="700" fill="#1F2937">PG Members</text>
+
+  <!-- Room grid -->
+  <text x="60" y="230" font-family="Poppins, Arial" font-size="34" font-weight="700" fill="#1F2937">Room Occupancy</text>
+
+  <!-- Room cards row 1 -->
+  <rect x="60" y="270" width="300" height="200" rx="24" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="3"/>
+  <text x="90" y="325" font-family="Poppins, Arial" font-size="28" font-weight="700" fill="#1F2937">Room 201</text>
+  <rect x="240" y="300" width="90" height="40" rx="12" fill="#10B981"/>
+  <text x="285" y="328" font-family="Poppins, Arial" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">Full</text>
+  <text x="90" y="390" font-family="Poppins, Arial" font-size="24" fill="#4B5563">🛏 Priya (You)</text>
+  <text x="90" y="435" font-family="Poppins, Arial" font-size="24" fill="#4B5563">🛏 Sneha</text>
+
+  <rect x="390" y="270" width="300" height="200" rx="24" fill="#FFFBEB" stroke="#FDE68A" stroke-width="3"/>
+  <text x="420" y="325" font-family="Poppins, Arial" font-size="28" font-weight="700" fill="#1F2937">Room 202</text>
+  <rect x="570" y="300" width="90" height="40" rx="12" fill="#F59E0B"/>
+  <text x="615" y="328" font-family="Poppins, Arial" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle">Partial</text>
+  <text x="420" y="390" font-family="Poppins, Arial" font-size="24" fill="#4B5563">🛏 Anita</text>
+  <text x="420" y="435" font-family="Poppins, Arial" font-size="24" fill="#9CA3AF">Bed B - Empty</text>
+
+  <rect x="720" y="270" width="300" height="200" rx="24" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="3"/>
+  <text x="750" y="325" font-family="Poppins, Arial" font-size="28" font-weight="700" fill="#1F2937">👑 101</text>
+  <rect x="900" y="300" width="90" height="40" rx="12" fill="#10B981"/>
+  <text x="945" y="328" font-family="Poppins, Arial" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">Full</text>
+  <text x="750" y="390" font-family="Poppins, Arial" font-size="24" fill="#4B5563">🛏 Naina</text>
+  <text x="750" y="430" font-family="Poppins, Arial" font-size="18" fill="#7C3AED">Premium • ₹7,500</text>
+
+  <!-- Member cards -->
+  <text x="60" y="560" font-family="Poppins, Arial" font-size="34" font-weight="700" fill="#1F2937">All Members</text>
+
+  <g>
+    <rect x="60" y="600" width="960" height="160" rx="24" fill="#ffffff"/>
+    <circle cx="150" cy="680" r="45" fill="#EDE9FE"/>
+    <text x="150" y="695" font-family="Poppins, Arial" font-size="36" font-weight="700" fill="#7C3AED" text-anchor="middle">P</text>
+    <text x="230" y="665" font-family="Poppins, Arial" font-size="30" font-weight="600" fill="#1F2937">Priya Sharma</text>
+    <text x="230" y="710" font-family="Poppins, Arial" font-size="24" fill="#9CA3AF">Room 201 • Bed A</text>
+    <rect x="800" y="655" width="150" height="50" rx="14" fill="#FEE2E2"/>
+    <text x="875" y="688" font-family="Poppins, Arial" font-size="22" font-weight="600" fill="#DC2626" text-anchor="middle">🩸 O+</text>
+  </g>
+
+  <g>
+    <rect x="60" y="785" width="960" height="160" rx="24" fill="#ffffff"/>
+    <circle cx="150" cy="865" r="45" fill="#EDE9FE"/>
+    <text x="150" y="880" font-family="Poppins, Arial" font-size="36" font-weight="700" fill="#7C3AED" text-anchor="middle">S</text>
+    <text x="230" y="850" font-family="Poppins, Arial" font-size="30" font-weight="600" fill="#1F2937">Sneha Gupta</text>
+    <text x="230" y="895" font-family="Poppins, Arial" font-size="24" fill="#9CA3AF">Room 201 • Bed B</text>
+    <rect x="800" y="840" width="150" height="50" rx="14" fill="#FEE2E2"/>
+    <text x="875" y="873" font-family="Poppins, Arial" font-size="22" font-weight="600" fill="#DC2626" text-anchor="middle">🩸 B+</text>
+  </g>
+
+  <!-- WiFi section -->
+  <text x="60" y="1050" font-family="Poppins, Arial" font-size="34" font-weight="700" fill="#1F2937">WiFi Networks</text>
+  <rect x="60" y="1090" width="960" height="150" rx="24" fill="#ffffff" stroke="#DBEAFE" stroke-width="2"/>
+  <circle cx="150" cy="1165" r="45" fill="#DBEAFE"/>
+  <text x="150" y="1180" font-family="Poppins, Arial" font-size="40" text-anchor="middle">📶</text>
+  <text x="230" y="1150" font-family="Poppins, Arial" font-size="30" font-weight="600" fill="#1F2937">KalpDev_5G</text>
+  <text x="230" y="1195" font-family="Poppins, Arial" font-size="24" fill="#9CA3AF">Password: ••••••••</text>
+  <rect x="820" y="1140" width="140" height="60" rx="16" fill="#EFF6FF"/>
+  <text x="890" y="1178" font-family="Poppins, Arial" font-size="24" font-weight="600" fill="#2563EB" text-anchor="middle">Copy</text>
+
+  <!-- Notices -->
+  <text x="60" y="1340" font-family="Poppins, Arial" font-size="34" font-weight="700" fill="#1F2937">Latest Notice</text>
+  <rect x="60" y="1380" width="960" height="200" rx="24" fill="#ffffff"/>
+  <text x="110" y="1450" font-family="Poppins, Arial" font-size="30" font-weight="600" fill="#1F2937">🔔 Water tank cleaning</text>
+  <text x="110" y="1505" font-family="Poppins, Arial" font-size="24" fill="#6B7280">Water supply will be off on Sunday</text>
+  <text x="110" y="1545" font-family="Poppins, Arial" font-size="24" fill="#6B7280">10 AM - 2 PM for maintenance.</text>
+</svg>

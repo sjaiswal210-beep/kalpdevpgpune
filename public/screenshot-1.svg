@@ -1,0 +1,66 @@
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="#F5F3FF"/>
+  <!-- Header -->
+  <rect width="1080" height="140" fill="#ffffff"/>
+  <rect x="60" y="45" width="50" height="50" rx="12" fill="#7C3AED"/>
+  <text x="130" y="70" font-family="Poppins, Arial" font-size="30" font-weight="700" fill="#1F2937">KalpDev PG</text>
+  <text x="130" y="105" font-family="Poppins, Arial" font-size="22" fill="#9CA3AF">Tenant Portal</text>
+
+  <!-- Welcome card -->
+  <rect x="60" y="190" width="960" height="360" rx="40" fill="url(#hero)"/>
+  <circle cx="150" cy="290" r="55" fill="#ffffff" opacity="0.2"/>
+  <text x="235" y="290" font-family="Poppins, Arial" font-size="42" font-weight="700" fill="#ffffff">Welcome, Priya!</text>
+  <text x="235" y="340" font-family="Poppins, Arial" font-size="28" fill="#E9D5FF">Room 201 • Bed A</text>
+  <!-- stat boxes -->
+  <rect x="110" y="400" width="200" height="110" rx="20" fill="#ffffff" opacity="0.15"/>
+  <text x="210" y="450" font-family="Poppins, Arial" font-size="34" font-weight="700" fill="#ffffff" text-anchor="middle">₹3,500</text>
+  <text x="210" y="485" font-family="Poppins, Arial" font-size="20" fill="#E9D5FF" text-anchor="middle">Monthly Rent</text>
+  <rect x="330" y="400" width="200" height="110" rx="20" fill="#ffffff" opacity="0.15"/>
+  <text x="430" y="450" font-family="Poppins, Arial" font-size="34" font-weight="700" fill="#ffffff" text-anchor="middle">201</text>
+  <text x="430" y="485" font-family="Poppins, Arial" font-size="20" fill="#E9D5FF" text-anchor="middle">Room No.</text>
+  <rect x="550" y="400" width="200" height="110" rx="20" fill="#ffffff" opacity="0.15"/>
+  <text x="650" y="450" font-family="Poppins, Arial" font-size="34" font-weight="700" fill="#86EFAC" text-anchor="middle">Paid</text>
+  <text x="650" y="485" font-family="Poppins, Arial" font-size="20" fill="#E9D5FF" text-anchor="middle">This Month</text>
+  <rect x="770" y="400" width="200" height="110" rx="20" fill="#ffffff" opacity="0.15"/>
+  <text x="870" y="450" font-family="Poppins, Arial" font-size="34" font-weight="700" fill="#ffffff" text-anchor="middle">Bed A</text>
+  <text x="870" y="485" font-family="Poppins, Arial" font-size="20" fill="#E9D5FF" text-anchor="middle">Assigned</text>
+
+  <!-- Tabs -->
+  <rect x="60" y="600" width="240" height="80" rx="24" fill="#7C3AED"/>
+  <text x="180" y="650" font-family="Poppins, Arial" font-size="26" font-weight="600" fill="#ffffff" text-anchor="middle">🎁 Rewards</text>
+  <rect x="320" y="600" width="240" height="80" rx="24" fill="#ffffff"/>
+  <text x="440" y="650" font-family="Poppins, Arial" font-size="26" fill="#6B7280" text-anchor="middle">Rent History</text>
+  <rect x="580" y="600" width="220" height="80" rx="24" fill="#ffffff"/>
+  <text x="690" y="650" font-family="Poppins, Arial" font-size="26" fill="#6B7280" text-anchor="middle">Electricity</text>
+
+  <!-- Rewards card -->
+  <rect x="60" y="720" width="960" height="240" rx="32" fill="url(#hero)"/>
+  <text x="110" y="800" font-family="Poppins, Arial" font-size="32" font-weight="600" fill="#ffffff">🎁 My Rewards</text>
+  <text x="110" y="880" font-family="Poppins, Arial" font-size="70" font-weight="800" fill="#ffffff">120 pts</text>
+  <text x="110" y="925" font-family="Poppins, Arial" font-size="24" fill="#E9D5FF">= ₹120 rent discount available</text>
+
+  <!-- Shop earn -->
+  <text x="60" y="1050" font-family="Poppins, Arial" font-size="34" font-weight="700" fill="#1F2937">Shop &amp; Earn Points</text>
+  <rect x="60" y="1090" width="960" height="200" rx="28" fill="#FFF7ED" stroke="#FED7AA" stroke-width="2"/>
+  <text x="110" y="1160" font-family="Poppins, Arial" font-size="28" font-weight="700" fill="#EA580C">Amazon Cashback</text>
+  <text x="110" y="1210" font-family="Poppins, Arial" font-size="24" fill="#78716C">Buy anything &amp; earn cashback points</text>
+  <rect x="110" y="1230" width="260" height="70" rx="18" fill="#F97316"/>
+  <text x="240" y="1275" font-family="Poppins, Arial" font-size="26" font-weight="600" fill="#ffffff" text-anchor="middle">Open Amazon</text>
+
+  <!-- Pay card -->
+  <rect x="60" y="1340" width="960" height="440" rx="32" fill="#ffffff" stroke="#FECACA" stroke-width="3"/>
+  <text x="110" y="1420" font-family="Poppins, Arial" font-size="32" font-weight="700" fill="#1F2937">Rent Due — June 2026</text>
+  <text x="850" y="1420" font-family="Poppins, Arial" font-size="40" font-weight="800" fill="#DC2626" text-anchor="middle">₹3,500</text>
+  <rect x="110" y="1470" width="860" height="90" rx="20" fill="#F5F3FF"/>
+  <text x="140" y="1525" font-family="monospace" font-size="30" fill="#4B5563">9834573544@ybl</text>
+  <rect x="110" y="1590" width="410" height="90" rx="20" fill="#ffffff" stroke="#93C5FD" stroke-width="2"/>
+  <text x="315" y="1645" font-family="Poppins, Arial" font-size="28" font-weight="600" fill="#1D4ED8" text-anchor="middle">💙 GPay</text>
+  <rect x="560" y="1590" width="410" height="90" rx="20" fill="#ffffff" stroke="#D8B4FE" stroke-width="2"/>
+  <text x="765" y="1645" font-family="Poppins, Arial" font-size="28" font-weight="600" fill="#7C3AED" text-anchor="middle">💜 PhonePe</text>
+</svg>
