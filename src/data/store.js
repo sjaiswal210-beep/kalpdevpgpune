@@ -149,6 +149,12 @@ export async function getRentRecords() {
 }
 
 export async function markRentPaid(tenantId, month, amount) {
+  // Prevent duplicate: check if a paid record already exists for this tenant + month
+  const records = await getRentRecords();
+  const existing = records.find(r => r.tenantId === tenantId && r.month === month && r.paid);
+  if (existing) {
+    return existing; // Already paid, don't add duplicate
+  }
   return await addDocument(COLLECTIONS.RENT, {
     tenantId, month, amount, paid: true,
     paidDate: new Date().toISOString().split('T')[0],
