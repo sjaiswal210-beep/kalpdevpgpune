@@ -1,0 +1,10 @@
+{
+  "appId": "com.kalpdev.pg",
+  "appName": "KalpDev PG",
+  "webDir": "dist",
+  "server": {
+    "url": "https://kalpdevpg.online",
+    "cleartext": true,
+    "androidScheme": "https"
+  }
+}
