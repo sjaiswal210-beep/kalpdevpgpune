@@ -1,0 +1,20 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="110" fill="url(#grad)"/>
+  <!-- Building icon -->
+  <g fill="#ffffff">
+    <rect x="156" y="140" width="200" height="240" rx="12"/>
+    <rect x="188" y="180" width="40" height="40" rx="6" fill="#7C3AED"/>
+    <rect x="284" y="180" width="40" height="40" rx="6" fill="#7C3AED"/>
+    <rect x="188" y="248" width="40" height="40" rx="6" fill="#7C3AED"/>
+    <rect x="284" y="248" width="40" height="40" rx="6" fill="#7C3AED"/>
+    <rect x="236" y="316" width="40" height="64" rx="6" fill="#7C3AED"/>
+  </g>
+  <!-- Text KP -->
+  <text x="256" y="450" font-family="Poppins, Arial, sans-serif" font-size="60" font-weight="700" fill="#ffffff" text-anchor="middle">KalpDev</text>
+</svg>

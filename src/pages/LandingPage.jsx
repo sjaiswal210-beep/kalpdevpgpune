@@ -276,6 +276,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-4">
             <a href="https://wa.me/917350785606" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-green-400 transition">WhatsApp</a>
             <a href="#" className="text-gray-400 hover:text-blue-400 transition">Instagram</a>
+            <Link to="/privacy" className="text-gray-400 hover:text-purple-400 transition">Privacy Policy</Link>
           </div>
         </div>
       </footer>
