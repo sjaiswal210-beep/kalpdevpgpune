@@ -30,3 +30,10 @@ android/.gradle/
 android/local.properties
 android/app/release/
 android/app/src/main/assets/public/
+
+# Android signing (keep private!)
+android/keystore.properties
+android/app/*.keystore
+android/app/*.jks
+*.keystore
+*.jks
